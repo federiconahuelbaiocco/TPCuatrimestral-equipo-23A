@@ -10,5 +10,10 @@ namespace dominio
     {
         public int IdEstadoTurno { get; set; }
         public string Descripcion { get; set; }
+    
+        public override string ToString()
+        {
+            return Descripcion;
+        }
     }
 }
