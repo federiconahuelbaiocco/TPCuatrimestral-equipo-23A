@@ -8,7 +8,6 @@ namespace dominio
 {
     internal class Paciente:Persona
     {
-        public int IdPaciente { get; set; }
         public DateTime FechaNac { get; set; }
         public ObraSocial ObraSocial { get; set; }
     }

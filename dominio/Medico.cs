@@ -9,7 +9,6 @@ namespace dominio
 {
     internal class Medico : Persona
     {
-        public int IdMedico { get; set; }
         public string Matricula { get; set; }
         public TurnoTrabajo HorarioAtencion { get; set; }
         public Especialidad Especialeidad { get; set; }
