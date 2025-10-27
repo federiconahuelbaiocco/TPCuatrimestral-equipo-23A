@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace dominio
 {
-    internal class Paciente:Persona
+    public class Paciente : Persona 
     {
-        public DateTime FechaNac { get; set; }
-        public ObraSocial ObraSocial { get; set; }
+        public DateTime FechaNac { get; set; } 
+       
+        // public ObraSocial ObraSocial { get; set; }
     }
 }

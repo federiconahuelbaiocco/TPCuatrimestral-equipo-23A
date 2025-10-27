@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace dominio
 {
-	public class EstadoTurno
+	public class Prestacion
 	{
-		public int IdEstadoTurno { get; set; }
+		public int IdPrestacion { get; set; }
 		public string Descripcion { get; set; }
+		public decimal Importe { get; set; }
+		public Especialidad Especialidad { get; set; }
 
 		public override string ToString()
 		{

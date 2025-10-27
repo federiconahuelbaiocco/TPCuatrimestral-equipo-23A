@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace dominio
 {
-    internal class Medico : Persona
-    {
-        public string Matricula { get; set; }
-        public TurnoTrabajo HorarioAtencion { get; set; }
-        public Especialidad Especialeidad { get; set; }
+	public class Medico : Persona
+	{
+		public string Matricula { get; set; }
+		public List<Especialidad> Especialidades { get; set; } = new List<Especialidad>();
+		public List<TurnoTrabajo> Horarios { get; set; } = new List<TurnoTrabajo>();
 
-    }
+		public int IdUsuario { get; set; } = -1;
+	}
 }

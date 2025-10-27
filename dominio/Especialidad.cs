@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace dominio
 {
-    internal class Especialidad
-    {
-        public int IdEspecialidad { get; set; }
-        public string Descripcion { get; set; }
+	public class Especialidad
+	{
+		public int IdEspecialidad { get; set; }
+		public string Descripcion { get; set; }
 
-        public override string ToString()
-        {
-            return Descripcion;
-        }
-    }
+		public override string ToString()
+		{
+			return Descripcion;
+		}
+	}
 }

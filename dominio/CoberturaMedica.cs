@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace dominio
 {
-	public class EstadoTurno
+	public class CoberturaMedica
 	{
-		public int IdEstadoTurno { get; set; }
-		public string Descripcion { get; set; }
+		public int IdCoberturaMedica { get; set; }
+		public string Nombre { get; set; }
 
 		public override string ToString()
 		{
-			return Descripcion;
+			return Nombre;
 		}
 	}
 }
