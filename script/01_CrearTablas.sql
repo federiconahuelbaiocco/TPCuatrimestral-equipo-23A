@@ -86,7 +86,7 @@ IF OBJECT_ID('dbo.Medicos', 'U') IS NOT NULL
 
 IF OBJECT_ID('dbo.Personas', 'U') IS NULL
 BEGIN
-    PRINT 'Error Crítico: La tabla Personas es necesaria y no existe. Abortando.';í
+    PRINT 'Error Crítico: La tabla Personas es necesaria y no existe. Abortando.';
 END
 ELSE
 BEGIN
