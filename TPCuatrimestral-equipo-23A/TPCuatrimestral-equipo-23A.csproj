@@ -69,6 +69,7 @@
     <Content Include="Especialidades.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Medico.aspx" />
+    <Content Include="PerfilMedico.aspx" />
     <Content Include="Recepcionista.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -117,6 +118,13 @@
     </Compile>
     <Compile Include="Medico.Master.designer.cs">
       <DependentUpon>Medico.Master</DependentUpon>
+    </Compile>
+    <Compile Include="PerfilMedico.aspx.cs">
+      <DependentUpon>PerfilMedico.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PerfilMedico.aspx.designer.cs">
+      <DependentUpon>PerfilMedico.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recepcionista.aspx.cs">
