@@ -7,6 +7,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TPCuatrimestral-equipo-23A"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dominio", "..\dominio\dominio.csproj", "{1E55C8E3-EAEB-4E6C-BA11-F22A3667449D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución", "Elementos de la solución", "{E9A21240-46F3-4BA8-9814-5F94197867D2}"
+	ProjectSection(SolutionItems) = preProject
+		..\script\01_CrearTablas.sql = ..\script\01_CrearTablas.sql
+		..\script\02_CrearSPs.sql = ..\script\02_CrearSPs.sql
+		..\script\ClinicaDB.txt = ..\script\ClinicaDB.txt
+		..\script\Procedures.txt = ..\script\Procedures.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

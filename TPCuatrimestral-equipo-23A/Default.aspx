@@ -15,7 +15,7 @@
                  <div class="card-body">
 
                      <p>Inicia sesion para ingresar al sistema</p>
-                     <label for="inputPassword5" class="form-label">Correo Electronico</label>
+                     <label for="inputPassword5" class="form-label">Correo Electronico/ Usuario</label>
                      <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
                      <label for="inputPassword5" class="form-label">Contraseña</label>
                      <input type="password" id="contra" class="form-control" aria-describedby="passwordHelpBlock">
@@ -25,7 +25,7 @@
                              <button type="button" class="btn btn-primary btn-sm">Iniciar sesion</button>
                              <br />
                              <a href="" >¿Olvidaste tu contraseña?</a>
-                             <p>¿No tenes cuenta? <a href="" > Registrate</a></p> 
+                             
                          </div>
                      </div>
                  </div>
