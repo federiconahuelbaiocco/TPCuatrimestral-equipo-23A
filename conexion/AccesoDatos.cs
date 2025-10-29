@@ -44,9 +44,9 @@ namespace conexion
                 conexion.Open();
                 lector = comando.ExecuteReader();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -58,10 +58,10 @@ namespace conexion
                 conexion.Open();
                 comando.ExecuteNonQuery();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
-                throw ex;
+                throw;
             }
         }
 
@@ -78,9 +78,9 @@ namespace conexion
                 conexion.Open();
                 return comando.ExecuteScalar();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 

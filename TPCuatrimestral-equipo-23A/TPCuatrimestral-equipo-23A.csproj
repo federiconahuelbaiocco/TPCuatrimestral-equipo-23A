@@ -65,12 +65,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Administradores.aspx" />
+    <Content Include="AgregarEmpleado.aspx" />
+    <Content Include="Configuraciones.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Especialidades.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Medico.aspx" />
     <Content Include="PerfilMedico.aspx" />
     <Content Include="Recepcionista.aspx" />
+    <Content Include="Usuarios.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +90,20 @@
     </Compile>
     <Compile Include="Administradores.aspx.designer.cs">
       <DependentUpon>Administradores.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AgregarEmpleado.aspx.cs">
+      <DependentUpon>AgregarEmpleado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AgregarEmpleado.aspx.designer.cs">
+      <DependentUpon>AgregarEmpleado.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Configuraciones.aspx.cs">
+      <DependentUpon>Configuraciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Configuraciones.aspx.designer.cs">
+      <DependentUpon>Configuraciones.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -148,6 +165,13 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
+    <Compile Include="Usuarios.aspx.cs">
+      <DependentUpon>Usuarios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Usuarios.aspx.designer.cs">
+      <DependentUpon>Usuarios.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Site.Master" />
@@ -164,7 +188,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
@@ -177,6 +200,10 @@
     <ProjectReference Include="..\dominio\dominio.csproj">
       <Project>{1e55c8e3-eaeb-4e6c-ba11-f22a3667449d}</Project>
       <Name>dominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\negocio\negocio.csproj">
+      <Project>{b9131c81-4059-4254-9e2b-c0811505ed6c}</Project>
+      <Name>negocio</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

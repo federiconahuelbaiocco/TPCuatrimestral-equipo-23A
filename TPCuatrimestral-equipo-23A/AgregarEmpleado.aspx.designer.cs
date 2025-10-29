@@ -11,88 +11,115 @@ namespace TPCuatrimestral_equipo_23A
 {
 
 
-	public partial class Admin
+	public partial class AgregarEmpleado
 	{
 
 		/// <summary>
-		/// Control head.
+		/// Control hlVolver.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
+		protected global::System.Web.UI.WebControls.HyperLink hlVolver;
 
 		/// <summary>
-		/// Control form1.
+		/// Control txtNombre.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+		protected global::System.Web.UI.WebControls.TextBox txtNombre;
 
 		/// <summary>
-		/// Control ScriptManager1.
+		/// Control txtApellido.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.ScriptManager ScriptManager1;
+		protected global::System.Web.UI.WebControls.TextBox txtApellido;
 
 		/// <summary>
-		/// Control hlInicio.
+		/// Control txtDni.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.HyperLink hlInicio;
+		protected global::System.Web.UI.WebControls.TextBox txtDni;
 
 		/// <summary>
-		/// Control hlUsuarios.
+		/// Control txtTelefono.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.HyperLink hlUsuarios;
+		protected global::System.Web.UI.WebControls.TextBox txtTelefono;
 
 		/// <summary>
-		/// Control hlEspecialidades.
+		/// Control txtEmailContacto.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.HyperLink hlEspecialidades;
+		protected global::System.Web.UI.WebControls.TextBox txtEmailContacto;
 
 		/// <summary>
-		/// Control hlConfiguracion.
+		/// Control txtLegajo.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.HyperLink hlConfiguracion;
+		protected global::System.Web.UI.WebControls.TextBox txtLegajo;
 
 		/// <summary>
-		/// Control ContentPlaceHolder1.
+		/// Control ddlRol.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentPlaceHolder1;
+		protected global::System.Web.UI.WebControls.DropDownList ddlRol;
 
 		/// <summary>
-		/// Control ScriptsPlaceHolder.
+		/// Control txtEmailLogin.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.ContentPlaceHolder ScriptsPlaceHolder;
+		protected global::System.Web.UI.WebControls.TextBox txtEmailLogin;
+
+		/// <summary>
+		/// Control txtContrasena.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.TextBox txtContrasena;
+
+		/// <summary>
+		/// Control btnCancelar.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Button btnCancelar;
+
+		/// <summary>
+		/// Control btnGuardarEmpleado.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Button btnGuardarEmpleado;
 	}
 }

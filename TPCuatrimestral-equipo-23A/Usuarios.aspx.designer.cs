@@ -11,205 +11,205 @@ namespace TPCuatrimestral_equipo_23A
 {
 
 
-	public partial class Administradores
+	public partial class Usuarios
 	{
 
 		/// <summary>
-		/// Control lblAdminCount.
+		/// Control imgAvatarGrande.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.Label lblAdminCount;
+		protected global::System.Web.UI.WebControls.Image imgAvatarGrande;
 
 		/// <summary>
-		/// Control lblRecepCount.
+		/// Control lblNombreCompletoTitulo.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.Label lblRecepCount;
+		protected global::System.Web.UI.WebControls.Label lblNombreCompletoTitulo;
 
 		/// <summary>
-		/// Control lblMedicoCount.
+		/// Control lblRolTitulo.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.Label lblMedicoCount;
+		protected global::System.Web.UI.WebControls.Label lblRolTitulo;
 
 		/// <summary>
-		/// Control hlNuevoEmpleado.
+		/// Control lblIdUsuarioTitulo.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.HyperLink hlNuevoEmpleado;
+		protected global::System.Web.UI.WebControls.Label lblIdUsuarioTitulo;
 
 		/// <summary>
-		/// Control hlEspecialidades.
+		/// Control fuCambiarFoto.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.HyperLink hlEspecialidades;
+		protected global::System.Web.UI.WebControls.FileUpload fuCambiarFoto;
 
 		/// <summary>
-		/// Control imgAvatarGrid.
+		/// Control txtNombre.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.Image imgAvatarGrid;
+		protected global::System.Web.UI.WebControls.TextBox txtNombre;
 
 		/// <summary>
-		/// Control btnEditar.
+		/// Control txtApellido.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.LinkButton btnEditar;
+		protected global::System.Web.UI.WebControls.TextBox txtApellido;
 
 		/// <summary>
-		/// Control btnEliminar.
+		/// Control txtDni.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.LinkButton btnEliminar;
+		protected global::System.Web.UI.WebControls.TextBox txtDni;
 
 		/// <summary>
-		/// Control hlVerTodos.
+		/// Control txtFechaNac.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.HyperLink hlVerTodos;
+		protected global::System.Web.UI.WebControls.TextBox txtFechaNac;
 
 		/// <summary>
-		/// Control upModalEmpleado.
+		/// Control txtTelefono.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.UpdatePanel upModalEmpleado;
+		protected global::System.Web.UI.WebControls.TextBox txtTelefono;
 
 		/// <summary>
-		/// Control pnlModalMensaje.
+		/// Control txtDireccion.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.Panel pnlModalMensaje;
+		protected global::System.Web.UI.WebControls.TextBox txtDireccion;
 
 		/// <summary>
-		/// Control lblModalMensaje.
+		/// Control btnGuardarInfoPersonal.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.Label lblModalMensaje;
+		protected global::System.Web.UI.WebControls.Button btnGuardarInfoPersonal;
 
 		/// <summary>
-		/// Control txtNombreModal.
+		/// Control pnlInfoProfesional.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.TextBox txtNombreModal;
+		protected global::System.Web.UI.WebControls.Panel pnlInfoProfesional;
 
 		/// <summary>
-		/// Control txtApellidoModal.
+		/// Control txtEspecialidad.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.TextBox txtApellidoModal;
+		protected global::System.Web.UI.WebControls.TextBox txtEspecialidad;
 
 		/// <summary>
-		/// Control txtDniModal.
+		/// Control txtMatricula.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.TextBox txtDniModal;
+		protected global::System.Web.UI.WebControls.TextBox txtMatricula;
 
 		/// <summary>
-		/// Control txtTelefonoModal.
+		/// Control btnGuardarInfoProfesional.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.TextBox txtTelefonoModal;
+		protected global::System.Web.UI.WebControls.Button btnGuardarInfoProfesional;
 
 		/// <summary>
-		/// Control txtEmailContactoModal.
+		/// Control lblEmailLogin.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.TextBox txtEmailContactoModal;
+		protected global::System.Web.UI.WebControls.Label lblEmailLogin;
 
 		/// <summary>
-		/// Control txtLegajoModal.
+		/// Control btnEmailNoEditable.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.TextBox txtLegajoModal;
+		protected global::System.Web.UI.WebControls.Button btnEmailNoEditable;
 
 		/// <summary>
-		/// Control ddlRolModal.
+		/// Control btnCambiarContrasena.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.DropDownList ddlRolModal;
+		protected global::System.Web.UI.WebControls.Button btnCambiarContrasena;
 
 		/// <summary>
-		/// Control txtEmailLoginModal.
+		/// Control chkNotifEmailPref.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.TextBox txtEmailLoginModal;
+		protected global::System.Web.UI.WebControls.CheckBox chkNotifEmailPref;
 
 		/// <summary>
-		/// Control txtContrasenaModal.
+		/// Control chkTemaOscuro.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.TextBox txtContrasenaModal;
+		protected global::System.Web.UI.WebControls.CheckBox chkTemaOscuro;
 
 		/// <summary>
-		/// Control btnGuardarModal.
+		/// Control ddlIdioma.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.Button btnGuardarModal;
+		protected global::System.Web.UI.WebControls.DropDownList ddlIdioma;
 	}
 }

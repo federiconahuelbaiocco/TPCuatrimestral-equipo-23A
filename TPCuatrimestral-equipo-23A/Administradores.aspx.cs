@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace TPCuatrimestral_equipo_23A
 {
@@ -11,7 +7,12 @@ namespace TPCuatrimestral_equipo_23A
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                lblAdminCount.Text = "0";
+                lblRecepCount.Text = "0";
+                lblMedicoCount.Text = "0";
+            }
         }
     }
 }

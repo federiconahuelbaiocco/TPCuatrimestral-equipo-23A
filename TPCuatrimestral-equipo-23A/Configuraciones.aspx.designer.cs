@@ -11,88 +11,106 @@ namespace TPCuatrimestral_equipo_23A
 {
 
 
-	public partial class Admin
+	public partial class Configuraciones
 	{
 
 		/// <summary>
-		/// Control head.
+		/// Control cblDiasLaborables.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
+		protected global::System.Web.UI.WebControls.CheckBoxList cblDiasLaborables;
 
 		/// <summary>
-		/// Control form1.
+		/// Control txtHoraApertura.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+		protected global::System.Web.UI.WebControls.TextBox txtHoraApertura;
 
 		/// <summary>
-		/// Control ScriptManager1.
+		/// Control txtHoraCierre.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.ScriptManager ScriptManager1;
+		protected global::System.Web.UI.WebControls.TextBox txtHoraCierre;
 
 		/// <summary>
-		/// Control hlInicio.
+		/// Control txtDuracionTurno.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.HyperLink hlInicio;
+		protected global::System.Web.UI.WebControls.TextBox txtDuracionTurno;
 
 		/// <summary>
-		/// Control hlUsuarios.
+		/// Control btnGuardarHorarios.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.HyperLink hlUsuarios;
+		protected global::System.Web.UI.WebControls.Button btnGuardarHorarios;
 
 		/// <summary>
-		/// Control hlEspecialidades.
+		/// Control chkNotifEmail.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.HyperLink hlEspecialidades;
+		protected global::System.Web.UI.WebControls.CheckBox chkNotifEmail;
 
 		/// <summary>
-		/// Control hlConfiguracion.
+		/// Control chkNotifSms.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.HyperLink hlConfiguracion;
+		protected global::System.Web.UI.WebControls.CheckBox chkNotifSms;
 
 		/// <summary>
-		/// Control ContentPlaceHolder1.
+		/// Control btnGuardarNotificaciones.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentPlaceHolder1;
+		protected global::System.Web.UI.WebControls.Button btnGuardarNotificaciones;
 
 		/// <summary>
-		/// Control ScriptsPlaceHolder.
+		/// Control txtGoogleApiKey.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.ContentPlaceHolder ScriptsPlaceHolder;
+		protected global::System.Web.UI.WebControls.TextBox txtGoogleApiKey;
+
+		/// <summary>
+		/// Control txtStripeApiKey.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.TextBox txtStripeApiKey;
+
+		/// <summary>
+		/// Control btnGuardarIntegraciones.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Button btnGuardarIntegraciones;
 	}
 }

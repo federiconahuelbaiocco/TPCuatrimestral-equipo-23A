@@ -11,16 +11,34 @@ namespace TPCuatrimestral_equipo_23A
 {
 
 
-    public partial class Especialidades
-    {
+	public partial class Especialidades
+	{
 
-        /// <summary>
-        /// Control gvEspecialidades.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvEspecialidades;
-    }
+		/// <summary>
+		/// Control txtNombreEspecialidad.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.TextBox txtNombreEspecialidad;
+
+		/// <summary>
+		/// Control btnAgregarEspecialidad.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Button btnAgregarEspecialidad;
+
+		/// <summary>
+		/// Control gvEspecialidades.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.GridView gvEspecialidades;
+	}
 }
