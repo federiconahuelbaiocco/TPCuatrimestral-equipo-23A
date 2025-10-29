@@ -20,7 +20,7 @@
                 
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Calendario</a>
+                        <a class="nav-link text-white" href="CalendarioMaster.aspx">Calendario</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">Pacientes</a>
