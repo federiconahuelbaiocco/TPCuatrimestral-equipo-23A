@@ -6,10 +6,29 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using TPCuatrimestral_equipo_23A.Models;
 
 namespace TPCuatrimestral_equipo_23A
 {
+	public class HorarioConfig
+	{
+		public List<DayOfWeek> DiasLaborables { get; set; } = new List<DayOfWeek>();
+		public TimeSpan HoraApertura { get; set; }
+		public TimeSpan HoraCierre { get; set; }
+		public int DuracionTurnoMin { get; set; }
+	}
+
+	public class NotificacionConfig
+	{
+		public bool Email { get; set; }
+		public bool Sms { get; set; }
+	}
+
+	public class IntegracionConfig
+	{
+		public string GoogleApiKey { get; set; }
+		public string StripeApiKey { get; set; }
+	}
+
 	public partial class Configuraciones : System.Web.UI.Page
 	{
 		protected void Page_Load(object sender, EventArgs e)
@@ -71,6 +90,25 @@ namespace TPCuatrimestral_equipo_23A
 			};
 			Application["IntegracionConfig"] = cfg;
 			ClientScript.RegisterStartupScript(GetType(), "ok3", "alert('Integraciones guardadas');", true);
+		}
+
+		protected void btnSubirLogo_Click(object sender, EventArgs e)
+		{
+			var cph = (ContentPlaceHolder)Master.FindControl("ContentPlaceHolder1");
+			var fu = (FileUpload)cph.FindControl("fuLogoClinica");
+			var img = (Image)cph.FindControl("imgLogoActual");
+
+			if (fu != null && fu.HasFile)
+			{
+				var folder = Server.MapPath("~/Content/Uploads");
+				Directory.CreateDirectory(folder);
+				var fileName = "logo_" + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(fu.FileName);
+				var path = Path.Combine(folder, fileName);
+				fu.SaveAs(path);
+				var url = "~/Content/Uploads/" + fileName;
+				img.ImageUrl = url;
+				ClientScript.RegisterStartupScript(GetType(), "ok4", "alert('Logo subido');", true);
+			}
 		}
 	}
 }

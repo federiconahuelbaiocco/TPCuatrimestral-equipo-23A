@@ -104,7 +104,6 @@
     </Compile>
     <Compile Include="Configuraciones.aspx.cs">
       <DependentUpon>Configuraciones.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Configuraciones.aspx.designer.cs">
       <DependentUpon>Configuraciones.aspx</DependentUpon>

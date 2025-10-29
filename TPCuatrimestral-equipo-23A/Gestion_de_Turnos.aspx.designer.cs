@@ -11,7 +11,7 @@ namespace TPCuatrimestral_equipo_23A
 {
 
 
-    public partial class Gestion_de_Turnos
-    {
-    }
+ public partial class GestionDeTurnos
+ {
+ }
 }

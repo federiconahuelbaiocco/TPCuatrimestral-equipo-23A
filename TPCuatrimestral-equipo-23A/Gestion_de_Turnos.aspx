@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Recepcionista.Master" AutoEventWireup="true" CodeBehind="Gestion_de_Turnos.aspx.cs" Inherits="TPCuatrimestral_equipo_23A.Gestion_de_Turnos" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Recepcionista.Master" AutoEventWireup="true" CodeBehind="Gestion_de_Turnos.aspx.cs" Inherits="TPCuatrimestral_equipo_23A.GestionDeTurnos" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
