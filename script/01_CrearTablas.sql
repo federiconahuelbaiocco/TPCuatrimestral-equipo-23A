@@ -51,9 +51,9 @@ ELSE
 BEGIN
     CREATE TABLE dbo.Personas (
         IdPersona INT IDENTITY(1,1) NOT NULL,
-        Dni VARCHAR(20) NOT NULL,
         Nombre VARCHAR(100) NOT NULL,
         Apellido VARCHAR(100) NOT NULL,
+        Dni VARCHAR(20) NOT NULL,
         Email VARCHAR(255) NULL,
         Telefono VARCHAR(50) NULL,
         Activo BIT NOT NULL DEFAULT 1,
