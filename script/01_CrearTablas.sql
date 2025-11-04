@@ -1,6 +1,3 @@
--- =========================================================================
--- Script para crear la Base de Datos y Estructura Inicial para ClinicaDB
--- =========================================================================
 
 USE master;
 GO
@@ -130,13 +127,10 @@ BEGIN
     SELECT 
         P.IdPersona, P.Dni, P.Nombre, P.Apellido, P.Email, P.Telefono, P.Activo,
         M.Matricula, M.IdUsuario 
-        -- Puedes añadir JOIN con Domicilios aquí si necesitas esos datos
-        -- , D.Calle, D.Altura, D.Localidad ...
     FROM 
         dbo.Personas P
     INNER JOIN 
         dbo.Medicos M ON P.IdPersona = M.IdPersona
-    -- LEFT JOIN dbo.Domicilios D ON P.IdDomicilio = D.IdDomicilio -- Ejemplo de JOIN con Domicilios
     WHERE 
         P.Activo = 1;
 END
@@ -144,9 +138,6 @@ GO
 PRINT 'SP sp_ListarMedicosActivos creado.';
 GO
 
--- =========================================================================
--- == PASO 4: (Opcional) Insertar Datos de Ejemplo ==
--- =========================================================================
 PRINT 'Insertando datos de ejemplo...';
 
 -- Insertar Domicilios (si la tabla está vacía)

@@ -1,6 +1,3 @@
--- Script para crear los Procedimientos Almacenados para ClinicaDB
--- =========================================================================
-
 USE ClinicaDB;
 GO
 
@@ -8,7 +5,9 @@ GO
 -- =========================================================================
 
 -- SP: Listar Especialidades
-PRINT 'Creando SP sp_ListarEspecialidades...';
+USE ClinicaDB;
+GO
+
 IF OBJECT_ID('dbo.sp_ListarEspecialidades', 'P') IS NOT NULL
     DROP PROCEDURE dbo.sp_ListarEspecialidades;
 GO
@@ -18,10 +17,86 @@ AS
 BEGIN
     SET NOCOUNT ON;
     SELECT IdEspecialidad, Descripcion 
-    FROM dbo.Especialidades;
+    FROM dbo.Especialidades
+    WHERE Activo = 1;
 END
 GO
-PRINT 'SP sp_ListarEspecialidades creado.';
+
+
+-- SP: Agregar Especialidad 
+
+USE ClinicaDB;
+GO
+
+IF OBJECT_ID('dbo.sp_AgregarEspecialidad', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_AgregarEspecialidad;
+GO
+
+CREATE PROCEDURE dbo.sp_AgregarEspecialidad
+    @Descripcion VARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    INSERT INTO dbo.Especialidades (Descripcion)
+    VALUES (@Descripcion);
+END
+GO
+
+-- SP: Modificar Especialidad
+
+USE ClinicaDB;
+GO
+
+IF OBJECT_ID('dbo.sp_ModificarEspecialidad', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_ModificarEspecialidad;
+GO
+
+CREATE PROCEDURE dbo.sp_ModificarEspecialidad
+    @IdEspecialidad INT,
+    @NuevaDescripcion VARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    UPDATE dbo.Especialidades
+    SET Descripcion = @NuevaDescripcion
+    WHERE IdEspecialidad = @IdEspecialidad;
+END
+GO
+
+-- SP: Eliminar Especialidad
+
+USE ClinicaDB;
+GO
+
+IF OBJECT_ID('dbo.sp_EliminarLogicoEspecialidad', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_EliminarLogicoEspecialidad;
+GO
+
+CREATE PROCEDURE dbo.sp_EliminarLogicoEspecialidad
+    @IdEspecialidad INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    UPDATE dbo.Especialidades
+    SET Activo = 0
+    WHERE IdEspecialidad = @IdEspecialidad;
+END
+GO
+
+-- modificar especialidades para baja logica 
+
+USE ClinicaDB;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM SYS.COLUMNS WHERE OBJECT_ID = OBJECT_ID('dbo.Especialidades') AND name = 'Activo')
+BEGIN
+    ALTER TABLE dbo.Especialidades
+    ADD Activo BIT NOT NULL DEFAULT 1;
+    PRINT 'Columna Activo agregada a Especialidades.';
+END
 GO
 
 

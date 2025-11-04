@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +21,9 @@ namespace conexion
 
         public AccesoDatos()
         {
-            conexion = new SqlConnection("Server = .\\SQLEXPRESS; Initial Catalog = ClinicaDB; Integrated Security = true");
-            comando = new SqlCommand();
-        }
+			conexion = new SqlConnection(ConfigurationManager.ConnectionStrings["ClinicaDB"].ConnectionString);
+			comando = new SqlCommand();
+		}
 
         public void setearConsulta(string consulta)
         {
