@@ -15,8 +15,6 @@ namespace dominio
 
 		public Paciente Paciente { get; set; }
 
-		public Plan PlanAplicado { get; set; }
-
 		
 		public List<FacturaItem> Items { get; set; } = new List<FacturaItem>();
 

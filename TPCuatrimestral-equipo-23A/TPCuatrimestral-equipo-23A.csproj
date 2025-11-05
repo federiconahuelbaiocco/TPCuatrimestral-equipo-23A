@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -68,8 +68,10 @@
     <Content Include="AgregarEmpleado.aspx" />
     <Content Include="CalendarioMaster.aspx" />
     <Content Include="Configuraciones.aspx" />
+    <Content Include="Consultorios.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="DetallePaciente.aspx" />
+    <Content Include="Error.aspx" />
     <Content Include="Especialidades.aspx" />
     <Content Include="Gestion_de_Pacientes.aspx" />
     <Content Include="Gestion_de_Turnos.aspx" />
@@ -116,6 +118,13 @@
     <Compile Include="Configuraciones.aspx.designer.cs">
       <DependentUpon>Configuraciones.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Consultorios.aspx.cs">
+      <DependentUpon>Consultorios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Consultorios.aspx.designer.cs">
+      <DependentUpon>Consultorios.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -129,6 +138,13 @@
     </Compile>
     <Compile Include="DetallePaciente.aspx.designer.cs">
       <DependentUpon>DetallePaciente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
     </Compile>
     <Compile Include="Especialidades.aspx.cs">
       <DependentUpon>Especialidades.aspx</DependentUpon>
@@ -227,6 +243,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="TPCuatrimestral-equipo-23A\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

@@ -99,6 +99,24 @@ BEGIN
 END
 GO
 
+USE ClinicaDB;
+GO
+
+ALTER PROCEDURE dbo.sp_ListarEspecialidades
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT 
+        IdEspecialidad, 
+        Descripcion,
+        Activo
+    FROM 
+        dbo.Especialidades
+    WHERE 
+        Activo = 1;
+END
+GO
+
 
 -- == SPs para Medicos ==
 -- =========================================================================
@@ -130,3 +148,97 @@ GO
 PRINT '========================================';
 PRINT 'Script de Stored Procedures completado.';
 GO
+
+-- == SPs para Colsultorios ==
+-- =========================================================================
+
+-- creacion de tabla consultorios
+
+USE ClinicaDB;
+GO
+
+IF OBJECT_ID('dbo.CONSULTORIOS', 'U') IS NOT NULL
+    DROP TABLE dbo.CONSULTORIOS;
+GO
+
+CREATE TABLE dbo.CONSULTORIOS (
+    IdConsultorio INT IDENTITY(1,1) NOT NULL,
+    Nombre VARCHAR(100) NOT NULL,
+    Activo BIT NOT NULL DEFAULT 1,
+    CONSTRAINT PK_Consultorios PRIMARY KEY CLUSTERED (IdConsultorio ASC)
+);
+PRINT 'Tabla CONSULTORIOS creada.';
+GO
+
+--- STORED PROCEDURES
+
+-- SP para Listar
+IF OBJECT_ID('dbo.sp_ListarConsultorios', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_ListarConsultorios;
+GO
+CREATE PROCEDURE dbo.sp_ListarConsultorios
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT 
+        IdConsultorio, 
+        Nombre, 
+        Activo 
+    FROM 
+        dbo.CONSULTORIOS;
+END
+GO
+PRINT 'SP sp_ListarConsultorios creado.';
+GO
+
+-- SP para Alta
+IF OBJECT_ID('dbo.sp_AgregarConsultorio', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_AgregarConsultorio;
+GO
+CREATE PROCEDURE dbo.sp_AgregarConsultorio
+    @Nombre VARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO dbo.CONSULTORIOS (Nombre) 
+    VALUES (@Nombre);
+END
+GO
+PRINT 'SP sp_AgregarConsultorio creado.';
+GO
+
+-- SP para Modificación
+IF OBJECT_ID('dbo.sp_ModificarConsultorio', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_ModificarConsultorio;
+GO
+CREATE PROCEDURE dbo.sp_ModificarConsultorio
+    @IdConsultorio INT,
+    @Nombre VARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE dbo.CONSULTORIOS 
+    SET Nombre = @Nombre 
+    WHERE IdConsultorio = @IdConsultorio;
+END
+GO
+PRINT 'SP sp_ModificarConsultorio creado.';
+GO
+
+-- SP para Baja Lógica
+IF OBJECT_ID('dbo.sp_EliminarLogicoConsultorio', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_EliminarLogicoConsultorio;
+GO
+CREATE PROCEDURE dbo.sp_EliminarLogicoConsultorio
+    @IdConsultorio INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE dbo.CONSULTORIOS 
+    SET Activo = 0 
+    WHERE IdConsultorio = @IdConsultorio;
+END
+GO
+PRINT 'SP sp_EliminarLogicoConsultorio creado.';
+GO
+
