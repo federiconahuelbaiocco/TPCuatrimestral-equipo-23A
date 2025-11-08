@@ -1,0 +1,2 @@
+USE ClinicaDB;
+GO
