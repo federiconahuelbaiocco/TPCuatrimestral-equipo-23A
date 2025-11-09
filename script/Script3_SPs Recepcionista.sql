@@ -62,3 +62,101 @@ BEGIN
     END CATCH
 END;
 GO
+
+CREATE PROCEDURE sp_ModificarPaciente
+    @IdPaciente INT,
+    @Dni VARCHAR(20),
+    @Nombre VARCHAR(100),
+    @Apellido VARCHAR(100),
+    @Email VARCHAR(255),
+    @Telefono VARCHAR(50),
+    @FechaNacimiento DATE,
+    @IdCobertura INT = NULL,      -- puede ser NULL si no tiene
+    @Calle VARCHAR(200),
+    @Altura VARCHAR(20),
+    @Piso VARCHAR(10) = NULL,
+    @Departamento VARCHAR(10) = NULL,
+    @CodigoPostal VARCHAR(20) = NULL,
+    @Localidad VARCHAR(100),
+    @Provincia VARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF NOT EXISTS (SELECT 1 FROM Pacientes WHERE IdPersona = @IdPaciente)
+    BEGIN
+        RAISERROR('El paciente no existe.', 16, 1);
+        RETURN;
+    END
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        UPDATE Personas
+        SET 
+            Dni = @Dni,
+            Nombre = @Nombre,
+            Apellido = @Apellido,
+            Email = @Email,
+            Telefono = @Telefono
+        WHERE IdPersona = @IdPaciente;
+
+        UPDATE Pacientes
+        SET 
+            FechaNacimiento = @FechaNacimiento,
+            IdCobertura = @IdCobertura
+        WHERE IdPersona = @IdPaciente;
+
+        UPDATE Domicilios
+        SET 
+            Calle = @Calle,
+            Altura = @Altura,
+            Piso = @Piso,
+            Departamento = @Departamento,
+            CodigoPostal = @CodigoPostal,
+            Localidad = @Localidad,
+            Provincia = @Provincia
+        WHERE IdDomicilio = (
+            SELECT IdDomicilio FROM Personas WHERE IdPersona = @IdPaciente
+        );
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        RAISERROR('Error al modificar el paciente.', 16, 1);
+    END CATCH
+END
+GO
+
+
+CREATE PROCEDURE sp_BajaPaciente
+    @IdPaciente INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF NOT EXISTS (SELECT 1 FROM Pacientes WHERE IdPersona = @IdPaciente)
+    BEGIN
+        RAISERROR('El Id indicado no corresponde a un paciente.', 16, 1);
+        RETURN;
+    END
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        UPDATE Personas
+        SET Activo = 0
+        WHERE IdPersona = @IdPaciente;
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        IF XACT_STATE() <> 0
+            ROLLBACK TRANSACTION;
+
+        DECLARE @Error NVARCHAR(4000) = ERROR_MESSAGE();
+        RAISERROR('Error al dar de baja el paciente: %s', 16, 1, @Error);
+    END CATCH
+END
+GO
