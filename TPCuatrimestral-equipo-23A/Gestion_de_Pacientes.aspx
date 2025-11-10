@@ -10,12 +10,12 @@
                     <h1 class="h2 fw-bold">Gestión de Pacientes</h1>
                     <p class="text-muted">Busca, añade y actualiza la información de los pacientes.</p>
                 </div>
-                <button class="btn btn-primary d-flex align-items-center gap-2">
+                <asp:Linkbutton id="btnNuevoPaciente" runat="server" OnClick="btnNuevoPaciente_Click" CssClass="btn btn-primary d-flex align-items-center gap-2">
                     <svg class="bi bi-plus-lg" fill="currentColor" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" fill-rule="evenodd"></path>
                     </svg>
                     Añadir Nuevo Paciente
-                </button>
+                </asp:LinkButton>
             </div>
             <div class="card shadow-sm mb-4">
                 <div class="card-body">

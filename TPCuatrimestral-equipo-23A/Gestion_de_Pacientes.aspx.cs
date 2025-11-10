@@ -13,5 +13,11 @@ namespace TPCuatrimestral_equipo_23A
         {
 
         }
+
+        protected void btnNuevoPaciente_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("AgregarPaciente.aspx");
+        }
+
     }
 }
