@@ -1,0 +1,117 @@
+﻿using conexion;
+using dominio;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace negocio
+{
+	public class RecepcionistaNegocio
+	{
+		public List<Recepcionista> Listar()
+		{
+			List<Recepcionista> lista = new List<Recepcionista>();
+			AccesoDatos datos = new AccesoDatos();
+			try
+			{
+				datos.setearProcedimiento("sp_ListarRecepcionistas");
+				datos.ejecutarLectura();
+				while (datos.Lector.Read())
+				{
+					Recepcionista aux = new Recepcionista();
+					aux.IdPersona = (int)datos.Lector["IdPersona"];
+					aux.Nombre = (string)datos.Lector["Nombre"];
+					aux.Apellido = (string)datos.Lector["Apellido"];
+					aux.Dni = (string)datos.Lector["Dni"];
+
+					aux.Usuario = new Usuario();
+					aux.Usuario.IdUsuario = (int)datos.Lector["IdUsuario"];
+					aux.Usuario.NombreUsuario = (string)datos.Lector["NombreUsuario"];
+					aux.Usuario.Activo = (bool)datos.Lector["Activo"];
+
+					lista.Add(aux);
+				}
+				return lista;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error al listar recepcionistas.", ex);
+			}
+			finally
+			{
+				datos.cerrarConexion();
+			}
+		}
+
+		public void Agregar(Recepcionista nuevo)
+		{
+			AccesoDatos datos = new AccesoDatos();
+			try
+			{
+				datos.setearProcedimiento("sp_AgregarRecepcionista");
+				datos.setearParametro("@Nombre", nuevo.Nombre);
+				datos.setearParametro("@Apellido", nuevo.Apellido);
+				datos.setearParametro("@DNI", nuevo.Dni);
+				datos.setearParametro("@Mail", (object)nuevo.Email ?? DBNull.Value);
+				datos.setearParametro("@Telefono", (object)nuevo.Telefono ?? DBNull.Value);
+				datos.setearParametro("@NombreUsuario", nuevo.Usuario.NombreUsuario);
+				datos.setearParametro("@Clave", nuevo.Usuario.Clave);
+				datos.ejecutarAccion();
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error al agregar recepcionista.", ex);
+			}
+			finally
+			{
+				datos.cerrarConexion();
+			}
+		}
+
+		public void Modificar(Recepcionista mod)
+		{
+			AccesoDatos datos = new AccesoDatos();
+			try
+			{
+				datos.setearProcedimiento("sp_ModificarRecepcionista");
+				datos.setearParametro("@IdUsuario", mod.Usuario.IdUsuario);
+				datos.setearParametro("@Nombre", mod.Nombre);
+				datos.setearParametro("@Apellido", mod.Apellido);
+				datos.setearParametro("@DNI", mod.Dni);
+				datos.setearParametro("@Mail", (object)mod.Email ?? DBNull.Value);
+				datos.setearParametro("@Telefono", (object)mod.Telefono ?? DBNull.Value);
+				datos.setearParametro("@NuevaClave", (object)mod.Usuario.Clave ?? DBNull.Value);
+				datos.ejecutarAccion();
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error al modificar recepcionista.", ex);
+			}
+			finally
+			{
+				datos.cerrarConexion();
+			}
+		}
+
+		public void EliminarLogico(int idUsuario)
+		{
+			AccesoDatos datos = new AccesoDatos();
+			try
+			{
+				datos.setearProcedimiento("sp_EliminarRecepcionista");
+				datos.setearParametro("@IdUsuario", idUsuario);
+				datos.ejecutarAccion();
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error al eliminar recepcionista.", ex);
+			}
+			finally
+			{
+				datos.cerrarConexion();
+			}
+		}
+	}
+}

@@ -1,2 +1,2 @@
-USE ClinicaDB;
+﻿USE ClinicaDB;
 GO

@@ -7,21 +7,21 @@ body {
 }
 
 .admin-layout .main-content {
-    margin-right: 420px;
+  margin-right: 480px !important;
 }
 
 .sidebar-panel-fixed {
     position: fixed !important;
     top: 0 !important;
     right: 0 !important;
-    width: 420px !important;
+    width: 480px !important;
     height: 100vh !important;
     z-index: 1000 !important;
     background: white;
     border-left: 1px solid #e2e8f0;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.08);
-    display: flex;
-    flex-direction: column;
+display: flex !important;
+    flex-direction: column !important;
 }
 
 .sidebar-panel-header {
@@ -29,11 +29,11 @@ body {
     padding: 2rem 2rem;
     color: white;
     flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
 .sidebar-panel-header h3 {
-    margin: 0;
+ margin: 0;
     font-size: 1.4rem;
     font-weight: 700;
     display: flex;
@@ -62,8 +62,8 @@ body {
     min-height: 350px;
     padding: 3rem 2rem;
     text-align: center;
-    background: white;
-    border-radius: 16px;
+background: white;
+ border-radius: 16px;
     border: 2px dashed #e2e8f0;
     margin: 1rem 0;
 }
@@ -74,7 +74,7 @@ body {
 
 @keyframes pulse {
     0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.05); }
+    50% { opacity: 0.7; transform: scale(1.05); }
 }
 
 .sidebar-empty-state p {
@@ -96,11 +96,11 @@ body {
 }
 
 .sidebar-form-group:last-of-type {
-    margin-bottom: 1.5rem;
+margin-bottom: 1.5rem;
 }
 
 .sidebar-label {
-    display: flex;
+ display: flex;
     align-items: center;
     gap: 0.5rem;
     font-weight: 700;
@@ -113,113 +113,142 @@ body {
 
 .sidebar-label i {
     font-size: 1.1rem;
- color: #667eea;
+    color: #667eea;
 }
 
 .sidebar-input {
     width: 100%;
-  border: 2px solid #e2e8f0;
+    border: 2px solid #e2e8f0;
     border-radius: 12px;
     padding: 1rem 1.25rem;
     font-size: 1.05rem;
-transition: all 0.3s ease;
+    transition: all 0.3s ease;
     background: #fafbfc;
     font-weight: 500;
 }
 
 .sidebar-input:hover {
-    border-color: #cbd5e0;
+  border-color: #cbd5e0;
     background: white;
 }
 
 .sidebar-input:focus {
-    border-color: #667eea;
+  border-color: #667eea;
     outline: none;
     box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12);
     background: white;
 }
 
-.sidebar-textarea {
-    width: 100%;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    font-size: 1.05rem;
-    transition: all 0.3s ease;
-    background: #fafbfc;
-    font-weight: 500;
-    resize: vertical;
-    min-height: 100px;
-}
-
-.sidebar-textarea:hover {
-    border-color: #cbd5e0;
-    background: white;
-}
-
-.sidebar-textarea:focus {
-    border-color: #667eea;
-    outline: none;
-box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12);
-    background: white;
-}
-
-.sidebar-checkbox-container {
+.toggle-switch-container {
     background: linear-gradient(135deg, #f8fafc 0%, #eef2f6 100%);
     padding: 1.5rem;
     border-radius: 14px;
-    border: 2px solid #e2e8f0;
+  border: 2px solid #e2e8f0;
     transition: all 0.3s ease;
 }
 
-.sidebar-checkbox-container:hover {
+.toggle-switch-container:hover {
     background: linear-gradient(135deg, #eef2f6 0%, #e2e8f0 100%);
     border-color: #cbd5e0;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-.sidebar-checkbox {
-  width: 1.4rem;
-    height: 1.4rem;
-    cursor: pointer;
- margin-right: 0.75rem;
-    accent-color: #667eea;
+.toggle-switch-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
 }
 
-.sidebar-checkbox-label {
-    font-weight: 600;
+.toggle-label {
+  font-weight: 600;
     color: #1e293b;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+}
+
+.toggle-switch {
+position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 32px;
+}
+
+.toggle-switch input {
+opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
     cursor: pointer;
-    user-select: none;
+    top: 0;
+ left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #cbd5e1;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 24px;
+    width: 24px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .toggle-slider {
+    background-color: #667eea;
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(28px);
+}
+
+.toggle-slider:hover {
+    box-shadow: 0 0 8px rgba(102, 126, 234, 0.3);
 }
 
 .sidebar-status-message {
-    margin-top: 1rem;
-    padding: 0.875rem 1rem;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    transition: all 0.3s ease;
-    border-radius: 8px;
+    margin-top: 0;
+    padding: 1rem 1.25rem;
+  font-size: 1.05rem;
+    line-height: 1.6;
+ transition: all 0.3s ease;
+    border-radius: 10px;
     background: rgba(255, 255, 255, 0.5);
 }
 
 .sidebar-status-message i {
-    font-size: 1rem;
+    font-size: 1.1rem;
     vertical-align: middle;
+    margin-right: 0.5rem;
 }
 
 .sidebar-status-message.text-success {
-    background: rgba(16, 185, 129, 0.1);
+    background: rgba(16, 185, 129, 0.15);
     color: #059669;
-    border-left: 3px solid #10b981;
+    border-left: 4px solid #10b981;
+    font-weight: 600;
 }
 
 .sidebar-status-message.text-danger {
-    background: rgba(239, 68, 68, 0.1);
-    color: #dc2626;
-    border-left: 3px solid #ef4444;
+background: rgba(239, 68, 68, 0.15);
+color: #dc2626;
+    border-left: 4px solid #ef4444;
+    font-weight: 600;
+}
+
+.sidebar-status-message.text-muted {
+    color: #64748b;
 }
 
 .sidebar-actions {
@@ -233,11 +262,11 @@ box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12);
 
 .sidebar-btn-save {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
- border: none;
-  border-radius: 12px;
-    padding: 1.125rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+  padding: 1.125rem 1.5rem;
     font-weight: 700;
-    font-size: 1.05rem;
+ font-size: 1.05rem;
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -248,8 +277,8 @@ box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12);
 
 .sidebar-btn-save:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.45);
-  background: linear-gradient(135deg, #7c8ff5 0%, #8b5cb8 100%);
+ box-shadow: 0 8px 20px rgba(102, 126, 234, 0.45);
+    background: linear-gradient(135deg, #7c8ff5 0%, #8b5cb8 100%);
 }
 
 .sidebar-btn-save:active {
@@ -260,7 +289,7 @@ box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12);
     background: white;
     border: 2px solid #d1d5db;
     border-radius: 12px;
-    padding: 1.125rem 1.5rem;
+  padding: 1.125rem 1.5rem;
     font-weight: 600;
     font-size: 1.05rem;
     color: #6b7280;
@@ -274,36 +303,12 @@ box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12);
     background: #f9fafb;
     border-color: #9ca3af;
     color: #374151;
-    transform: translateY(-2px);
+ transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .sidebar-btn-cancel:active {
     transform: translateY(0);
-}
-
-.sidebar-info-box {
-    background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
-    border-left: 4px solid #667eea;
-    padding: 1.25rem 1.5rem;
-    border-radius: 12px;
-    margin-top: 2rem;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
-}
-
-.sidebar-info-box small {
-    color: #1e40af;
-    font-size: 0.9rem;
-    line-height: 1.6;
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-}
-
-.sidebar-info-box i {
-    font-size: 1rem;
-    margin-top: 0.125rem;
-    flex-shrink: 0;
 }
 
 .sidebar-panel-body::-webkit-scrollbar {
@@ -315,8 +320,8 @@ box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12);
 }
 
 .sidebar-panel-body::-webkit-scrollbar-thumb {
-background: #cbd5e1;
-    border-radius: 10px;
+    background: #cbd5e1;
+  border-radius: 10px;
 }
 
 .sidebar-panel-body::-webkit-scrollbar-thumb:hover {
@@ -325,13 +330,13 @@ background: #cbd5e1;
 
 @media (max-width: 1399px) {
     .admin-layout .main-content {
-     margin-right: 0;
+        margin-right: 0 !important;
     }
     
     .sidebar-panel-fixed {
         position: relative !important;
-    width: 100% !important;
-     height: auto !important;
+  width: 100% !important;
+        height: auto !important;
         margin-top: 2rem;
         border-left: none;
         border-top: 1px solid #e2e8f0;

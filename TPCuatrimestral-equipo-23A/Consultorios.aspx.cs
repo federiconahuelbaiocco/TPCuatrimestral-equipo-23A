@@ -30,8 +30,8 @@ namespace TPCuatrimestral_equipo_23A
             catch (Exception ex)
             {
                 Session["error"] = ex;
-                Response.Redirect("Error.aspx", false);
-            }
+				Response.Redirect("~/Error.aspx", false);
+			}
         }
 
         protected void btnAgregarConsultorio_Click(object sender, EventArgs e)
@@ -56,8 +56,8 @@ namespace TPCuatrimestral_equipo_23A
             catch (Exception ex)
             {
                 Session["error"] = ex;
-                Response.Redirect("Error.aspx", false);
-            }
+				Response.Redirect("~/Error.aspx", false);
+			}
         }
 
         protected void btnGuardarEdicion_Click(object sender, EventArgs e)
@@ -89,8 +89,8 @@ namespace TPCuatrimestral_equipo_23A
             catch (Exception ex)
             {
                 Session["error"] = ex;
-                Response.Redirect("Error.aspx", false);
-            }
+				Response.Redirect("~/Error.aspx", false);
+			}
         }
 
         protected void gvConsultorios_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -112,8 +112,8 @@ namespace TPCuatrimestral_equipo_23A
                 catch (Exception ex)
                 {
                     Session["error"] = ex;
-                    Response.Redirect("Error.aspx", false);
-                }
+					Response.Redirect("~/Error.aspx", false);
+				}
             }
         }
 

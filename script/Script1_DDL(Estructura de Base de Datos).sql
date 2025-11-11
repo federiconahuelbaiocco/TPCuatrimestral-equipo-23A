@@ -1,7 +1,7 @@
-USE master;
+ï»¿USE master;
 GO
 
--- 1. CREACIÓN DE LA BASE DE DATOS
+-- 1. CREACIÃ“N DE LA BASE DE DATOS
 IF EXISTS (SELECT name FROM sys.databases WHERE name = N'ClinicaDB')
 BEGIN
     ALTER DATABASE ClinicaDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
@@ -101,7 +101,7 @@ CREATE TABLE dbo.Usuarios (
 );
 GO
 
--- DATOS INICIALES OBLIGATORIOS (Catálogos base)
+-- DATOS INICIALES OBLIGATORIOS (CatÃ¡logos base)
 INSERT INTO dbo.COBERTURA (Nombre) VALUES ('Particular'), ('OSDE'), ('Galeno'), ('PAMI');
-INSERT INTO dbo.Especialidades (Descripcion) VALUES ('Clínica Médica'), ('Pediatría'), ('Cardiología');
-INSERT INTO dbo.Roles (Nombre) VALUES ('Administrador'), ('Recepcionista'), ('Médico');
+INSERT INTO dbo.Especialidades (Descripcion) VALUES ('ClÃ­nica MÃ©dica'), ('PediatrÃ­a'), ('CardiologÃ­a');
+INSERT INTO dbo.Roles (Nombre) VALUES ('Administrador'), ('Recepcionista'), ('MÃ©dico');

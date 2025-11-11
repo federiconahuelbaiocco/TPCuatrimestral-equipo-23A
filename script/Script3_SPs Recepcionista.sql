@@ -1,4 +1,4 @@
-USE ClinicaDB;
+ï»¿USE ClinicaDB;
 GO
 
 --PACIENTES
@@ -139,13 +139,13 @@ BEGIN
             SET @IdDomicilio = SCOPE_IDENTITY();
         END
 
-        -- 2. Actualizar datos personales básicos
+        -- 2. Actualizar datos personales bÃ¡sicos
         UPDATE Personas
         SET Nombre = @Nombre, Apellido = @Apellido, Dni = @DNI, Email = @Mail,
             Telefono = @Telefono, IdDomicilio = @IdDomicilio
         WHERE IdPersona = @IdPaciente;
 
-        -- 3. Actualizar datos específicos de Paciente
+        -- 3. Actualizar datos especÃ­ficos de Paciente
         UPDATE PACIENTES
         SET FechaNacimiento = @FechaNacimiento, idCobertura = @idCobertura
         WHERE idPersona = @IdPaciente;

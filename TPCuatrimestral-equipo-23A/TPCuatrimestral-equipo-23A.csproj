@@ -81,19 +81,15 @@
     <Content Include="Medico.aspx" />
     <Content Include="PerfilMedico.aspx" />
     <Content Include="Recepcionista.aspx" />
-    <Content Include="TPCuatrimestral-equipo-23A\styles\SidebarStyles.css" />
-    <Content Include="TPCuatrimestral-equipo-23A\styles\styles.css" />
+    <Content Include="styles\Dashboard.css" />
+    <Content Include="styles\MasterLayout.css" />
+    <Content Include="styles\SidebarStyles.css" />
+    <Content Include="styles\styles.css" />
+    <Content Include="styles\FormStyles.css" />
     <Content Include="Usuarios.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Admin.Master.cs">
-      <DependentUpon>Admin.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin.Master.designer.cs">
-      <DependentUpon>Admin.Master</DependentUpon>
-    </Compile>
     <Compile Include="Administradores.aspx.cs">
       <DependentUpon>Administradores.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -230,6 +226,10 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
+    <Compile Include="Admin.Master.cs">
+      <DependentUpon>Admin.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Usuarios.aspx.cs">
       <DependentUpon>Usuarios.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -240,10 +240,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Site.Master" />
-    <Content Include="Admin.Master" />
     <Content Include="Medico.Master" />
     <None Include="packages.config" />
     <Content Include="Recepcionista.Master" />
+    <Content Include="Admin.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

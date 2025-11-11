@@ -1,50 +1,73 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Recepcionista.master.cs" Inherits="TPCuatrimestral_equipo_23A.Recepcionista" %>
 
 <!DOCTYPE html>
-
-<html>
+<html lang="es">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Pagina de recepcionista</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <asp:ContentPlaceHolder ID="head" runat="server">
-    </asp:ContentPlaceHolder>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Sistema de Gestión</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="~/styles/styles.css" rel="stylesheet" type="text/css" />
+    <link href="~/styles/MasterLayout.css" rel="stylesheet" type="text/css" />
+    <link href="~/styles/SidebarStyles.css" rel="stylesheet" type="text/css" />
+    <link href="~/styles/FormStyles.css" rel="stylesheet" type="text/css" />
+    <link href="~/styles/Dashboard.css" rel="stylesheet" type="text/css" />
+
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
 </head>
-<body class="bg-light">
-    <form id="form1" runat="server">
-        <div class="d-flex">
-            <!-- Sidebar -->
-            <nav class="bg-secondary text-white vh-100 p-3" style="width: 200px;">
-                <h5>Nombre Recepcionista</h5>
-                <h6>Recepcionista</h6>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="Gestion_de_Turnos.aspx">Turnos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="Gestion_de_Pacientes.aspx">Pacientes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="ListadoMedicos.aspx">Medicos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Reportes</a>
-                    </li>
-                </ul>
-            </nav>
+<body class="d-flex flex-column min-vh-100">
+    <form id="form1" runat="server" class="d-flex admin-layout flex-grow-1">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
 
-            <div class="flex-grow-1 p-4">
-                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-                </asp:ContentPlaceHolder>
-            </div>
+        <aside class="sidebar d-flex flex-column border-end border-1 border-secondary-subtle flex-shrink-0"> 
+        <h4 class="px-3 pt-3">Menú Recepcionista</h4>
+       <nav class="flex-grow-1 px-3">
+    <ul class="nav flex-column gap-1">
+          <li class="nav-item">
+    <asp:HyperLink ID="hlRecepcionista" runat="server" CssClass="nav-link" NavigateUrl="~/Recepcionista.aspx">
+     <i class="bi bi-house-fill"></i> Inicio
+           </asp:HyperLink>
+         </li>
+             <li class="nav-item">
+   <asp:HyperLink ID="hlTurnos" runat="server" CssClass="nav-link" NavigateUrl="~/Gestion_de_Turnos.aspx">
+        <i class="bi bi-calendar-check"></i> Gestión de Turnos
+       </asp:HyperLink>
+             </li>
+  <li class="nav-item">
+    <asp:HyperLink ID="hlPacientes" runat="server" CssClass="nav-link" NavigateUrl="~/Gestion_de_Pacientes.aspx">
+    <i class="bi bi-people-fill"></i> Gestión de Pacientes
+   </asp:HyperLink>
+    </li>
+      <li class="nav-item">
+        <asp:HyperLink ID="hlMedicos" runat="server" CssClass="nav-link" NavigateUrl="~/ListadoMedicos.aspx">
+      <i class="bi bi-heart-pulse"></i> Listado de Médicos
+</asp:HyperLink>
+        </li>
+ <li class="nav-item">
+        <asp:HyperLink ID="hlReportes" runat="server" CssClass="nav-link" NavigateUrl="#">
+     <i class="bi bi-file-earmark-bar-graph"></i> Reportes
+     </asp:HyperLink>
+    </li>
+     </ul>
+        </nav>
+        </aside>
 
+  <div class="main-content d-flex flex-column w-100">
+     <header class="top-navbar"></header> 
+
+    <main class="content-area p-4">
+     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+       </main>
         </div>
     </form>
-    <footer>
-        <p>Copyright 2025 - TPCuatrimestral equipo 23A </p>
+    
+    <footer class="text-center mt-auto py-3">
+        <p class="mb-0">Copyright 2025 - TPCuatrimestral equipo23A</p>
     </footer>
-    <!-- Bootstrap JS Bundle -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <asp:ContentPlaceHolder ID="ScriptsPlaceHolder" runat="server"></asp:ContentPlaceHolder>
 </body>
 </html>

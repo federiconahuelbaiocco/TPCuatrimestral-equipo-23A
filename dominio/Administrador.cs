@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace dominio
 {
-	public class Rol
+	public class Administrador : Persona
 	{
-		public int IdRol { get; set; }
-		public string Nombre { get; set; }
+		public Usuario Usuario { get; set; }
 
-		public override string ToString()
+		public Administrador()
 		{
-			return Nombre;
+			Usuario = new Usuario();
 		}
 	}
 }

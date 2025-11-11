@@ -1,4 +1,4 @@
-USE ClinicaDB;
+﻿USE ClinicaDB;
 GO
 
 --ESPECIALIDADES
@@ -56,13 +56,22 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE dbo.sp_ModificarConsultorio
+USE ClinicaDB;
+GO
+
+ALTER PROCEDURE dbo.sp_ModificarConsultorio
     @IdConsultorio INT,
-    @Nombre VARCHAR(100)
+    @Nombre VARCHAR(100),
+    @Activo BIT
 AS
 BEGIN
     SET NOCOUNT ON;
-    UPDATE dbo.CONSULTORIOS SET Nombre = @Nombre WHERE IdConsultorio = @IdConsultorio;
+    UPDATE dbo.CONSULTORIOS 
+    SET 
+        Nombre = @Nombre,
+        Activo = @Activo
+    WHERE 
+        IdConsultorio = @IdConsultorio;
 END
 GO
 
@@ -75,7 +84,7 @@ BEGIN
 END
 GO
 
---MEDICOS (Gesti�n)
+--MEDICOS (Gestión)
 CREATE PROCEDURE dbo.sp_ListarMedicosActivos
 AS
 BEGIN
@@ -146,14 +155,25 @@ BEGIN
 END
 GO
 
+USE ClinicaDB;
+GO
+
 CREATE OR ALTER PROCEDURE dbo.sp_ListarRecepcionistas
 AS
 BEGIN
-    SET NOCOUNT ON;
-    SELECT U.IdUsuario, U.NombreUsuario, P.Nombre, P.Apellido, P.Dni, P.Activo
-    FROM Usuarios U INNER JOIN Personas P ON U.IdPersona = P.IdPersona
-    INNER JOIN Roles R ON U.IdRol = R.IdRol
-    WHERE R.Nombre = 'Recepcionista' AND U.Activo = 1;
+    SET NOCOUNT ON;
+    SELECT 
+        U.IdUsuario, 
+        U.NombreUsuario, 
+        P.IdPersona,
+        P.Nombre, 
+        P.Apellido, 
+        P.Dni, 
+        U.Activo
+    FROM Usuarios U 
+    INNER JOIN Personas P ON U.IdPersona = P.IdPersona
+    INNER JOIN Roles R ON U.IdRol = R.IdRol
+    WHERE R.Nombre = 'Recepcionista' AND U.Activo = 1;
 END
 GO
 
@@ -173,17 +193,17 @@ BEGIN
     BEGIN TRY
         -- 1. Validar que el nombre de usuario no exista ya
         IF EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = @NombreUsuario)
-            THROW 50001, 'El nombre de usuario ya est� en uso.', 1;
+            THROW 50001, 'El nombre de usuario ya está en uso.', 1;
 
         -- 2. Insertar los datos personales
         INSERT INTO dbo.Personas (Nombre, Apellido, Dni, Email, Telefono)
         VALUES (@Nombre, @Apellido, @DNI, @Mail, @Telefono);
 
-        -- Guardamos el ID de la persona reci�n creada
+        -- Guardamos el ID de la persona recién creada
         DECLARE @NuevoIdPersona INT = SCOPE_IDENTITY();
 
         -- 3. Crear el Usuario vinculado a esa persona con Rol de Administrador (IdRol = 1)
-        -- Asumimos que el IdRol 1 corresponde a 'Administrador' seg�n tu script inicial
+        -- Asumimos que el IdRol 1 corresponde a 'Administrador' según tu script inicial
         INSERT INTO dbo.Usuarios (NombreUsuario, Clave, IdRol, IdPersona, Activo)
         VALUES (@NombreUsuario, @Clave, 1, @NuevoIdPersona, 1);
 
@@ -215,7 +235,7 @@ CREATE OR ALTER PROCEDURE dbo.sp_ModificarAdministrador
     @DNI VARCHAR(20),
     @Mail VARCHAR(255) = NULL,
     @Telefono VARCHAR(50) = NULL,
-    @NuevaClave VARCHAR(50) = NULL -- Opcional: si viene vac�o o NULL, no se cambia la clave actual
+    @NuevaClave VARCHAR(50) = NULL -- Opcional: si viene vacío o NULL, no se cambia la clave actual
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -233,7 +253,7 @@ BEGIN
             Telefono = @Telefono
         WHERE IdPersona = @IdPersona;
 
-        -- 3. Si se proporcion� una nueva clave, actualizarla en la tabla Usuarios
+        -- 3. Si se proporcionó una nueva clave, actualizarla en la tabla Usuarios
         IF @NuevaClave IS NOT NULL AND LTRIM(RTRIM(@NuevaClave)) <> ''
         BEGIN
             UPDATE dbo.Usuarios

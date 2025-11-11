@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace dominio
 {
-	public class Administrativo : Persona
+	public class Recepcionista : Persona
 	{
-		public string Legajo { get; set; } 
-		public int IdUsuario { get; set; } = -1;
+		public Usuario Usuario { get; set; }
+
+		public Recepcionista()
+		{
+			Usuario = new Usuario();
+		}
 	}
 }
