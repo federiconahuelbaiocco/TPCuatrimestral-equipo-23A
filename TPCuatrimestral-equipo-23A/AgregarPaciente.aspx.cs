@@ -14,16 +14,7 @@ namespace TPCuatrimestral_equipo_23A
 
         }
 
-        protected void txtFechaNac_Click(object sender, EventArgs e)
-        {
-            Calendar1.Visible = true;
-        }
-
-        protected void Calendar1_SelectionChanged(object sender, EventArgs e)
-        {
-            txtFechaNac.Text = Calendar1.SelectedDate.ToString("dd/MM/yyyy");
-            Calendar1.Style["display"] = "none";
-        }
+       
 
     }
 }

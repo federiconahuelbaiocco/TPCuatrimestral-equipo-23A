@@ -25,7 +25,7 @@
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
                             </svg>
                         </span>
-                        <input aria-describedby="basic-addon1" aria-label="Buscar paciente" class="form-control" placeholder="Buscar paciente por nombre, contacto o DNI..." type="text" />
+                        <input aria-describedby="basic-addon1" aria-label="Buscar paciente" class="form-control" placeholder="Buscar paciente por nombre o DNI..." type="text" />
                     </div>
                 </div>
             </div>
@@ -33,55 +33,7 @@
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover table-striped mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th class="px-4 py-3" scope="col">Nombre Completo</th>
-                                    <th class="px-4 py-3" scope="col">Contacto</th>
-                                    <th class="px-4 py-3 text-end" scope="col">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="align-middle px-4 py-3">Juan Pérez</td>
-                                    <td class="align-middle px-4 py-3 text-muted">juan.perez@example.com</td>
-                                    <td class="align-middle px-4 py-3 text-end">
-                                        <a href="DetallePaciente.aspx" class="btn btn-outline-primary btn-sm me-2">Ver Detalle</a>
-                                        <a href="DetallePaciente.aspx" class="btn btn-secondary btn-sm">Editar</a>
-                                    </td>
-                                </tr>
-                                <tr class="table-primary">
-                                    <td class="align-middle px-4 py-3">Ana Gómez</td>
-                                    <td class="align-middle px-4 py-3">ana.gomez@example.com</td>
-                                    <td class="align-middle px-4 py-3 text-end">
-                                        <button class="btn btn-outline-primary btn-sm me-2">Ver Detalle</button>
-                                        <button class="btn btn-secondary btn-sm">Editar</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle px-4 py-3">Carlos Rodriguez</td>
-                                    <td class="align-middle px-4 py-3 text-muted">carlos.r@example.com</td>
-                                    <td class="align-middle px-4 py-3 text-end">
-                                        <button class="btn btn-outline-primary btn-sm me-2">Ver Detalle</button>
-                                        <button class="btn btn-secondary btn-sm">Editar</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle px-4 py-3">Maria Lopez</td>
-                                    <td class="align-middle px-4 py-3 text-muted">maria.lopez@example.com</td>
-                                    <td class="align-middle px-4 py-3 text-end">
-                                        <button class="btn btn-outline-primary btn-sm me-2">Ver Detalle</button>
-                                        <button class="btn btn-secondary btn-sm">Editar</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle px-4 py-3">Luis Martínez</td>
-                                    <td class="align-middle px-4 py-3 text-muted">luis.martinez@example.com</td>
-                                    <td class="align-middle px-4 py-3 text-end">
-                                        <button class="btn btn-outline-primary btn-sm me-2">Ver Detalle</button>
-                                        <button class="btn btn-secondary btn-sm">Editar</button>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <asp:GridView ID="dgvPacientes" runat="server"></asp:GridView>
                         </table>
                     </div>
                 </div>
