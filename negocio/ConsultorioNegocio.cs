@@ -64,27 +64,28 @@ namespace negocio
             }
         }
 
-        public void Modificar(Consultorio mod)
-        {
-            AccesoDatos datos = new AccesoDatos();
-            try
-            {
-                datos.setearProcedimiento("sp_ModificarConsultorio");
-                datos.setearParametro("@IdConsultorio", mod.IdConsultorio);
-                datos.setearParametro("@Nombre", mod.Nombre);
-                datos.ejecutarAccion();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al modificar consultorio.", ex);
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-        }
+		public void Modificar(Consultorio mod)
+		{
+			AccesoDatos datos = new AccesoDatos();
+			try
+			{
+				datos.setearProcedimiento("sp_ModificarConsultorio");
+				datos.setearParametro("@IdConsultorio", mod.IdConsultorio);
+				datos.setearParametro("@Nombre", mod.Nombre);
+				datos.setearParametro("@Activo", mod.Activo);
+				datos.ejecutarAccion();
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error al modificar consultorio.", ex);
+			}
+			finally
+			{
+				datos.cerrarConexion();
+			}
+		}
 
-        public void EliminarLogico(int id)
+		public void EliminarLogico(int id)
         {
             AccesoDatos datos = new AccesoDatos();
             try

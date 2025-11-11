@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Recepcionista.Master" AutoEventWireup="true" CodeBehind="DetallePaciente.aspx.cs" Inherits="TPCuatrimestral_equipo_23A.DetallePaciente" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <link href="~/styles/styles.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid p-4">
@@ -37,7 +38,7 @@
                 <div class="card-body p-4">
                     <div class="d-flex flex-column flex-md-row align-items-center">
                         <div class="d-flex align-items-center flex-grow-1 mb-3 mb-md-0">
-                            <div class="profile-img rounded-circle me-4" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDr7ObkPoRxK9mVDi3rqxyWlSZgIiMj_eYR9mcjjbzbTx-cDN0jCXiRfrGlMZGrHua9_2t81ZNZivyiTJGGHhcDaagqA2PhAko3uCigEIFI3aFoATZabL6akOP5423uZxd9MMLWCmdHbZzZBSduYPpWbfXH6pPn95XL4t_4zr1syOfiZsIh7T4OIa8W5TK9nT9T-6yJQkkWTJh_aw7MEmpb-eXPXCZR1B3Gt3BD_NE9l3Dsh2k-mwAO7xSFbQRjcnqBf_yXUonIKhk");'></div>
+                            <div class="profile-img rounded-circle me-4"></div>
                             <div>
                                 <h1 class="h4 fw-bold mb-0">Juan Pérez</h1>
                                 <p class="text-muted mb-0">DNI: 12.345.678</p>

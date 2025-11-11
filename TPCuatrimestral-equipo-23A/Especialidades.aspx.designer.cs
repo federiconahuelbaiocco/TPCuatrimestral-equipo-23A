@@ -1,10 +1,10 @@
-ï»¿//------------------------------------------------------------------------------
-// <generado automÃ¡ticamente>
-//     Este cÃ³digo fue generado por una herramienta.
+//------------------------------------------------------------------------------
+// <generado automáticamente>
+//     Este código fue generado por una herramienta.
 //
-//     Los cambios en este archivo podrÃ­an causar un comportamiento incorrecto y se perderÃ¡n si
-//     se vuelve a generar el cÃ³digo. 
-// </generado automÃ¡ticamente>
+//     Los cambios en este archivo podrían causar un comportamiento incorrecto y se perderán si
+//     se vuelve a generar el código. 
+// </generado automáticamente>
 //------------------------------------------------------------------------------
 
 namespace TPCuatrimestral_equipo_23A
@@ -18,8 +18,8 @@ namespace TPCuatrimestral_equipo_23A
 		/// Control txtNombreEspecialidad.
 		/// </summary>
 		/// <remarks>
-		/// Campo generado automÃ¡ticamente.
-		/// Para modificarlo, mueva la declaraciÃ³n del campo del archivo del diseÃ±ador al archivo de cÃ³digo subyacente.
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
 		protected global::System.Web.UI.WebControls.TextBox txtNombreEspecialidad;
 
@@ -27,8 +27,8 @@ namespace TPCuatrimestral_equipo_23A
 		/// Control btnAgregarEspecialidad.
 		/// </summary>
 		/// <remarks>
-		/// Campo generado automÃ¡ticamente.
-		/// Para modificarlo, mueva la declaraciÃ³n del campo del archivo del diseÃ±ador al archivo de cÃ³digo subyacente.
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
 		protected global::System.Web.UI.WebControls.Button btnAgregarEspecialidad;
 
@@ -36,9 +36,45 @@ namespace TPCuatrimestral_equipo_23A
 		/// Control gvEspecialidades.
 		/// </summary>
 		/// <remarks>
-		/// Campo generado automÃ¡ticamente.
-		/// Para modificarlo, mueva la declaraciÃ³n del campo del archivo del diseÃ±ador al archivo de cÃ³digo subyacente.
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
 		protected global::System.Web.UI.WebControls.GridView gvEspecialidades;
+
+		/// <summary>
+		/// Control hfEspecialidadId.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.HiddenField hfEspecialidadId;
+
+		/// <summary>
+		/// Control txtNombreEditar.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.TextBox txtNombreEditar;
+
+		/// <summary>
+		/// Control chkActivoEditar.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.CheckBox chkActivoEditar;
+
+		/// <summary>
+		/// Control btnGuardarEdicion.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Button btnGuardarEdicion;
 	}
 }

@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------------------------
 // <generado automáticamente>
-//     Este código fue generado por una herramienta.
+//   Este código fue generado por una herramienta.
 //
 //     Los cambios en este archivo podrían causar un comportamiento incorrecto y se perderán si
 //     se vuelve a generar el código. 
@@ -15,19 +15,19 @@ namespace TPCuatrimestral_equipo_23A
     {
 
         /// <summary>
-        /// Control txtNombreConsultorio.
+    /// Control txtNombreConsultorio.
         /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
+     /// <remarks>
+     /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNombreConsultorio;
+     protected global::System.Web.UI.WebControls.TextBox txtNombreConsultorio;
 
         /// <summary>
         /// Control btnAgregarConsultorio.
         /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
+   /// <remarks>
+ /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAgregarConsultorio;
@@ -35,10 +35,46 @@ namespace TPCuatrimestral_equipo_23A
         /// <summary>
         /// Control gvConsultorios.
         /// </summary>
-        /// <remarks>
+     /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvConsultorios;
+
+        /// <summary>
+ /// Control hfConsultorioId.
+   /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+      /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfConsultorioId;
+
+        /// <summary>
+        /// Control txtNombreEditar.
+        /// </summary>
+        /// <remarks>
+ /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+      /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNombreEditar;
+
+        /// <summary>
+        /// Control chkActivoEditar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkActivoEditar;
+
+   /// <summary>
+  /// Control btnGuardarEdicion.
+        /// </summary>
+        /// <remarks>
+      /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGuardarEdicion;
     }
 }

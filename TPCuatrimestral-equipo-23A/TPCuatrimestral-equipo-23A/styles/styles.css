@@ -1,0 +1,511 @@
+/* Estilos para switches personalizados */
+.form-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    vertical-align: middle;
+}
+
+.form-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+  background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.form-switch input[type=checkbox]:checked + .slider {
+    background-color: #0d6efd;
+}
+
+.form-switch input[type=checkbox]:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* Estilos para DetallePaciente.aspx */
+.profile-img {
+    width: 80px;
+    height: 80px;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Estilos para avatar de usuario en ListadoMedicos.aspx */
+.user-avatar {
+    background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC0_5rNJIuwJSjc3B7GFicQ2SptCRQsgVoSWyZQ7zOyLQTBVbQ5Fqe5ZSekmG8xvSQDoAYVArpOoFqO_Ej2ANc1OvWZcgsdiMie1mgbC1oWTwppTkDtjas8Vzy1iZlTJTAqwHeU-_XrLSHj8O-LtR-uuNIpaJTFAUlVU0PuIWbWaKS6aAK8BOvlq6RGNcjp-EQRr5TSQrNksJTBAbYwiD_hER06f6K1Y0a1a1d5yn0XR-A9ezn3ZE36x4MtPwcCwO2ZH-KJqJwmzJw");
+}
+
+/* Estilos para el formulario de modificación de consultorio */
+.consultorio-form-container {
+    max-width: 600px;
+  margin: 0 auto;
+}
+
+.consultorio-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+    margin-bottom: 2rem;
+}
+
+.consultorio-card h1 {
+    color: white;
+    text-align: center;
+    margin: 0;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.consultorio-form-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.consultorio-form-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+}
+
+.form-label-custom {
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-control-custom {
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control-custom:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    outline: none;
+}
+
+.checkbox-container {
+    background: #f7fafc;
+    padding: 1.25rem;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.checkbox-container:hover {
+    background: #edf2f7;
+    border-color: #cbd5e0;
+}
+
+.checkbox-custom {
+    width: 1.25rem;
+    height: 1.25rem;
+    cursor: pointer;
+    margin-top: 0;
+    float: left;
+}
+
+.checkbox-label {
+    font-weight: 500;
+    color: #2d3748;
+    font-size: 1.05rem;
+    display: block;
+    line-height: 1.25rem;
+}
+
+.form-check {
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+#statusMessage {
+    transition: color 0.3s ease;
+    font-size: 0.875rem;
+ line-height: 1.4;
+}
+
+#statusText {
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.btn-save-custom {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 12px;
+    padding: 0.875rem 2.5rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-save-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.btn-cancel-custom {
+    background: white;
+    border: 2px solid #cbd5e0;
+    border-radius: 12px;
+    padding: 0.875rem 2.5rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #4a5568;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel-custom:hover {
+    background: #f7fafc;
+    border-color: #a0aec0;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.divider-custom {
+    height: 2px;
+    background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+    border: none;
+    margin: 2rem 0;
+}
+
+.icon-consultorio {
+    font-size: 3rem;
+    color: white;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* ========================================
+   ESTILOS MEJORADOS PARA EL SIDEBAR FIJO DE CONSULTORIOS
+   ======================================== */
+
+.consultorio-layout {
+    position: relative;
+}
+
+.consultorio-main-content {
+ width: 100%;
+}
+
+/* Header del sidebar con gradiente mejorado */
+.sidebar-fixed-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem 2rem;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.sidebar-fixed-header h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    letter-spacing: -0.02em;
+}
+
+.sidebar-fixed-header h3 i {
+    font-size: 1.6rem;
+    opacity: 0.95;
+}
+
+/* Body del sidebar con más espaciado */
+.sidebar-fixed-body {
+    padding: 2.5rem 2rem;
+    overflow-y: auto;
+    flex: 1;
+    background: #fafbfc;
+}
+
+/* Estado vacío mejorado */
+#estadoVacio {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 350px;
+    padding: 3rem 2rem;
+ text-align: center;
+    background: white;
+    border-radius: 16px;
+    border: 2px dashed #e2e8f0;
+    margin: 1rem 0;
+}
+
+#estadoVacio i {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+#estadoVacio p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #64748b;
+    max-width: 280px;
+}
+
+/* Formulario de edición mejorado */
+#formularioEdicion {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* Grupos de formulario con más espacio */
+.sidebar-form-group {
+    margin-bottom: 2rem;
+}
+
+.sidebar-form-group:last-of-type {
+    margin-bottom: 1.5rem;
+}
+
+/* Labels mejorados */
+.sidebar-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+font-weight: 700;
+    color: #334155;
+    margin-bottom: 0.875rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.sidebar-label i {
+    font-size: 1.1rem;
+    color: #667eea;
+}
+
+/* Inputs mejorados */
+.sidebar-input {
+    width: 100%;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+    background: #fafbfc;
+    font-weight: 500;
+}
+
+.sidebar-input:hover {
+    border-color: #cbd5e0;
+    background: white;
+}
+
+.sidebar-input:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12);
+    background: white;
+}
+
+/* Contenedor de checkbox mejorado */
+.sidebar-checkbox-container {
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f6 100%);
+    padding: 1.5rem;
+    border-radius: 14px;
+  border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.sidebar-checkbox-container:hover {
+    background: linear-gradient(135deg, #eef2f6 0%, #e2e8f0 100%);
+    border-color: #cbd5e0;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Checkbox mejorado */
+.sidebar-checkbox {
+    width: 1.4rem;
+    height: 1.4rem;
+    cursor: pointer;
+  margin-right: 0.75rem;
+    accent-color: #667eea;
+}
+
+.sidebar-checkbox-label {
+    font-weight: 600;
+color: #1e293b;
+    font-size: 1.1rem;
+    cursor: pointer;
+  user-select: none;
+}
+
+/* Mensaje de estado mejorado */
+.sidebar-status-message {
+    margin-top: 1rem;
+    padding: 0.875rem 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.sidebar-status-message i {
+    font-size: 1rem;
+    vertical-align: middle;
+}
+
+.sidebar-status-message.text-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    border-left: 3px solid #10b981;
+}
+
+.sidebar-status-message.text-danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+    border-left: 3px solid #ef4444;
+}
+
+/* Botones de acción mejorados */
+.sidebar-actions {
+    margin-top: 2.5rem;
+  padding-top: 2rem;
+    border-top: 2px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+}
+
+.sidebar-btn-save {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 12px;
+    padding: 1.125rem 1.5rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(102, 126, 234, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-btn-save:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.45);
+    background: linear-gradient(135deg, #7c8ff5 0%, #8b5cb8 100%);
+}
+
+.sidebar-btn-save:active {
+    transform: translateY(-1px);
+}
+
+.sidebar-btn-cancel {
+    background: white;
+    border: 2px solid #d1d5db;
+    border-radius: 12px;
+    padding: 1.125rem 1.5rem;
+    font-weight: 600;
+ font-size: 1.05rem;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-btn-cancel:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+    color: #374151;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.sidebar-btn-cancel:active {
+    transform: translateY(0);
+}
+
+/* Info box mejorada */
+.sidebar-info-box {
+    background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+    border-left: 4px solid #667eea;
+    padding: 1.25rem 1.5rem;
+    border-radius: 12px;
+  margin-top: 2rem;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
+}
+
+.sidebar-info-box small {
+    color: #1e40af;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.sidebar-info-box i {
+    font-size: 1rem;
+    margin-top: 0.125rem;
+    flex-shrink: 0;
+}
+
+/* Scrollbar personalizado para el sidebar */
+.sidebar-fixed-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar-fixed-body::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.sidebar-fixed-body::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.sidebar-fixed-body::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}

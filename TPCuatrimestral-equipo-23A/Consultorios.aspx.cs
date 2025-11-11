@@ -8,7 +8,7 @@ using negocio;
 
 namespace TPCuatrimestral_equipo_23A
 {
-       public partial class Consultorios : System.Web.UI.Page
+    public partial class Consultorios : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -60,6 +60,39 @@ namespace TPCuatrimestral_equipo_23A
             }
         }
 
+        protected void btnGuardarEdicion_Click(object sender, EventArgs e)
+        {
+            ConsultorioNegocio negocio = new ConsultorioNegocio();
+            try
+            {
+                dominio.Consultorio consultorio = new dominio.Consultorio();
+                
+                consultorio.IdConsultorio = int.Parse(hfConsultorioId.Value);
+                consultorio.Nombre = txtNombreEditar.Text;
+                consultorio.Activo = chkActivoEditar.Checked;
+
+                if (string.IsNullOrEmpty(consultorio.Nombre))
+                {
+                    return;
+                }
+
+                negocio.Modificar(consultorio);
+
+                CargarConsultorios();
+
+                hfConsultorioId.Value = "";
+                txtNombreEditar.Text = "";
+                chkActivoEditar.Checked = false;
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "limpiarFormulario", "limpiarFormulario(); alert('✅ Consultorio actualizado correctamente');", true);
+            }
+            catch (Exception ex)
+            {
+                Session["error"] = ex;
+                Response.Redirect("Error.aspx", false);
+            }
+        }
+
         protected void gvConsultorios_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "Eliminar")
@@ -70,6 +103,11 @@ namespace TPCuatrimestral_equipo_23A
                     ConsultorioNegocio negocio = new ConsultorioNegocio();
                     negocio.EliminarLogico(idEliminar);
                     CargarConsultorios();
+                    
+                    if (hfConsultorioId.Value == idEliminar.ToString())
+                    {
+                        ScriptManager.RegisterStartupScript(this, GetType(), "limpiarFormulario", "limpiarFormulario();", true);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -77,15 +115,10 @@ namespace TPCuatrimestral_equipo_23A
                     Response.Redirect("Error.aspx", false);
                 }
             }
-            else if (e.CommandName == "Editar")
-            {
-                string idModificar = e.CommandArgument.ToString();
-                Response.Redirect("ConsultorioForm.aspx?ID=" + idModificar, false);
-            }
         }
 
         protected void gvConsultorios_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
         }
     }
- }
+}

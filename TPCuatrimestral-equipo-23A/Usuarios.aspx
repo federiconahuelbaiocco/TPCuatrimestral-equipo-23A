@@ -1,14 +1,7 @@
 ﻿<%@ Page Title="Mi Perfil" Language="C#" MasterPageFile="~/Admin.master" AutoEventWireup="true" CodeBehind="Usuarios.aspx.cs" Inherits="TPCuatrimestral_equipo_23A.Usuarios" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <style>
-        .form-switch { position: relative; display: inline-block; width: 44px; height: 24px; vertical-align: middle;}
-        .form-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        .form-switch input[type=checkbox]:checked + .slider { background-color: #0d6efd; }
-        .form-switch input[type=checkbox]:checked + .slider:before { transform: translateX(20px); }
-    </style>
+    <link href="~/styles/styles.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">

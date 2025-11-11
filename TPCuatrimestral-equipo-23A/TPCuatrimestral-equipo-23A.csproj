@@ -80,6 +80,8 @@
     <Content Include="Medico.aspx" />
     <Content Include="PerfilMedico.aspx" />
     <Content Include="Recepcionista.aspx" />
+    <Content Include="TPCuatrimestral-equipo-23A\styles\SidebarStyles.css" />
+    <Content Include="TPCuatrimestral-equipo-23A\styles\styles.css" />
     <Content Include="Usuarios.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -243,7 +245,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="TPCuatrimestral-equipo-23A\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
