@@ -66,6 +66,7 @@
   <ItemGroup>
     <Content Include="Administradores.aspx" />
     <Content Include="AgregarEmpleado.aspx" />
+    <Content Include="AgregarPaciente.aspx" />
     <Content Include="CalendarioMaster.aspx" />
     <Content Include="Configuraciones.aspx" />
     <Content Include="Consultorios.aspx" />
@@ -106,6 +107,13 @@
     </Compile>
     <Compile Include="AgregarEmpleado.aspx.designer.cs">
       <DependentUpon>AgregarEmpleado.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AgregarPaciente.aspx.cs">
+      <DependentUpon>AgregarPaciente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AgregarPaciente.aspx.designer.cs">
+      <DependentUpon>AgregarPaciente.aspx</DependentUpon>
     </Compile>
     <Compile Include="CalendarioMaster.aspx.cs">
       <DependentUpon>CalendarioMaster.aspx</DependentUpon>

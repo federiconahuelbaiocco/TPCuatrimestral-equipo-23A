@@ -78,8 +78,30 @@ CREATE TABLE dbo.PACIENTES(
 	CONSTRAINT FK_Pacientes_Personas FOREIGN KEY (idPersona) REFERENCES dbo.Personas(IdPersona),
 	CONSTRAINT FK_Pacientes_Cobertura FOREIGN KEY (idCobertura) REFERENCES dbo.COBERTURA(idCoberturaMedica)
 );
+
+CREATE TABLE dbo.Roles (
+	IdRol INT IDENTITY(1,1) NOT NULL,
+	Nombre VARCHAR(50) NOT NULL,
+	Activo BIT NOT NULL DEFAULT 1,
+	CONSTRAINT PK_Roles PRIMARY KEY CLUSTERED (IdRol ASC)
+);
+
+CREATE TABLE dbo.Usuarios (
+        IdUsuario INT IDENTITY(1,1) NOT NULL,
+        NombreUsuario VARCHAR(50) NOT NULL,
+        Clave VARCHAR(50) NOT NULL,
+        IdRol INT NOT NULL,
+        IdPersona INT NOT NULL,
+        Activo BIT NOT NULL DEFAULT 1,
+
+        CONSTRAINT PK_Usuarios PRIMARY KEY CLUSTERED (IdUsuario ASC),
+        CONSTRAINT UQ_Usuarios_NombreUsuario UNIQUE (NombreUsuario),
+        CONSTRAINT FK_Usuarios_Roles FOREIGN KEY (IdRol) REFERENCES dbo.Roles(IdRol),
+        CONSTRAINT FK_Usuarios_Personas FOREIGN KEY (IdPersona) REFERENCES dbo.Personas(IdPersona)
+);
 GO
 
 -- DATOS INICIALES OBLIGATORIOS (Catálogos base)
 INSERT INTO dbo.COBERTURA (Nombre) VALUES ('Particular'), ('OSDE'), ('Galeno'), ('PAMI');
 INSERT INTO dbo.Especialidades (Descripcion) VALUES ('Clínica Médica'), ('Pediatría'), ('Cardiología');
+INSERT INTO dbo.Roles (Nombre) VALUES ('Administrador'), ('Recepcionista'), ('Médico');
