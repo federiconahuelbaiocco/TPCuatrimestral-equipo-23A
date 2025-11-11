@@ -133,49 +133,6 @@ CssClass="table table-hover mb-0"
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="ScriptsPlaceHolder" runat="server">
-<script type="text/javascript">
-  function cargarEspecialidad(id, descripcion, activo) {
-      document.getElementById('estadoVacio').style.display = 'none';
-       document.getElementById('formularioEdicion').style.display = 'block';
-  
-   document.getElementById('<%= hfEspecialidadId.ClientID %>').value = id;
-document.getElementById('<%= txtNombreEditar.ClientID %>').value = descripcion;
- document.getElementById('<%= chkActivoEditar.ClientID %>').checked = activo;
- 
-        document.getElementById('sidebarTitulo').textContent = 'Editar: ' + descripcion;
-   
-         actualizarEstadoSidebar(document.getElementById('<%= chkActivoEditar.ClientID %>'));
-
-   console.log('Especialidad cargada - ID:', id, 'Descripción:', descripcion, 'Activo:', activo);
-        }
-
-   function limpiarFormulario() {
-  document.getElementById('estadoVacio').style.display = 'flex';
-       document.getElementById('formularioEdicion').style.display = 'none';
-   
-    document.getElementById('<%= hfEspecialidadId.ClientID %>').value = '';
-     document.getElementById('<%= txtNombreEditar.ClientID %>').value = '';
-     document.getElementById('<%= chkActivoEditar.ClientID %>').checked = false;
-
-   document.getElementById('sidebarTitulo').textContent = 'Editar Especialidad';
-   
-    console.log('Formulario limpiado');
-}
-
-        function actualizarEstadoSidebar(checkbox) {
-  var statusText = document.getElementById('sidebarStatusText');
-var statusDescription = document.getElementById('sidebarStatusDescription');
-   var statusMessage = document.getElementById('sidebarStatusMessage');
-    
-      if (checkbox.checked) {
-    statusText.textContent = 'Especialidad Activa';
- statusDescription.textContent = 'Una especialidad activa puede ser asignada a médicos';
-      statusMessage.className = 'sidebar-status-message text-success';
-      } else {
- statusText.textContent = 'Especialidad Inactiva';
-   statusDescription.textContent = 'Una especialidad inactiva no podrá ser asignada a médicos';
-   statusMessage.className = 'sidebar-status-message text-danger';
-   }
-        }
- </script>
+    <script src="~/scripts_js/especialidades.js"  rel="stylesheet" type="text/javascript"></script>
+    <script src="~/scripts_js/consultorios.js"  rel="stylesheet" type="text/javascript"></script>
 </asp:Content>

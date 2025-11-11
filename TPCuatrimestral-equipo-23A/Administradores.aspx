@@ -48,17 +48,70 @@
  </div>
 
 <div class="activity-section">
-<div class="activity-card">
-          <h2>
-       <i class="bi bi-clock-history"></i>
-  Actividad Reciente
-      </h2>
-    <div class="text-center p-4 text-muted">
-    <i class="bi bi-inbox" style="font-size: 3rem; opacity: 0.3;"></i>
-     <p class="mt-3 mb-0">No hay actividad reciente para mostrar.</p>
-      </div>
-   </div>
- </div>
+            <div class="activity-card">
+                <h2>
+                    <i class="bi bi-people-fill"></i>
+                    Lista de Usuarios
+                </h2>
+
+                <div class="row g-3 p-3 align-items-end">
+                    <div class="col-md-4">
+                        <label for="<%= ddlRoles.ClientID %>" class="form-label fw-medium">Filtrar por Rol</label>
+                        <asp:DropDownList ID="ddlRoles" runat="server" 
+                            CssClass="form-select form-select-lg"
+                            AutoPostBack="true" 
+                            OnSelectedIndexChanged="ddlRoles_SelectedIndexChanged">
+                        </asp:DropDownList>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm overflow-hidden mt-3">
+                    <asp:GridView ID="gvUsuariosRol" runat="server"
+                        CssClass="table table-hover mb-0"
+                        AutoGenerateColumns="False"
+                        GridLines="None"
+                        DataKeyNames="IdPersona"
+                        OnRowCommand="gvUsuariosRol_RowCommand"
+                        >
+                        <HeaderStyle CssClass="bg-light text-secondary text-uppercase small" />
+                        <Columns>
+                            <asp:TemplateField HeaderText="Nombre Completo" HeaderStyle-CssClass="px-4 py-3">
+                                <ItemTemplate>
+                                    <span class="fw-medium text-dark"><%# Eval("Apellido") %>, <%# Eval("Nombre") %></span>
+                                </ItemTemplate>
+                                <ItemStyle CssClass="px-4 py-3 align-middle" />
+                            </asp:TemplateField>
+                            <asp:BoundField DataField="Dni" HeaderText="DNI" ItemStyle-CssClass="px-4 py-3 align-middle" HeaderStyle-CssClass="px-4 py-3"/>
+                            
+                            <asp:TemplateField HeaderText="Acciones" ItemStyle-CssClass="text-end px-4 py-3 align-middle" HeaderStyle-CssClass="text-end px-4 py-3">
+                                <ItemTemplate>
+                                    <div class="d-inline-flex gap-2">
+                                        <asp:LinkButton ID="btnEditar" runat="server"
+                                            CssClass="btn btn-sm btn-outline-primary"
+                                            CommandName="Editar"
+                                            CommandArgument='<%# Eval("IdPersona") %>'
+                                            ToolTip="Editar">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </asp:LinkButton>
+                                        <asp:LinkButton ID="btnEliminar" runat="server"
+                                            CssClass="btn btn-sm btn-outline-danger"
+                                            CommandName="Eliminar"
+                                            CommandArgument='<%# Eval("IdPersona") %>'
+                                            OnClientClick="return confirm('¿Está seguro de que quiere eliminar este usuario?');"
+                                            ToolTip="Eliminar">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </asp:LinkButton>
+                                    </div>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                        </Columns>
+                        <EmptyDataTemplate>
+                            <div class="text-center p-5">No hay usuarios para el rol seleccionado.</div>
+                        </EmptyDataTemplate>
+                    </asp:GridView>
+                </div>
+            </div>
+        </div>
 </div>
     </div>
 

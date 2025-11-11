@@ -42,6 +42,24 @@ namespace TPCuatrimestral_equipo_23A
 		protected global::System.Web.UI.WebControls.Label lblMedicoCount;
 
 		/// <summary>
+		/// Control ddlRoles.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.DropDownList ddlRoles;
+
+		/// <summary>
+		/// Control gvUsuariosRol.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.GridView gvUsuariosRol;
+
+		/// <summary>
 		/// Control hlNuevoEmpleado.
 		/// </summary>
 		/// <remarks>

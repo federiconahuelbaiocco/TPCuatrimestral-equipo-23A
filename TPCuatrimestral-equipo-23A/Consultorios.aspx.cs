@@ -24,14 +24,26 @@ namespace TPCuatrimestral_equipo_23A
             try
             {
                 List<dominio.Consultorio> listaConsultorios = negocio.Listar();
+                
+                System.Diagnostics.Debug.WriteLine($"DEBUG: Se obtuvieron {listaConsultorios.Count} consultorios");
+            
+                if (listaConsultorios.Count == 0)
+                {
+                    System.Diagnostics.Debug.WriteLine("DEBUG: La lista está vacía - no hay datos en la BD");
+                }
+            
                 gvConsultorios.DataSource = listaConsultorios;
                 gvConsultorios.DataBind();
+                
+                System.Diagnostics.Debug.WriteLine($"DEBUG: GridView Rows Count: {gvConsultorios.Rows.Count}");
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"DEBUG ERROR: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"DEBUG STACK: {ex.StackTrace}");
                 Session["error"] = ex;
-				Response.Redirect("~/Error.aspx", false);
-			}
+                    Response.Redirect("~/Error.aspx", false);
+            }
         }
 
         protected void btnAgregarConsultorio_Click(object sender, EventArgs e)
@@ -56,8 +68,8 @@ namespace TPCuatrimestral_equipo_23A
             catch (Exception ex)
             {
                 Session["error"] = ex;
-				Response.Redirect("~/Error.aspx", false);
-			}
+                    Response.Redirect("~/Error.aspx", false);
+            }
         }
 
         protected void btnGuardarEdicion_Click(object sender, EventArgs e)
@@ -89,8 +101,8 @@ namespace TPCuatrimestral_equipo_23A
             catch (Exception ex)
             {
                 Session["error"] = ex;
-				Response.Redirect("~/Error.aspx", false);
-			}
+                    Response.Redirect("~/Error.aspx", false);
+            }
         }
 
         protected void gvConsultorios_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -112,8 +124,8 @@ namespace TPCuatrimestral_equipo_23A
                 catch (Exception ex)
                 {
                     Session["error"] = ex;
-					Response.Redirect("~/Error.aspx", false);
-				}
+                    Response.Redirect("~/Error.aspx", false);
+                }
             }
         }
 
