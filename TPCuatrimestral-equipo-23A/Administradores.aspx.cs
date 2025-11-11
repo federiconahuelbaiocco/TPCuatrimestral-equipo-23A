@@ -11,10 +11,11 @@ namespace TPCuatrimestral_equipo_23A
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
+			CargarDesplegableRoles();
+
 			if (!IsPostBack)
 			{
 				CargarContadores();
-				CargarDesplegableRoles();
 				CargarGrillaUsuarios();
 			}
 		}
@@ -40,14 +41,24 @@ namespace TPCuatrimestral_equipo_23A
 
 		private void CargarDesplegableRoles()
 		{
+			RolNegocio negocioRol = new RolNegocio();
 			try
 			{
-				ddlRoles.Items.Clear();
-				ddlRoles.Items.Add(new ListItem("Administrador", "Administrador"));
-				ddlRoles.Items.Add(new ListItem("Recepcionista", "Recepcionista"));
-				ddlRoles.Items.Add(new ListItem("Médico", "Medico"));
-				
-				ddlRoles.SelectedIndex = 0;
+				if (!IsPostBack)
+				{
+					List<Rol> roles = negocioRol.Listar();
+
+					ddlRoles.DataSource = roles;
+					ddlRoles.DataValueField = "IdRol";
+					ddlRoles.DataTextField = "Nombre";
+					ddlRoles.DataBind();
+
+					ListItem itemAdmin = ddlRoles.Items.FindByText("Administrador");
+					if (itemAdmin != null)
+					{
+						itemAdmin.Selected = true;
+					}
+				}
 			}
 			catch (Exception ex)
 			{
@@ -58,7 +69,12 @@ namespace TPCuatrimestral_equipo_23A
 
 		private void CargarGrillaUsuarios()
 		{
-			string nombreRol = ddlRoles.SelectedValue;
+			if (ddlRoles.SelectedItem == null)
+			{
+				return;
+			}
+
+			string nombreRol = ddlRoles.SelectedItem.Text;
 
 			try
 			{
@@ -69,14 +85,17 @@ namespace TPCuatrimestral_equipo_23A
 					case "Administrador":
 						AdministradorNegocio adminNegocio = new AdministradorNegocio();
 						dataSource = adminNegocio.Listar();
+						gvUsuariosRol.DataKeyNames = new string[] { "Usuario.IdUsuario" };
 						break;
 					case "Recepcionista":
 						RecepcionistaNegocio recepNegocio = new RecepcionistaNegocio();
 						dataSource = recepNegocio.Listar();
+						gvUsuariosRol.DataKeyNames = new string[] { "Usuario.IdUsuario" };
 						break;
 					case "Medico":
 						MedicoNegocio medicoNegocio = new MedicoNegocio();
 						dataSource = medicoNegocio.ListarActivos();
+						gvUsuariosRol.DataKeyNames = new string[] { "Usuario.IdUsuario" };
 						break;
 					default:
 						break;
@@ -99,8 +118,13 @@ namespace TPCuatrimestral_equipo_23A
 
 		protected void gvUsuariosRol_RowCommand(object sender, GridViewCommandEventArgs e)
 		{
-			int idSeleccionado = Convert.ToInt32(e.CommandArgument);
-			string nombreRol = ddlRoles.SelectedValue;
+			if (ddlRoles.SelectedItem == null)
+			{
+				return;
+			}
+
+			int idUsuarioSeleccionado = Convert.ToInt32(e.CommandArgument);
+			string nombreRol = ddlRoles.SelectedItem.Text;
 
 			if (e.CommandName == "Eliminar")
 			{
@@ -110,16 +134,16 @@ namespace TPCuatrimestral_equipo_23A
 					{
 						case "Administrador":
 							AdministradorNegocio adminNegocio = new AdministradorNegocio();
-							adminNegocio.EliminarLogico(idSeleccionado);
+							adminNegocio.EliminarLogico(idUsuarioSeleccionado);
 							break;
 						case "Recepcionista":
 							RecepcionistaNegocio recepNegocio = new RecepcionistaNegocio();
-							recepNegocio.EliminarLogico(idSeleccionado);
+							recepNegocio.EliminarLogico(idUsuarioSeleccionado);
 							break;
 						case "Medico":
 							break;
 					}
-					
+
 					CargarContadores();
 					CargarGrillaUsuarios();
 				}
@@ -134,13 +158,13 @@ namespace TPCuatrimestral_equipo_23A
 				switch (nombreRol)
 				{
 					case "Administrador":
-						Response.Redirect("~/AdministradorForm.aspx?ID=" + idSeleccionado, false);
+						Response.Redirect("~/AdministradorForm.aspx?ID=" + idUsuarioSeleccionado, false);
 						break;
 					case "Recepcionista":
-						Response.Redirect("~/RecepcionistaForm.aspx?ID=" + idSeleccionado, false);
+						Response.Redirect("~/RecepcionistaForm.aspx?ID=" + idUsuarioSeleccionado, false);
 						break;
 					case "Medico":
-						Response.Redirect("~/MedicoForm.aspx?ID=" + idSeleccionado, false);
+						Response.Redirect("~/MedicoForm.aspx?ID=" + idUsuarioSeleccionado, false);
 						break;
 				}
 			}

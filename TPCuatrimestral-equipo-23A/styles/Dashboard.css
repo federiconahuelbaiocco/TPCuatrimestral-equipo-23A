@@ -1,5 +1,5 @@
 .admin-dashboard-layout {
-    margin-right: 400px;
+    margin-right: 480px;
 }
 
 .dashboard-main-content {
@@ -10,14 +10,14 @@
     position: fixed !important;
     top: 0 !important;
   right: 0 !important;
-    width: 400px !important;
+    width: 480px !important;
     height: 100vh !important;
-    z-index: 1000 !important;
+ z-index: 1000 !important;
     background: white;
     border-left: 1px solid #e2e8f0;
 box-shadow: -4px 0 20px rgba(0, 0, 0, 0.08);
     display: flex !important;
-    flex-direction: column !important;
+ flex-direction: column !important;
     overflow: hidden;
 }
 
@@ -64,7 +64,7 @@ font-weight: 800;
     padding: 1.25rem 1.5rem;
     color: #1f2937;
  text-decoration: none;
-    font-weight: 600;
+ font-weight: 600;
     font-size: 1.05rem;
  transition: all 0.3s ease;
     display: flex;
@@ -80,7 +80,7 @@ font-weight: 800;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
+  border-radius: 10px;
 flex-shrink: 0;
 }
 
@@ -95,7 +95,7 @@ flex-shrink: 0;
 }
 
 .quick-access-link.warning-link i {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+ background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     color: white;
 }
 
@@ -133,7 +133,7 @@ flex-shrink: 0;
     font-weight: 700;
     color: #1e40af;
     margin-bottom: 0.75rem;
-    display: flex;
+ display: flex;
     align-items: center;
     gap: 0.5rem;
 }
@@ -211,7 +211,7 @@ width: 8px;
 }
 
 .stats-card.recep-card .stats-icon {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     color: white;
 }
 
@@ -228,7 +228,7 @@ width: 8px;
     background: white;
   border-radius: 16px;
     padding: 2rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     border: 1px solid #e5e7eb;
 }
 
@@ -253,7 +253,7 @@ width: 8px;
     }
 
     .quick-access-sidebar-fixed {
-     position: relative !important;
+   position: relative !important;
         width: 100% !important;
     height: auto !important;
 margin-bottom: 2rem;
@@ -261,14 +261,14 @@ margin-bottom: 2rem;
   border-top: 1px solid #e2e8f0;
  }
 
-    .quick-access-body {
+  .quick-access-body {
    max-height: none;
  }
 
     .quick-access-links {
    flex-direction: row;
         flex-wrap: wrap;
-    }
+  }
 
     .quick-access-link {
         flex: 1;

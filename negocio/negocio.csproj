@@ -48,6 +48,7 @@
     <Compile Include="PacienteNegocio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecepcionistaNegocio.cs" />
+    <Compile Include="RolNegocio.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\conexion\conexion.csproj">

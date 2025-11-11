@@ -289,3 +289,48 @@ BEGIN
     WHERE R.Nombre = 'Administrador' AND U.Activo = 1;
 END
 GO
+
+USE ClinicaDB;
+GO
+
+IF OBJECT_ID('dbo.Roles', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Roles (
+        IdRol INT IDENTITY(1,1) NOT NULL,
+        Nombre VARCHAR(50) NOT NULL,
+        CONSTRAINT PK_Roles PRIMARY KEY CLUSTERED (IdRol ASC)
+    );
+    
+    INSERT INTO dbo.Roles (Nombre) VALUES ('Administrador'), ('Recepcionista'), ('Medico');
+END
+GO
+
+IF OBJECT_ID('dbo.Usuarios', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Usuarios (
+        IdUsuario INT IDENTITY(1,1) NOT NULL,
+        NombreUsuario VARCHAR(50) NOT NULL,
+        Clave VARCHAR(50) NOT NULL,
+        IdRol INT NOT NULL,
+        IdPersona INT NOT NULL,
+        Activo BIT NOT NULL DEFAULT 1,
+        FechaCreacion DATETIME NOT NULL DEFAULT GETDATE(),
+        CONSTRAINT PK_Usuarios PRIMARY KEY CLUSTERED (IdUsuario ASC),
+        CONSTRAINT UQ_Usuarios_NombreUsuario UNIQUE (NombreUsuario),
+        CONSTRAINT FK_Usuarios_Roles FOREIGN KEY (IdRol) REFERENCES dbo.Roles(IdRol),
+        CONSTRAINT FK_Usuarios_PersonAS FOREIGN KEY (IdPersona) REFERENCES dbo.Personas(IdPersona)
+    );
+END
+GO
+
+IF OBJECT_ID('dbo.sp_ListarRoles', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_ListarRoles;
+GO
+
+CREATE PROCEDURE dbo.sp_ListarRoles
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT IdRol, Nombre FROM dbo.Roles;
+END
+GO
