@@ -63,100 +63,109 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE sp_ModificarPaciente
-    @IdPaciente INT,
-    @Dni VARCHAR(20),
-    @Nombre VARCHAR(100),
-    @Apellido VARCHAR(100),
-    @Email VARCHAR(255),
-    @Telefono VARCHAR(50),
-    @FechaNacimiento DATE,
-    @IdCobertura INT = NULL,      -- puede ser NULL si no tiene
-    @Calle VARCHAR(200),
-    @Altura VARCHAR(20),
-    @Piso VARCHAR(10) = NULL,
-    @Departamento VARCHAR(10) = NULL,
-    @CodigoPostal VARCHAR(20) = NULL,
-    @Localidad VARCHAR(100),
-    @Provincia VARCHAR(100)
+CREATE OR ALTER PROCEDURE dbo.sp_BuscarPacientes
+    @DNI VARCHAR(20) = NULL,
+    @Apellido VARCHAR(100) = NULL,
+    @Nombre VARCHAR(100) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
+    SELECT P.IdPersona, P.Dni, P.Nombre, P.Apellido, PAC.FechaNacimiento FROM Personas P
+    INNER JOIN PACIENTES PAC ON P.IdPersona = PAC.IdPersona
+    WHERE P.Activo = 1
+        AND (@DNI IS NULL OR P.Dni LIKE '%' + @DNI + '%')
+        AND (@Apellido IS NULL OR P.Apellido LIKE '%' + @Apellido + '%')
+        AND (@Nombre IS NULL OR P.Nombre LIKE '%' + @Nombre + '%')
+    ORDER BY P.Apellido, P.Nombre;
+END
+GO
 
-    IF NOT EXISTS (SELECT 1 FROM Pacientes WHERE IdPersona = @IdPaciente)
-    BEGIN
-        RAISERROR('El paciente no existe.', 16, 1);
-        RETURN;
-    END
+CREATE OR ALTER PROCEDURE dbo.sp_EliminarPaciente
+    @IdPaciente INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE Personas
+    SET Activo = 0
+    WHERE IdPersona = @IdPaciente;
+END
+GO
 
+CREATE OR ALTER PROCEDURE dbo.sp_ObtenerPaciente
+    @IdPaciente INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT
+        P.IdPersona, P.Nombre, P.Apellido, P.Dni, P.Email, P.Telefono, P.IdDomicilio,
+        D.Calle, D.Altura, D.Piso, D.Departamento, D.Localidad, D.Provincia, D.CodigoPostal,
+        PAC.idCobertura, C.Nombre AS NombreCobertura, PAC.FechaNacimiento
+    FROM Personas P
+    INNER JOIN PACIENTES PAC ON P.IdPersona = PAC.IdPersona
+    LEFT JOIN Domicilios D ON P.IdDomicilio = D.IdDomicilio
+    LEFT JOIN COBERTURA C ON PAC.idCobertura = C.idCoberturaMedica
+    WHERE P.IdPersona = @IdPaciente;
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_ModificarPaciente
+    @IdPaciente INT,
+    @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20),
+    @Mail VARCHAR(255) = NULL, @Telefono VARCHAR(50) = NULL,
+    @Calle VARCHAR(200) = NULL, @Altura VARCHAR(20) = NULL, @Piso VARCHAR(10) = NULL,
+    @Departamento VARCHAR(10) = NULL, @Localidad VARCHAR(100) = NULL,
+    @Provincia VARCHAR(100) = NULL, @CodigoPostal VARCHAR(20) = NULL,
+    @FechaNacimiento DATE, @idCobertura INT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRANSACTION;
     BEGIN TRY
-        BEGIN TRANSACTION;
+        DECLARE @IdDomicilio INT;
+        SELECT @IdDomicilio = IdDomicilio FROM Personas WHERE IdPersona = @IdPaciente;
 
+        -- 1. Manejo de Domicilio
+        IF @IdDomicilio IS NOT NULL
+        BEGIN
+            UPDATE Domicilios
+            SET Calle = @Calle, Altura = @Altura, Piso = @Piso, Departamento = @Departamento,
+                Localidad = @Localidad, Provincia = @Provincia, CodigoPostal = @CodigoPostal
+            WHERE IdDomicilio = @IdDomicilio;
+        END
+        ELSE IF @Calle IS NOT NULL OR @Altura IS NOT NULL
+        BEGIN
+            INSERT INTO Domicilios (Calle, Altura, Piso, Departamento, Localidad, Provincia, CodigoPostal)
+            VALUES (@Calle, @Altura, @Piso, @Departamento, @Localidad, @Provincia, @CodigoPostal);
+            SET @IdDomicilio = SCOPE_IDENTITY();
+        END
+
+        -- 2. Actualizar datos personales básicos
         UPDATE Personas
-        SET 
-            Dni = @Dni,
-            Nombre = @Nombre,
-            Apellido = @Apellido,
-            Email = @Email,
-            Telefono = @Telefono
+        SET Nombre = @Nombre, Apellido = @Apellido, Dni = @DNI, Email = @Mail,
+            Telefono = @Telefono, IdDomicilio = @IdDomicilio
         WHERE IdPersona = @IdPaciente;
 
-        UPDATE Pacientes
-        SET 
-            FechaNacimiento = @FechaNacimiento,
-            IdCobertura = @IdCobertura
-        WHERE IdPersona = @IdPaciente;
-
-        UPDATE Domicilios
-        SET 
-            Calle = @Calle,
-            Altura = @Altura,
-            Piso = @Piso,
-            Departamento = @Departamento,
-            CodigoPostal = @CodigoPostal,
-            Localidad = @Localidad,
-            Provincia = @Provincia
-        WHERE IdDomicilio = (
-            SELECT IdDomicilio FROM Personas WHERE IdPersona = @IdPaciente
-        );
+        -- 3. Actualizar datos específicos de Paciente
+        UPDATE PACIENTES
+        SET FechaNacimiento = @FechaNacimiento, idCobertura = @idCobertura
+        WHERE idPersona = @IdPaciente;
 
         COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
         ROLLBACK TRANSACTION;
-        RAISERROR('Error al modificar el paciente.', 16, 1);
+        THROW;
     END CATCH
 END
 GO
 
-
-CREATE PROCEDURE sp_BajaPaciente
-    @IdPaciente INT
+-- LISTAR COBERTURAS
+CREATE OR ALTER PROCEDURE dbo.sp_ListarCoberturas
 AS
 BEGIN
     SET NOCOUNT ON;
-
-    IF NOT EXISTS (SELECT 1 FROM Pacientes WHERE IdPersona = @IdPaciente)
-    BEGIN
-        RAISERROR('El Id indicado no corresponde a un paciente.', 16, 1);
-        RETURN;
-    END
-
-    BEGIN TRY
-        BEGIN TRANSACTION;
-
-        UPDATE Personas
-        SET Activo = 0
-        WHERE IdPersona = @IdPaciente;
-
-        COMMIT TRANSACTION;
-    END TRY
-    BEGIN CATCH
-        IF XACT_STATE() <> 0
-            ROLLBACK TRANSACTION;
-
-        DECLARE @Error NVARCHAR(4000) = ERROR_MESSAGE();
-        RAISERROR('Error al dar de baja el paciente: %s', 16, 1, @Error);
-    END CATCH
+    SELECT idCoberturaMedica, Nombre
+    FROM dbo.COBERTURA
+    ORDER BY Nombre ASC;
 END
 GO
