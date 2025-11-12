@@ -63,9 +63,6 @@ Recepcionista
         </aside>
 
       <div class="main-content d-flex flex-column w-100">
-   <header class="top-navbar">
-  </header>
-
       <main class="content-area">
    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
         </main>

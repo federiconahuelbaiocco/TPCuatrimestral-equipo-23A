@@ -15,7 +15,7 @@
             <div class="form-header">
                 <h1>
                     <i class="bi bi-person-plus-fill"></i>
-                    Agregar Nuevo Empleado
+                    <asp:Literal ID="litTitulo" runat="server" Text="Agregar Nuevo Empleado"></asp:Literal>
                 </h1>
                 <p class="mb-0 mt-2 opacity-90">Complete el formulario para registrar un nuevo empleado en el sistema</p>
             </div>
@@ -77,6 +77,7 @@
                         <div class="col-md-6">
                             <label for="<%= txtContrasena.ClientID %>" class="form-label">Contraseña</label>
                             <asp:TextBox ID="txtContrasena" runat="server" CssClass="form-control" placeholder="Crear una contraseña segura" TextMode="Password"></asp:TextBox>
+                            <asp:Label ID="lblAvisoClave" runat="server" CssClass="form-text" Text="Dejar en blanco para no modificar la contraseña actual." Visible="false"></asp:Label>
                         </div>
                     </div>
                 </div>

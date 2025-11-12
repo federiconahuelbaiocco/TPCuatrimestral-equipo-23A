@@ -4,13 +4,11 @@ GO
 BEGIN TRANSACTION;
 BEGIN TRY
 
-    -- ESPECIALIDADES
     IF NOT EXISTS (SELECT 1 FROM Especialidades WHERE Descripcion = 'Ginecología')
         EXEC dbo.sp_AgregarEspecialidad @Descripcion = 'Ginecología';
     IF NOT EXISTS (SELECT 1 FROM Especialidades WHERE Descripcion = 'Traumatología')
         EXEC dbo.sp_AgregarEspecialidad @Descripcion = 'Traumatología';
 
-    -- CONSULTORIOS 
     IF NOT EXISTS (SELECT 1 FROM CONSULTORIOS WHERE Nombre = 'Consultorio 101')
         EXEC dbo.sp_AgregarConsultorio @Nombre = 'Consultorio 101';
     IF NOT EXISTS (SELECT 1 FROM CONSULTORIOS WHERE Nombre = 'Consultorio 102')
@@ -22,7 +20,6 @@ BEGIN TRY
     IF NOT EXISTS (SELECT 1 FROM CONSULTORIOS WHERE Nombre = 'Laboratorio')
         EXEC dbo.sp_AgregarConsultorio @Nombre = 'Laboratorio';
 
-    -- ADMINISTRADORES 
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'admin_gonzalez')
         EXEC dbo.sp_AgregarAdministrador 'Carlos', 'González', '20111222', 'cgonzalez@clinica.com', '1155550001', 'admin_gonzalez', 'clave123';
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'admin_rodriguez')
@@ -34,7 +31,6 @@ BEGIN TRY
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'admin_sanchez')
         EXEC dbo.sp_AgregarAdministrador 'Javier', 'Sánchez', '24555666', 'jsanchez@clinica.com', '1155550005', 'admin_sanchez', 'clave123';
 
-    -- RECEPCIONISTAS 
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'recep_diaz')
         EXEC dbo.sp_AgregarRecepcionista 'Lucía', 'Díaz', '30111222', 'ldiaz@clinica.com', '1166660001', 'recep_diaz', 'clave123';
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'recep_perez')
@@ -46,7 +42,6 @@ BEGIN TRY
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'recep_moreno')
         EXEC dbo.sp_AgregarRecepcionista 'Sofía', 'Moreno', '34555666', 'smoreno@clinica.com', '1166660005', 'recep_moreno', 'clave123';
 
-    --  PACIENTES 
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '40111222')
         EXEC dbo.sp_InsertarPaciente 'Roberto', 'García', '40111222', 'rgarcia@email.com', '1177770001', 'Calle Falsa', '123', NULL, NULL, 'Springfield', 'Buenos Aires', '1610', '1980-05-10', 2;
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '41222333')
@@ -58,42 +53,39 @@ BEGIN TRY
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '44555666')
         EXEC dbo.sp_InsertarPaciente 'Marcos', 'Navarro', '44555666', 'mnavarro@email.com', '1177770005', 'Av. Corrientes', '1500', '8B', NULL, 'CABA', 'CABA', '1042', '1999-03-05', 2;
 
-    -- MEDICOS (FALTAN LOS SP TODAVIA POR ESO LOS INSERTO ASI)
-    DECLARE @IdPersonaMedico INT;
-
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '25111222')
     BEGIN
-        INSERT INTO Personas (Nombre, Apellido, Dni, Email, Telefono, Activo) VALUES ('Laura', 'Torres', '25111222', 'ltorres@clinica.com', '1188880001', 1);
-        SET @IdPersonaMedico = SCOPE_IDENTITY();
-        INSERT INTO Medicos (IdPersona, Matricula, IdUsuario) VALUES (@IdPersonaMedico, 'MN1001', NULL);
+        EXEC dbo.sp_AgregarMedico 
+            @Nombre = 'Laura', @Apellido = 'Torres', @DNI = '25111222', 
+            @Matricula = 'MN1001', @Mail = 'ltorres@clinica.com', @Telefono = '1188880001';
     END
     
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '26222333')
     BEGIN
-        INSERT INTO Personas (Nombre, Apellido, Dni, Email, Telefono, Activo) VALUES ('Diego', 'Ramírez', '26222333', 'dramirez@clinica.com', '1188880002', 1);
-        SET @IdPersonaMedico = SCOPE_IDENTITY();
-        INSERT INTO Medicos (IdPersona, Matricula, IdUsuario) VALUES (@IdPersonaMedico, 'MN1002', NULL);
+        EXEC dbo.sp_AgregarMedico 
+            @Nombre = 'Diego', @Apellido = 'Ramírez', @DNI = '26222333', 
+            @Matricula = 'MN1002', @Mail = 'dramirez@clinica.com', @Telefono = '1188880002';
     END
 
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '27333444')
     BEGIN
-        INSERT INTO Personas (Nombre, Apellido, Dni, Email, Telefono, Activo) VALUES ('Valeria', 'Castro', '27333444', 'vcastro@clinica.com', '1188880003', 1);
-        SET @IdPersonaMedico = SCOPE_IDENTITY();
-        INSERT INTO Medicos (IdPersona, Matricula, IdUsuario) VALUES (@IdPersonaMedico, 'MN1003', NULL);
+        EXEC dbo.sp_AgregarMedico 
+            @Nombre = 'Valeria', @Apellido = 'Castro', @DNI = '27333444', 
+            @Matricula = 'MN1003', @Mail = 'vcastro@clinica.com', @Telefono = '1188880003';
     END
 
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '28444555')
     BEGIN
-        INSERT INTO Personas (Nombre, Apellido, Dni, Email, Telefono, Activo) VALUES ('Jorge', 'Ortega', '28444555', 'jortega@clinica.com', '1188880004', 1);
-        SET @IdPersonaMedico = SCOPE_IDENTITY();
-        INSERT INTO Medicos (IdPersona, Matricula, IdUsuario) VALUES (@IdPersonaMedico, 'MN1004', NULL);
+        EXEC dbo.sp_AgregarMedico 
+            @Nombre = 'Jorge', @Apellido = 'Ortega', @DNI = '28444555', 
+            @Matricula = 'MN1004', @Mail = 'jortega@clinica.com', @Telefono = '1188880004';
     END
 
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '29555666')
     BEGIN
-        INSERT INTO Personas (Nombre, Apellido, Dni, Email, Telefono, Activo) VALUES ('Clara', 'Molina', '29555666', 'cmolina@clinica.com', '1188880005', 1);
-        SET @IdPersonaMedico = SCOPE_IDENTITY();
-        INSERT INTO Medicos (IdPersona, Matricula, IdUsuario) VALUES (@IdPersonaMedico, 'MN1005', NULL);
+        EXEC dbo.sp_AgregarMedico 
+            @Nombre = 'Clara', @Apellido = 'Molina', @DNI = '29555666', 
+            @Matricula = 'MN1005', @Mail = 'cmolina@clinica.com', @Telefono = '1188880005';
     END
 
     COMMIT TRANSACTION;
@@ -107,7 +99,6 @@ BEGIN CATCH
 END CATCH
 GO
 
--- 7. VERIFICACIÓN FINAL
 PRINT '--- Verificación de Datos ---';
 SELECT 'Especialidades' AS Tabla, COUNT(*) AS Total FROM Especialidades;
 SELECT 'Consultorios' AS Tabla, COUNT(*) AS Total FROM CONSULTORIOS;

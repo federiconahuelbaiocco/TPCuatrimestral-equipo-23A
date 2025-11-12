@@ -1,25 +1,26 @@
 .main-container {
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 0 auto 2rem;
+    padding: 0 1rem;
 }
 
 .form-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 20px 20px 0 0;
     padding: 2rem;
- color: white;
+    color: white;
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
 .form-header.cyan-gradient {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
- box-shadow: 0 4px 12px rgba(79, 172, 254, 0.2);
+    box-shadow: 0 4px 12px rgba(79, 172, 254, 0.2);
 }
 
 .form-header h1 {
     margin: 0;
-  font-weight: 800;
-  display: flex;
+    font-weight: 800;
+    display: flex;
     align-items: center;
     gap: 1rem;
 }
@@ -44,9 +45,9 @@
 }
 
 .form-section h2 {
-font-size: 1.25rem;
-font-weight: 700;
-  color: #1f2937;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
     border-bottom: 2px solid #e5e7eb;
@@ -104,7 +105,7 @@ font-weight: 700;
 .btn-save {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
-  border-radius: 12px;
+    border-radius: 12px;
     padding: 1rem 2.5rem;
     font-weight: 700;
     font-size: 1rem;
@@ -116,7 +117,7 @@ font-weight: 700;
 }
 
 .btn-save:hover {
-  transform: translateY(-2px);
+    transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
     color: white;
 }
@@ -132,7 +133,7 @@ font-weight: 700;
 
 .btn-cancel {
     background: white;
-border: 2px solid #d1d5db;
+    border: 2px solid #d1d5db;
     border-radius: 12px;
     padding: 1rem 2.5rem;
     font-weight: 600;
@@ -146,7 +147,7 @@ border: 2px solid #d1d5db;
 .btn-cancel:hover {
     background: #f9fafb;
     border-color: #9ca3af;
-  color: #374151;
+    color: #374151;
     transform: translateY(-2px);
 }
 
@@ -157,7 +158,7 @@ border: 2px solid #d1d5db;
     padding: 0.75rem 1.5rem;
     border-radius: 10px;
     font-weight: 600;
- transition: all 0.3s ease;
+    transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -168,7 +169,7 @@ border: 2px solid #d1d5db;
     background: rgba(255, 255, 255, 0.3);
     border-color: rgba(255, 255, 255, 0.5);
     color: white;
-  transform: translateX(-3px);
+    transform: translateX(-3px);
 }
 
 @media (max-width: 768px) {
@@ -177,11 +178,11 @@ border: 2px solid #d1d5db;
     }
 
     .form-header h1 {
-   font-size: 1.5rem;
+        font-size: 1.5rem;
     }
 
     .form-section {
- padding: 1.5rem;
+        padding: 1.5rem;
     }
 
     .form-actions {
@@ -191,5 +192,5 @@ border: 2px solid #d1d5db;
 
     .btn-save, .btn-cancel {
         width: 100%;
-  }
+    }
 }

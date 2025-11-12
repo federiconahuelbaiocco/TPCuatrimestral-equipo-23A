@@ -92,14 +92,127 @@ END
 GO
 
 --MEDICOS (Gestión)
-CREATE PROCEDURE dbo.sp_ListarMedicosActivos
+
+USE ClinicaDB;
+GO
+
+CREATE PROCEDURE dbo.sp_AgregarMedico
+    @Nombre VARCHAR(100),
+    @Apellido VARCHAR(100),
+    @DNI VARCHAR(20),
+    @Matricula VARCHAR(50),
+    @Mail VARCHAR(255) = NULL,
+    @Telefono VARCHAR(50) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT P.IdPersona, P.Dni, P.Nombre, P.Apellido, P.Email, P.Telefono, M.Matricula
+    BEGIN TRANSACTION;
+    BEGIN TRY
+        
+        IF EXISTS (SELECT 1 FROM PERSONAS WHERE DNI = @DNI)
+        BEGIN
+            RAISERROR('El DNI ya existe.', 16, 1);
+            ROLLBACK TRANSACTION;
+            RETURN;
+        END
+
+        INSERT INTO dbo.Personas (Nombre, Apellido, Dni, Email, Telefono, Activo)
+        VALUES (@Nombre, @Apellido, @DNI, @Mail, @Telefono, 1);
+
+        DECLARE @NuevoIdPersona INT = SCOPE_IDENTITY();
+
+        INSERT INTO dbo.Medicos (IdPersona, Matricula, IdUsuario)
+        VALUES (@NuevoIdPersona, @Matricula, NULL);
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW; 
+    END CATCH
+END
+GO
+
+USE ClinicaDB;
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_ListarMedicosActivos
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT 
+        P.IdPersona, 
+        P.Dni, 
+        P.Nombre, 
+        P.Apellido, 
+        P.Email, 
+        P.Telefono, 
+        M.Matricula,
+        M.IdUsuario
     FROM dbo.Personas P
     INNER JOIN dbo.Medicos M ON P.IdPersona = M.IdPersona
     WHERE P.Activo = 1;
+END
+GO
+
+USE ClinicaDB;
+GO
+
+CREATE PROCEDURE dbo.sp_ModificarMedico
+    @IdPersona INT,
+    @Nombre VARCHAR(100),
+    @Apellido VARCHAR(100),
+    @DNI VARCHAR(20),
+    @Matricula VARCHAR(50),
+    @Mail VARCHAR(255) = NULL,
+    @Telefono VARCHAR(50) = NULL,
+    @Activo BIT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRANSACTION;
+    BEGIN TRY
+        
+        UPDATE dbo.Personas
+        SET 
+            Nombre = @Nombre,
+            Apellido = @Apellido,
+            Dni = @DNI,
+            Email = @Mail,
+            Telefono = @Telefono,
+            Activo = @Activo
+        WHERE 
+            IdPersona = @IdPersona;
+
+        UPDATE dbo.Medicos
+        SET 
+            Matricula = @Matricula
+        WHERE 
+            IdPersona = @IdPersona;
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END
+GO
+
+USE ClinicaDB;
+GO
+
+CREATE PROCEDURE dbo.sp_EliminarLogicoMedico
+    @IdPersona INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    UPDATE dbo.Personas
+    SET 
+        Activo = 0
+    WHERE 
+        IdPersona = @IdPersona;
 END
 GO
 
