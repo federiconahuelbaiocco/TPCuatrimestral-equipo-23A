@@ -12,7 +12,7 @@
     </header>
 
 <div class="mb-4 p-4 bg-white rounded shadow-sm border">
-         <h2 class="h5 fw-bold mb-3">Añadir Nueva Especialidad</h2>
+ <h2 class="h5 fw-bold mb-3">Añadir Nueva Especialidad</h2>
    
     <div class="row g-3 align-items-end">
    <div class="col-sm">
@@ -35,16 +35,16 @@ CssClass="table table-hover mb-0"
         GridLines="None"
   DataKeyNames="IdEspecialidad"
     OnRowCommand="gvEspecialidades_RowCommand"
-      OnRowDeleting="gvEspecialidades_RowDeleting">
+  OnRowDeleting="gvEspecialidades_RowDeleting">
       <HeaderStyle CssClass="bg-light text-secondary text-uppercase small" />
   <Columns>
-      <asp:BoundField DataField="IdEspecialidad" HeaderText="ID" ItemStyle-CssClass="px-4 py-3 align-middle" HeaderStyle-CssClass="px-4 py-3"/>
+   <asp:BoundField DataField="IdEspecialidad" HeaderText="ID" ItemStyle-CssClass="px-4 py-3 align-middle" HeaderStyle-CssClass="px-4 py-3"/>
     
    <asp:TemplateField HeaderText="Nombre de la Especialidad" HeaderStyle-CssClass="px-4 py-3">
      <ItemTemplate>
-     <span class="fw-medium text-dark"><%# Eval("Descripcion") %></span>
+  <span class="fw-medium text-dark"><%# Eval("Descripcion") %></span>
        </ItemTemplate>
-           <ItemStyle CssClass="px-4 py-3 align-middle" />
+      <ItemStyle CssClass="px-4 py-3 align-middle" />
    </asp:TemplateField>
 
      <asp:TemplateField HeaderText="Estado" HeaderStyle-CssClass="px-4 py-3">
@@ -58,13 +58,13 @@ CssClass="table table-hover mb-0"
  <ItemTemplate>
      <div class="d-inline-flex gap-2">
    <button type="button" class="btn btn-sm btn-outline-primary" 
-       onclick='cargarEspecialidad(<%# Eval("IdEspecialidad") %>, "<%# Eval("Descripcion") %>", <%# Eval("Activo").ToString().ToLower() %>)'
-       title="Editar">
+ onclick='EspecialidadesModule.cargarEspecialidad(<%# Eval("IdEspecialidad") %>, "<%# Eval("Descripcion") %>", <%# Eval("Activo").ToString().ToLower() %>)'
+ title="Editar">
    <i class="bi bi-pencil-fill"></i>
 </button>
      <asp:LinkButton ID="btnEliminar" runat="server" 
   CssClass="btn btn-sm btn-outline-danger" 
-     CommandName="EliminarEsp" 
+  CommandName="EliminarEsp" 
      CommandArgument='<%# Eval("IdEspecialidad") %>'
      OnClientClick="return confirm('¿Estás seguro de que quieres eliminar esta especialidad?');"
  ToolTip="Eliminar">
@@ -74,7 +74,7 @@ CssClass="table table-hover mb-0"
     </ItemTemplate>
     </asp:TemplateField>
    </Columns>
-      <EmptyDataTemplate>
+   <EmptyDataTemplate>
      <div class="text-center p-5">No hay especialidades cargadas.</div>
  </EmptyDataTemplate>
 </asp:GridView>
@@ -96,7 +96,7 @@ CssClass="table table-hover mb-0"
 
    <div id="estadoVacio" class="sidebar-empty-state">
       <i class="bi bi-arrow-left-circle" style="font-size: 4rem; color: #cbd5e0;"></i>
-    <p class="text-muted mt-3 mb-0">Selecciona una especialidad de la lista para editarla</p>
+ <p class="text-muted mt-3 mb-0">Selecciona una especialidad de la lista para editarla</p>
      </div>
 
    <div id="formularioEdicion" class="sidebar-form-edit" style="display: none;">
@@ -110,8 +110,8 @@ CssClass="table table-hover mb-0"
   <div class="toggle-switch-container">
      <div class="toggle-switch-wrapper">
      <span class="toggle-label" id="sidebarStatusText">Especialidad Activa</span>
-         <label class="toggle-switch">
-         <asp:CheckBox ID="chkActivoEditar" runat="server" onclick="actualizarEstadoSidebar(this)" />
+    <label class="toggle-switch">
+         <asp:CheckBox ID="chkActivoEditar" runat="server" onclick="EspecialidadesModule.actualizarEstadoSidebar(this)" />
    <span class="toggle-slider"></span>
    </label>
        </div>
@@ -120,11 +120,11 @@ CssClass="table table-hover mb-0"
     <span id="sidebarStatusDescription">Una especialidad activa puede ser asignada a médicos</span>
 </div>
 </div>
-        </div>
+</div>
 
     <div class="sidebar-actions">
 <asp:Button ID="btnGuardarEdicion" runat="server" Text=" GUARDAR CAMBIOS" CssClass="sidebar-btn-save w-100 mb-2" OnClick="btnGuardarEdicion_Click" />
-         <button type="button" class="sidebar-btn-cancel w-100" onclick="limpiarFormulario()"> LIMPIAR</button>
+         <button type="button" class="sidebar-btn-cancel w-100" onclick="EspecialidadesModule.limpiarFormulario()"> LIMPIAR</button>
     </div>
    </div>
   </div>
@@ -134,5 +134,4 @@ CssClass="table table-hover mb-0"
 
 <asp:Content ID="Content3" ContentPlaceHolderID="ScriptsPlaceHolder" runat="server">
     <script src="~/scripts_js/especialidades.js"  rel="stylesheet" type="text/javascript"></script>
-    <script src="~/scripts_js/consultorios.js"  rel="stylesheet" type="text/javascript"></script>
 </asp:Content>

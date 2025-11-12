@@ -6,7 +6,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div class="consultorio-layout">
-        <div class="consultorio-main-content">
+  <div class="consultorio-main-content">
        <header class="mb-4">
       <h1 class="display-5 fw-bolder">Gestionar Consultorios</h1>
      </header>
@@ -26,10 +26,10 @@
   </div>
        
     <div>
-        <h3 class="h5 fw-bold mb-3">Consultorios Actuales</h3>
+<h3 class="h5 fw-bold mb-3">Consultorios Actuales</h3>
   <div class="card shadow-sm overflow-hidden">
    
-     <asp:GridView ID="gvConsultorios" runat="server" CssClass="table table-hover mb-0" AutoGenerateColumns="False" GridLines="None" DataKeyNames="IdConsultorio" OnRowCommand="gvConsultorios_RowCommand" OnRowDeleting="gvConsultorios_RowDeleting">
+   <asp:GridView ID="gvConsultorios" runat="server" CssClass="table table-hover mb-0" AutoGenerateColumns="False" GridLines="None" DataKeyNames="IdConsultorio" OnRowCommand="gvConsultorios_RowCommand" OnRowDeleting="gvConsultorios_RowDeleting">
    <HeaderStyle CssClass="bg-light text-secondary text-uppercase small" />
      <Columns>
     <asp:BoundField DataField="IdConsultorio" HeaderText="ID" ItemStyle-CssClass="px-4 py-3 align-middle" HeaderStyle-CssClass="px-4 py-3"/>
@@ -50,15 +50,15 @@
 
    <asp:TemplateField HeaderText="Acciones" ItemStyle-CssClass="text-end px-4 py-3 align-middle" HeaderStyle-CssClass="text-end px-4 py-3">
    <ItemTemplate>
-      <div class="d-inline-flex gap-2">
+  <div class="d-inline-flex gap-2">
    <button type="button" class="btn btn-sm btn-outline-primary" 
-  onclick='cargarConsultorio(<%# Eval("IdConsultorio") %>, "<%# Eval("Nombre") %>", <%# Eval("Activo").ToString().ToLower() %>)'
+  onclick='ConsultoriosModule.cargarConsultorio(<%# Eval("IdConsultorio") %>, "<%# Eval("Nombre") %>", <%# Eval("Activo").ToString().ToLower() %>)'
    title="Editar">
 <i class="bi bi-pencil-fill"></i>
    </button>
        <asp:LinkButton ID="btnEliminar" runat="server" CssClass="btn btn-sm btn-outline-danger" 
     CommandName="Eliminar" CommandArgument='<%# Eval("IdConsultorio") %>' 
-         OnClientClick="return confirm('¿Está seguro de que quiere eliminar este consultorio?');" 
+    OnClientClick="return confirm('¿Está seguro de que quiere eliminar este consultorio?');" 
    ToolTip="Eliminar">
       <i class="bi bi-trash-fill"></i>
      </asp:LinkButton>
@@ -83,7 +83,7 @@
      </h3>
 </div>
 
-   <div class="sidebar-panel-body">
+<div class="sidebar-panel-body">
   <asp:HiddenField ID="hfConsultorioId" runat="server" />
 
  <div id="estadoVacio" class="sidebar-empty-state">
@@ -99,12 +99,12 @@
 
    <div class="sidebar-form-group">
 <label class="sidebar-label">Estado del Consultorio</label>
-          <div class="toggle-switch-container">
+        <div class="toggle-switch-container">
  <div class="toggle-switch-wrapper">
        <span class="toggle-label" id="sidebarStatusText">Consultorio Activo</span>
   <label class="toggle-switch">
- <asp:CheckBox ID="chkActivoEditar" runat="server" onclick="actualizarEstadoSidebar(this)" />
-      <span class="toggle-slider"></span>
+ <asp:CheckBox ID="chkActivoEditar" runat="server" onclick="ConsultoriosModule.actualizarEstadoSidebar(this)" />
+    <span class="toggle-slider"></span>
       </label>
      </div>
         <div id="sidebarStatusMessage" class="sidebar-status-message text-muted">
@@ -116,7 +116,7 @@
 
   <div class="sidebar-actions">
      <asp:Button ID="btnGuardarEdicion" runat="server" Text=" GUARDAR CAMBIOS" CssClass="sidebar-btn-save w-100 mb-2" OnClick="btnGuardarEdicion_Click" />
-   <button type="button" class="sidebar-btn-cancel w-100" onclick="limpiarFormulario()"> LIMPIAR</button>
+   <button type="button" class="sidebar-btn-cancel w-100" onclick="ConsultoriosModule.limpiarFormulario()"> LIMPIAR</button>
   </div>
  </div>
  </div>

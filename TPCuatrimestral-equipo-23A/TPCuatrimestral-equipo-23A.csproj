@@ -81,7 +81,6 @@
     <Content Include="Medico.aspx" />
     <Content Include="PerfilMedico.aspx" />
     <Content Include="Recepcionista.aspx" />
-    <Content Include="styles\Dashboard.css" />
     <Content Include="styles\MasterLayout.css" />
     <Content Include="styles\SidebarStyles.css" />
     <Content Include="styles\styles.css" />

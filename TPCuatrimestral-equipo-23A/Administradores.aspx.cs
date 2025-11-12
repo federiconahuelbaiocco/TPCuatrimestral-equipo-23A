@@ -4,6 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DominioAdmin = dominio.Administrador;
+using DominioRecep = dominio.Recepcionista;
+using DominioMedico = dominio.Medico;
 
 namespace TPCuatrimestral_equipo_23A
 {
@@ -85,17 +88,17 @@ namespace TPCuatrimestral_equipo_23A
 					case "Administrador":
 						AdministradorNegocio adminNegocio = new AdministradorNegocio();
 						dataSource = adminNegocio.Listar();
-						gvUsuariosRol.DataKeyNames = new string[] { "Usuario.IdUsuario" };
+						gvUsuariosRol.DataKeyNames = new string[] { "IdPersona" };
 						break;
 					case "Recepcionista":
 						RecepcionistaNegocio recepNegocio = new RecepcionistaNegocio();
 						dataSource = recepNegocio.Listar();
-						gvUsuariosRol.DataKeyNames = new string[] { "Usuario.IdUsuario" };
+						gvUsuariosRol.DataKeyNames = new string[] { "IdPersona" };
 						break;
 					case "Medico":
 						MedicoNegocio medicoNegocio = new MedicoNegocio();
 						dataSource = medicoNegocio.ListarActivos();
-						gvUsuariosRol.DataKeyNames = new string[] { "Usuario.IdUsuario" };
+						gvUsuariosRol.DataKeyNames = new string[] { "IdPersona" };
 						break;
 					default:
 						break;
@@ -123,22 +126,24 @@ namespace TPCuatrimestral_equipo_23A
 				return;
 			}
 
-			int idUsuarioSeleccionado = Convert.ToInt32(e.CommandArgument);
+			int idPersonaSeleccionado = Convert.ToInt32(e.CommandArgument);
 			string nombreRol = ddlRoles.SelectedItem.Text;
 
 			if (e.CommandName == "Eliminar")
 			{
 				try
 				{
+					int idUsuario = ObtenerIdUsuarioPorIdPersona(idPersonaSeleccionado, nombreRol);
+
 					switch (nombreRol)
 					{
 						case "Administrador":
 							AdministradorNegocio adminNegocio = new AdministradorNegocio();
-							adminNegocio.EliminarLogico(idUsuarioSeleccionado);
+							adminNegocio.EliminarLogico(idUsuario);
 							break;
 						case "Recepcionista":
 							RecepcionistaNegocio recepNegocio = new RecepcionistaNegocio();
-							recepNegocio.EliminarLogico(idUsuarioSeleccionado);
+							recepNegocio.EliminarLogico(idUsuario);
 							break;
 						case "Medico":
 							break;
@@ -155,18 +160,47 @@ namespace TPCuatrimestral_equipo_23A
 			}
 			else if (e.CommandName == "Editar")
 			{
+				int idUsuario = ObtenerIdUsuarioPorIdPersona(idPersonaSeleccionado, nombreRol);
+
 				switch (nombreRol)
 				{
 					case "Administrador":
-						Response.Redirect("~/AdministradorForm.aspx?ID=" + idUsuarioSeleccionado, false);
+						Response.Redirect("~/AdministradorForm.aspx?ID=" + idUsuario, false);
 						break;
 					case "Recepcionista":
-						Response.Redirect("~/RecepcionistaForm.aspx?ID=" + idUsuarioSeleccionado, false);
+						Response.Redirect("~/RecepcionistaForm.aspx?ID=" + idUsuario, false);
 						break;
 					case "Medico":
-						Response.Redirect("~/MedicoForm.aspx?ID=" + idUsuarioSeleccionado, false);
+						Response.Redirect("~/MedicoForm.aspx?ID=" + idUsuario, false);
 						break;
 				}
+			}
+		}
+
+		private int ObtenerIdUsuarioPorIdPersona(int idPersona, string nombreRol)
+		{
+			switch (nombreRol)
+			{
+				case "Administrador":
+					AdministradorNegocio adminNegocio = new AdministradorNegocio();
+					List<DominioAdmin> admins = adminNegocio.Listar();
+					DominioAdmin admin = admins.Find(a => a.IdPersona == idPersona);
+					return admin != null ? admin.Usuario.IdUsuario : 0;
+
+				case "Recepcionista":
+					RecepcionistaNegocio recepNegocio = new RecepcionistaNegocio();
+					List<DominioRecep> receps = recepNegocio.Listar();
+					DominioRecep recep = receps.Find(r => r.IdPersona == idPersona);
+					return recep != null ? recep.Usuario.IdUsuario : 0;
+
+				case "Medico":
+					MedicoNegocio medicoNegocio = new MedicoNegocio();
+					List<DominioMedico> medicos = medicoNegocio.ListarActivos();
+					DominioMedico medico = medicos.Find(m => m.IdPersona == idPersona);
+					return medico != null ? medico.Usuario.IdUsuario : 0;
+
+				default:
+					return 0;
 			}
 		}
 	}
