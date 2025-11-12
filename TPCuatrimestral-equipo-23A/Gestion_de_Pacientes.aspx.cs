@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using negocio;
+using dominio;
 
 namespace TPCuatrimestral_equipo_23A
 {
@@ -23,7 +24,7 @@ namespace TPCuatrimestral_equipo_23A
 			PacienteNegocio negocio = new PacienteNegocio();
 			try
 			{
-				List<dominio.Paciente> listaPacientes = negocio.Listar();
+				List<Paciente> listaPacientes = negocio.Listar();
 				dgvPacientes.DataSource = listaPacientes;
 				dgvPacientes.DataBind();
 			}
@@ -38,5 +39,11 @@ namespace TPCuatrimestral_equipo_23A
 		{
 			Response.Redirect("~/AgregarPaciente.aspx", false);
 		}
-	}
+
+        protected void dgvPacientes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+			var id = dgvPacientes.SelectedDataKey.Value.ToString();
+			Response.Redirect("AgregarPaciente.aspx?id=" + id);
+        }
+    }
 }

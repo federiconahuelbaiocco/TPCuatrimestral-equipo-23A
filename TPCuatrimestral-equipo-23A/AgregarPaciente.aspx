@@ -15,9 +15,9 @@
  <div class="form-header cyan-gradient">
       <h1>
   <i class="bi bi-person-plus-fill"></i>
- Agregar Nuevo Paciente
+ Agregar o Editar Paciente
   </h1>
-    <p class="mb-0 mt-2 opacity-90">Complete el formulario para registrar un nuevo paciente en el sistema</p>
+    <p class="mb-0 mt-2 opacity-90">Complete el formulario para registrar un nuevo paciente en el sistema o editar un paciente registrado</p>
    </div>
 
     <div class="p-4">
