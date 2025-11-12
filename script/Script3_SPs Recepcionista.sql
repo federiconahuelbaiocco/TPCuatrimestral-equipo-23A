@@ -159,13 +159,14 @@ BEGIN
 END
 GO
 
--- LISTAR COBERTURAS
-CREATE OR ALTER PROCEDURE dbo.sp_ListarCoberturas
+-- LISTAR COBERTURAS ACTIVAS
+CREATE OR ALTER PROCEDURE dbo.sp_ListarCoberturasActivas
 AS
 BEGIN
     SET NOCOUNT ON;
     SELECT idCoberturaMedica, Nombre
     FROM dbo.COBERTURA
+    WHERE Activo = 1
     ORDER BY Nombre ASC;
 END
 GO

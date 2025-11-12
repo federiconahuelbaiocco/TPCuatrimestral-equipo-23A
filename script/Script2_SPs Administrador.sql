@@ -19,13 +19,20 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE dbo.sp_ModificarEspecialidad
+CREATE OR ALTER PROCEDURE dbo.sp_ModificarEspecialidad
     @IdEspecialidad INT,
-    @NuevaDescripcion VARCHAR(100)
+    @NuevaDescripcion VARCHAR(100),
+    @Activo BIT
 AS
 BEGIN
     SET NOCOUNT ON;
-    UPDATE dbo.Especialidades SET Descripcion = @NuevaDescripcion WHERE IdEspecialidad = @IdEspecialidad;
+    
+    UPDATE dbo.Especialidades
+    SET 
+        Descripcion = @NuevaDescripcion,
+        Activo = @Activo
+    WHERE 
+        IdEspecialidad = @IdEspecialidad;
 END
 GO
 
@@ -332,5 +339,80 @@ AS
 BEGIN
     SET NOCOUNT ON;
     SELECT IdRol, Nombre FROM dbo.Roles;
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_CambiarRolUsuario
+    @IdUsuario INT,
+    @IdNuevoRol INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Validamos que el rol nuevo exista
+    IF NOT EXISTS (SELECT 1 FROM dbo.Roles WHERE IdRol = @IdNuevoRol)
+    BEGIN
+        RAISERROR('El rol de destino no existe.', 16, 1);
+        RETURN;
+    END
+
+    -- Validamos que el usuario exista
+    IF NOT EXISTS (SELECT 1 FROM dbo.Usuarios WHERE IdUsuario = @IdUsuario)
+    BEGIN
+        RAISERROR('El usuario no existe.', 16, 1);
+        RETURN;
+    END
+
+    -- Actualizamos el rol del usuario
+    UPDATE dbo.Usuarios
+    SET IdRol = @IdNuevoRol
+    WHERE IdUsuario = @IdUsuario;
+END
+GO
+
+-- === ABM COBERTURAS ===
+
+CREATE OR ALTER PROCEDURE dbo.sp_ListarTodasCoberturas
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT idCoberturaMedica, Nombre, Activo
+    FROM dbo.COBERTURA
+    ORDER BY Nombre;
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_AgregarCobertura
+    @Nombre VARCHAR(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO dbo.COBERTURA (Nombre, Activo)
+    VALUES (@Nombre, 1);
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_ModificarCobertura
+    @IdCoberturaMedica INT,
+    @Nombre VARCHAR(50),
+    @Activo BIT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE dbo.COBERTURA
+    SET Nombre = @Nombre,
+        Activo = @Activo
+    WHERE idCoberturaMedica = @IdCoberturaMedica;
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_EliminarLogicoCobertura
+    @IdCoberturaMedica INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE dbo.COBERTURA
+    SET Activo = 0
+    WHERE idCoberturaMedica = @IdCoberturaMedica;
 END
 GO

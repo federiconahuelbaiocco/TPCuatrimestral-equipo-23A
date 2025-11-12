@@ -38,6 +38,7 @@ CREATE TABLE dbo.Especialidades (
 CREATE TABLE dbo.COBERTURA(
 	idCoberturaMedica INT IDENTITY(1,1) NOT NULL,
 	Nombre VARCHAR(50) NOT NULL,
+	Activo BIT NOT NULL DEFAULT 1,
 	CONSTRAINT PK_Cobertura PRIMARY KEY CLUSTERED (idCoberturaMedica ASC)
 );
 
