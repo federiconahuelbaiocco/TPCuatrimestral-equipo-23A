@@ -1,7 +1,10 @@
 ﻿USE ClinicaDB;
 GO
 
---PACIENTES
+-- PACIENTES
+IF OBJECT_ID('dbo.sp_ListarPacientesActivos', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_ListarPacientesActivos;
+GO
 CREATE PROCEDURE dbo.sp_ListarPacientesActivos
 AS
 BEGIN
@@ -19,6 +22,9 @@ BEGIN
 END
 GO
 
+IF OBJECT_ID('dbo.sp_InsertarPaciente', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_InsertarPaciente;
+GO
 CREATE PROCEDURE dbo.sp_InsertarPaciente
     @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20),
     @Mail VARCHAR(255) = NULL, @Telefono VARCHAR(50)= NULL,
@@ -36,7 +42,9 @@ BEGIN
         BEGIN TRANSACTION;
         IF EXISTS (SELECT 1 FROM PERSONAS WHERE DNI = @DNI)
         BEGIN
-            RAISERROR('El DNI ya existe.', 16, 1); ROLLBACK TRANSACTION; RETURN;
+            RAISERROR('El DNI ya existe.', 16, 1);
+            ROLLBACK TRANSACTION;
+            RETURN;
         END
 
         IF @Calle IS NOT NULL OR @Altura IS NOT NULL
@@ -63,7 +71,10 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE dbo.sp_BuscarPacientes
+IF OBJECT_ID('dbo.sp_BuscarPacientes', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_BuscarPacientes;
+GO
+CREATE PROCEDURE dbo.sp_BuscarPacientes
     @DNI VARCHAR(20) = NULL,
     @Apellido VARCHAR(100) = NULL,
     @Nombre VARCHAR(100) = NULL
@@ -80,7 +91,10 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE dbo.sp_EliminarPaciente
+IF OBJECT_ID('dbo.sp_EliminarPaciente', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_EliminarPaciente;
+GO
+CREATE PROCEDURE dbo.sp_EliminarPaciente
     @IdPaciente INT
 AS
 BEGIN
@@ -91,7 +105,10 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE dbo.sp_ObtenerPaciente
+IF OBJECT_ID('dbo.sp_ObtenerPaciente', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_ObtenerPaciente;
+GO
+CREATE PROCEDURE dbo.sp_ObtenerPaciente
     @IdPaciente INT
 AS
 BEGIN
@@ -108,7 +125,10 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE dbo.sp_ModificarPaciente
+IF OBJECT_ID('dbo.sp_ModificarPaciente', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_ModificarPaciente;
+GO
+CREATE PROCEDURE dbo.sp_ModificarPaciente
     @IdPaciente INT,
     @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20),
     @Mail VARCHAR(255) = NULL, @Telefono VARCHAR(50) = NULL,
@@ -124,7 +144,6 @@ BEGIN
         DECLARE @IdDomicilio INT;
         SELECT @IdDomicilio = IdDomicilio FROM Personas WHERE IdPersona = @IdPaciente;
 
-        -- 1. Manejo de Domicilio
         IF @IdDomicilio IS NOT NULL
         BEGIN
             UPDATE Domicilios
@@ -139,13 +158,11 @@ BEGIN
             SET @IdDomicilio = SCOPE_IDENTITY();
         END
 
-        -- 2. Actualizar datos personales básicos
         UPDATE Personas
         SET Nombre = @Nombre, Apellido = @Apellido, Dni = @DNI, Email = @Mail,
             Telefono = @Telefono, IdDomicilio = @IdDomicilio
         WHERE IdPersona = @IdPaciente;
 
-        -- 3. Actualizar datos específicos de Paciente
         UPDATE PACIENTES
         SET FechaNacimiento = @FechaNacimiento, idCobertura = @idCobertura
         WHERE idPersona = @IdPaciente;
@@ -160,7 +177,10 @@ END
 GO
 
 -- LISTAR COBERTURAS ACTIVAS
-CREATE OR ALTER PROCEDURE dbo.sp_ListarCoberturasActivas
+IF OBJECT_ID('dbo.sp_ListarCoberturasActivas', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_ListarCoberturasActivas;
+GO
+CREATE PROCEDURE dbo.sp_ListarCoberturasActivas
 AS
 BEGIN
     SET NOCOUNT ON;

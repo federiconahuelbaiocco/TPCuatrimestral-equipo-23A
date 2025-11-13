@@ -25,6 +25,7 @@ namespace TPCuatrimestral_equipo_23A
 			try
 			{
 				List<Paciente> listaPacientes = negocio.Listar();
+				Session["listaPacientes"] = listaPacientes;
 				dgvPacientes.DataSource = listaPacientes;
 				dgvPacientes.DataBind();
 			}

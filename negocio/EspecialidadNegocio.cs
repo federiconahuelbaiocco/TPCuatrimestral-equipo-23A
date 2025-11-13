@@ -72,6 +72,7 @@ namespace negocio
 				datos.setearProcedimiento("sp_ModificarEspecialidad");
 				datos.setearParametro("@IdEspecialidad", mod.IdEspecialidad);
 				datos.setearParametro("@NuevaDescripcion", mod.Descripcion);
+				datos.setearParametro("@Activo", mod.Activo);
 				datos.ejecutarAccion();
 			}
 			catch (Exception ex)

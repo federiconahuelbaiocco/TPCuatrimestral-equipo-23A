@@ -1,7 +1,6 @@
 ﻿USE master;
 GO
 
--- 1. CREACIÓN DE LA BASE DE DATOS
 IF EXISTS (SELECT name FROM sys.databases WHERE name = N'ClinicaDB')
 BEGIN
     ALTER DATABASE ClinicaDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
@@ -15,7 +14,6 @@ GO
 USE ClinicaDB;
 GO
 
--- 2. TABLAS (DDL)
 CREATE TABLE dbo.Domicilios (
     IdDomicilio INT IDENTITY(1,1) NOT NULL,
     Calle VARCHAR(200) NULL,
@@ -94,15 +92,10 @@ CREATE TABLE dbo.Usuarios (
         IdRol INT NOT NULL,
         IdPersona INT NOT NULL,
         Activo BIT NOT NULL DEFAULT 1,
-
+        FechaCreacion DATETIME NOT NULL DEFAULT GETDATE(),
         CONSTRAINT PK_Usuarios PRIMARY KEY CLUSTERED (IdUsuario ASC),
         CONSTRAINT UQ_Usuarios_NombreUsuario UNIQUE (NombreUsuario),
         CONSTRAINT FK_Usuarios_Roles FOREIGN KEY (IdRol) REFERENCES dbo.Roles(IdRol),
-        CONSTRAINT FK_Usuarios_Personas FOREIGN KEY (IdPersona) REFERENCES dbo.Personas(IdPersona)
+        CONSTRAINT FK_Usuarios_PersonAS FOREIGN KEY (IdPersona) REFERENCES dbo.Personas(IdPersona)
 );
 GO
-
--- DATOS INICIALES OBLIGATORIOS (Catálogos base)
-INSERT INTO dbo.COBERTURA (Nombre) VALUES ('Particular'), ('OSDE'), ('Galeno'), ('PAMI');
-INSERT INTO dbo.Especialidades (Descripcion) VALUES ('Clínica Médica'), ('Pediatría'), ('Cardiología');
-INSERT INTO dbo.Roles (Nombre) VALUES ('Administrador'), ('Recepcionista'), ('Médico');

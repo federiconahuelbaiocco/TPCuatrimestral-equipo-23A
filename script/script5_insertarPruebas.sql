@@ -4,11 +4,17 @@ GO
 BEGIN TRANSACTION;
 BEGIN TRY
 
-    IF NOT EXISTS (SELECT 1 FROM Especialidades WHERE Descripcion = 'Ginecología')
-        EXEC dbo.sp_AgregarEspecialidad @Descripcion = 'Ginecología';
-    IF NOT EXISTS (SELECT 1 FROM Especialidades WHERE Descripcion = 'Traumatología')
-        EXEC dbo.sp_AgregarEspecialidad @Descripcion = 'Traumatología';
+    -- DATOS INICIALES OBLIGATORIOS (Catálogos base)
+    IF NOT EXISTS (SELECT 1 FROM dbo.Roles)
+        INSERT INTO dbo.Roles (Nombre) VALUES ('Administrador'), ('Recepcionista'), ('Medico');
+        
+    IF NOT EXISTS (SELECT 1 FROM dbo.COBERTURA)
+        INSERT INTO dbo.COBERTURA (Nombre) VALUES ('Particular'), ('OSDE'), ('Galeno'), ('PAMI');
+    
+    IF NOT EXISTS (SELECT 1 FROM dbo.Especialidades)
+        INSERT INTO dbo.Especialidades (Descripcion) VALUES ('Clínica Médica'), ('Pediatría'), ('Cardiología'), ('Dermatología'), ('Ginecología'), ('Traumatología');
 
+    -- CONSULTORIOS 
     IF NOT EXISTS (SELECT 1 FROM CONSULTORIOS WHERE Nombre = 'Consultorio 101')
         EXEC dbo.sp_AgregarConsultorio @Nombre = 'Consultorio 101';
     IF NOT EXISTS (SELECT 1 FROM CONSULTORIOS WHERE Nombre = 'Consultorio 102')
@@ -20,6 +26,7 @@ BEGIN TRY
     IF NOT EXISTS (SELECT 1 FROM CONSULTORIOS WHERE Nombre = 'Laboratorio')
         EXEC dbo.sp_AgregarConsultorio @Nombre = 'Laboratorio';
 
+    -- ADMINISTRADORES 
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'admin_gonzalez')
         EXEC dbo.sp_AgregarAdministrador 'Carlos', 'González', '20111222', 'cgonzalez@clinica.com', '1155550001', 'admin_gonzalez', 'clave123';
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'admin_rodriguez')
@@ -31,6 +38,7 @@ BEGIN TRY
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'admin_sanchez')
         EXEC dbo.sp_AgregarAdministrador 'Javier', 'Sánchez', '24555666', 'jsanchez@clinica.com', '1155550005', 'admin_sanchez', 'clave123';
 
+    -- RECEPCIONISTAS 
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'recep_diaz')
         EXEC dbo.sp_AgregarRecepcionista 'Lucía', 'Díaz', '30111222', 'ldiaz@clinica.com', '1166660001', 'recep_diaz', 'clave123';
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'recep_perez')
@@ -42,6 +50,7 @@ BEGIN TRY
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'recep_moreno')
         EXEC dbo.sp_AgregarRecepcionista 'Sofía', 'Moreno', '34555666', 'smoreno@clinica.com', '1166660005', 'recep_moreno', 'clave123';
 
+    --  PACIENTES 
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '40111222')
         EXEC dbo.sp_InsertarPaciente 'Roberto', 'García', '40111222', 'rgarcia@email.com', '1177770001', 'Calle Falsa', '123', NULL, NULL, 'Springfield', 'Buenos Aires', '1610', '1980-05-10', 2;
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '41222333')
@@ -53,6 +62,7 @@ BEGIN TRY
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '44555666')
         EXEC dbo.sp_InsertarPaciente 'Marcos', 'Navarro', '44555666', 'mnavarro@email.com', '1177770005', 'Av. Corrientes', '1500', '8B', NULL, 'CABA', 'CABA', '1042', '1999-03-05', 2;
 
+    -- MEDICOS 
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '25111222')
     BEGIN
         EXEC dbo.sp_AgregarMedico 

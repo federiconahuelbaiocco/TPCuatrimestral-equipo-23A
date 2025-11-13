@@ -9,25 +9,30 @@ using negocio;
 
 namespace TPCuatrimestral_equipo_23A
 {
-    public partial class AgregarPaciente : System.Web.UI.Page
-    {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            if (!IsPostBack)
-            {
-                if (Request.QueryString["IdPersona"] != null)
-                {
-                    int id = int.Parse(Request.QueryString["IdPersona"].ToString());
-                    List<Paciente> temporal = (List<Paciente>)Session["listaPacientes"];
-                    Paciente seleccionado = temporal.Find(x => x.IdPersona == id);
-
-                    txtApellido.Text = seleccionado.Apellido;
-                    txtNombre.Text = seleccionado.Nombre;
-                }
-            }
-        }
-
-
-
-    }
+	public partial class AgregarPaciente : System.Web.UI.Page
+	{
+		protected void Page_Load(object sender, EventArgs e)
+		{
+			if (!IsPostBack)
+			{
+				if (Request.QueryString["id"] != null)
+				{
+					int id;
+					if (int.TryParse(Request.QueryString["id"], out id))
+					{
+						var temporal = Session["listaPacientes"] as List<Paciente>;
+						if (temporal != null)
+						{
+							var seleccionado = temporal.Find(x => x.IdPersona == id);
+							if (seleccionado != null)
+							{
+								txtApellido.Text = seleccionado.Apellido;
+								txtNombre.Text = seleccionado.Nombre;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
