@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdministradorNegocio.cs" />
+    <Compile Include="CoberturaNegocio.cs" />
     <Compile Include="ConsultorioNegocio.cs" />
     <Compile Include="EspecialidadNegocio.cs" />
     <Compile Include="MedicoNegocio.cs" />
