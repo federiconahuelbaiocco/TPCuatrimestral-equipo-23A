@@ -194,3 +194,41 @@
         width: 100%;
     }
 }
+
+.perfil-medico .form-check-input:focus {
+    border-color: #dee2e6;
+    box-shadow: none;
+}
+
+.perfil-medico .form-select:disabled,
+.perfil-medico .form-control:disabled {
+ background-color: #e9ecef;
+    opacity: 1;
+}
+
+.perfil-medico .card .form-check,
+.perfil-medico .card .form-select,
+.perfil-medico .card input {
+    border-left: none !important;
+}
+
+.perfil-medico .form-switch .form-check-input {
+    width: 3em !important;
+    height: 1.5em !important;
+    cursor: pointer;
+}
+
+.perfil-medico .form-switch .form-check-input:disabled {
+ cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.perfil-medico .form-check {
+    min-height: 1.5rem !important;
+    padding-left: 3.5em !important;
+    margin-bottom: 0 !important;
+}
+
+.perfil-medico .form-check-label {
+    padding-top: 0.125rem;
+}

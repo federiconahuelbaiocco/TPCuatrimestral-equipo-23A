@@ -3,84 +3,84 @@
 <!DOCTYPE html>
 <html lang="es">
 <head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%: Page.Title %> - UTN Salud</title>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title><%: Page.Title %> - UTN Salud</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-    
-    <link href="~/styles/styles.css" rel="stylesheet" type="text/css" />
-    <link href="~/styles/MasterLayout.css" rel="stylesheet" type="text/css" />
-    <link href="~/styles/SidebarStyles.css" rel="stylesheet" type="text/css" />
-    <link href="~/styles/FormStyles.css" rel="stylesheet" type="text/css" />
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+ 
+ <link href="~/styles/styles.css" rel="stylesheet" type="text/css" />
+ <link href="~/styles/MasterLayout.css" rel="stylesheet" type="text/css" />
+ <link href="~/styles/SidebarStyles.css" rel="stylesheet" type="text/css" />
+ <link href="~/styles/FormStyles.css" rel="stylesheet" type="text/css" />
 
-    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+ <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
 </head>
 <body class="d-flex flex-column min-vh-100">
-    <form id="form1" runat="server" class="d-flex admin-layout flex-grow-1">
-        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+ <form id="form1" runat="server" class="d-flex admin-layout flex-grow-1">
+ <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
 
-  <aside class="sidebar d-flex flex-column flex-shrink-0">
+ <aside class="sidebar d-flex flex-column flex-shrink-0">
  <h4 class="px-3 pt-3">
-                <i class="bi bi-person-badge-fill"></i>
+ <i class="bi bi-person-badge-fill"></i>
 Recepcionista
-         </h4>
-   <nav class="flex-grow-1 px-3">
-     <ul class="nav flex-column gap-1">
-  <li class="nav-item">
-           <asp:HyperLink ID="hlRecepcionista" runat="server" CssClass="nav-link" NavigateUrl="~/Recepcionista.aspx">
-   <i class="bi bi-house-fill"></i>
-  <span>Inicio</span>
+ </h4>
+ <nav class="flex-grow-1 px-3">
+ <ul class="nav flex-column gap-1">
+ <li class="nav-item">
+ <asp:HyperLink ID="hlRecepcionista" runat="server" CssClass="nav-link" NavigateUrl="~/Recepcionista.aspx">
+ <i class="bi bi-house-fill"></i>
+ <span>Inicio</span>
  </asp:HyperLink>
  </li>
-           <li class="nav-item">
-             <asp:HyperLink ID="hlTurnos" runat="server" CssClass="nav-link" NavigateUrl="~/Gestion_de_Turnos.aspx">
-      <i class="bi bi-calendar-check-fill"></i>
-      <span>Gestión de Turnos</span>
-    </asp:HyperLink>
-   </li>
-    <li class="nav-item">
+ <li class="nav-item">
+ <asp:HyperLink ID="hlTurnos" runat="server" CssClass="nav-link" NavigateUrl="~/Gestion_de_Turnos.aspx">
+ <i class="bi bi-calendar-check-fill"></i>
+ <span>Gestión de Turnos</span>
+ </asp:HyperLink>
+ </li>
+ <li class="nav-item">
  <asp:HyperLink ID="hlPacientes" runat="server" CssClass="nav-link" NavigateUrl="~/Gestion_de_Pacientes.aspx">
-          <i class="bi bi-people-fill"></i>
-    <span>Gestión de Pacientes</span>
-       </asp:HyperLink>
-        </li>
-  <li class="nav-item">
-     <asp:HyperLink ID="hlMedicos" runat="server" CssClass="nav-link" NavigateUrl="~/ListadoMedicos.aspx">
-        <i class="bi bi-heart-pulse-fill"></i>
-  <span>Listado de Médicos</span>
-      </asp:HyperLink>
-  </li>
-       <li class="nav-item">
-   <asp:HyperLink ID="hlReportes" runat="server" CssClass="nav-link" NavigateUrl="#">
-    <i class="bi bi-file-earmark-bar-graph-fill"></i>
-           <span>Reportes</span>
-    </asp:HyperLink>
-   </li>
-  </ul>
+ <i class="bi bi-people-fill"></i>
+ <span>Gestión de Pacientes</span>
+ </asp:HyperLink>
+ </li>
+ <li class="nav-item">
+ <asp:HyperLink ID="hlMedicos" runat="server" CssClass="nav-link" NavigateUrl="~/ListadoMedicos.aspx">
+ <i class="bi bi-heart-pulse-fill"></i>
+ <span>Listado de Médicos</span>
+ </asp:HyperLink>
+ </li>
+ <li class="nav-item">
+ <asp:HyperLink ID="hlReportes" runat="server" CssClass="nav-link" NavigateUrl="#">
+ <i class="bi bi-file-earmark-bar-graph-fill"></i>
+ <span>Reportes</span>
+ </asp:HyperLink>
+ </li>
+ </ul>
  </nav>
-        </aside>
+ </aside>
 
-      <div class="main-content d-flex flex-column w-100">
-      <main class="content-area">
-   <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
-        </main>
-        </div>
-    </form>
-    
-    <footer class="text-center mt-auto py-3 border-top bg-white">
-        <p class="mb-0 text-muted">
-    <i class="bi bi-heart-fill text-danger"></i>
+ <div class="main-content d-flex flex-column w-100">
+ <main class="content-area">
+ <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+ </main>
+ </div>
+ </form>
+ 
+ <footer class="text-center mt-auto py-3 border-top bg-white">
+ <p class="mb-0 text-muted">
+ <i class="bi bi-heart-fill text-danger"></i>
     Copyright 2025 - TPCuatrimestral equipo23A
-        </p>
-    </footer>
+ </p>
+ </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
-    <script src="scripts_js/especialidades.js" type="text/javascript"></script>
-    <script src="scripts_js/consultorios.js" type="text/javascript"></script>
-    
-    <asp:ContentPlaceHolder ID="ScriptsPlaceHolder" runat="server"></asp:ContentPlaceHolder>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+ 
+ <script src="scripts_js/especialidades.js" type="text/javascript" charset="utf-8"></script>
+ <script src="scripts_js/consultorios.js" type="text/javascript" charset="utf-8"></script>
+ 
+ <asp:ContentPlaceHolder ID="ScriptsPlaceHolder" runat="server"></asp:ContentPlaceHolder>
 </body>
 </html>

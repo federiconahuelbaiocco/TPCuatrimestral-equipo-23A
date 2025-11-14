@@ -9,7 +9,7 @@ CREATE PROCEDURE dbo.sp_ListarEspecialidades
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT IdEspecialidad, Descripcion, Activo FROM dbo.Especialidades WHERE Activo = 1;
+    SELECT IdEspecialidad, Descripcion, Activo FROM dbo.Especialidades;
 END
 GO
 

@@ -19,7 +19,7 @@ var EspecialidadesModule = (function() {
    actualizarEstadoSidebar(chkActivoEditar);
    }
 
-        console.log('Especialidad cargada - ID:', id, 'Descripción:', descripcion, 'Activo:', activo);
+        console.log('Especialidad cargada - ID:', id, 'Descripcion:', descripcion, 'Activo:', activo);
     }
 
     function limpiarFormulario() {
@@ -46,11 +46,11 @@ var EspecialidadesModule = (function() {
 
         if (checkbox.checked) {
   statusText.textContent = 'Especialidad Activa';
-       statusDescription.textContent = 'Una especialidad activa puede ser asignada a médicos';
+       statusDescription.textContent = 'Una especialidad activa puede ser asignada a medicos';
    statusMessage.className = 'sidebar-status-message text-success';
  } else {
     statusText.textContent = 'Especialidad Inactiva';
-  statusDescription.textContent = 'Una especialidad inactiva no podrá ser asignada a médicos';
+  statusDescription.textContent = 'Una especialidad inactiva no podra ser asignada a medicos';
         statusMessage.className = 'sidebar-status-message text-danger';
         }
     }
