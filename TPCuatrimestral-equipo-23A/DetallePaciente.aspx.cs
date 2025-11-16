@@ -72,7 +72,12 @@ namespace TPCuatrimestral_equipo_23A
                             txtTelefono.Text = seleccionado.Telefono;
                             txtMail.Text = seleccionado.Email;
                             ddlCoberturas.SelectedValue = seleccionado.Cobertura.IdCoberturaMedica.ToString();
-                            txtDomicilio.Text = seleccionado.Domicilio.Calle + " " + seleccionado.Domicilio.Altura + " " + seleccionado.Domicilio.Departamento + " " + seleccionado.Domicilio.Localidad + " " + seleccionado.Domicilio.Provincia;
+                            txtCalle.Text = seleccionado.Domicilio.Calle;
+                            txtAltura.Text = seleccionado.Domicilio.Altura;
+                            txtDepartamento.Text = seleccionado.Domicilio.Departamento;
+                            txtLocalidad.Text = seleccionado.Domicilio.Localidad;
+                            txtProvincia.Text = seleccionado.Domicilio.Provincia;
+                            txtCodigoPostal.Text = seleccionado.Domicilio.CodigoPostal;
                             ddlSexo.SelectedValue = seleccionado.Sexo;
                         
 
@@ -138,6 +143,9 @@ namespace TPCuatrimestral_equipo_23A
             
         }
 
-
+        protected void btnCancelar_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/Recepcionista.aspx", false);
+        }
     }
 }

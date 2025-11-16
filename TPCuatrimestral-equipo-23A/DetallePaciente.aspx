@@ -35,7 +35,7 @@
 
                         </div>
                         <div class="d-flex gap-2">
-                            <asp:Button ID="btnCancelar" CssClass="btn btn-secondary" runat="server" type="button" Text="Cancelar"></asp:Button>
+                            <asp:Button ID="btnCancelar" OnClick="btnCancelar_Click" CssClass="btn btn-secondary" runat="server" type="button" Text="Cancelar"></asp:Button>
                             <asp:Button ID="btnGuardarCambios" OnClick="btnGuardarCambios_Click" CssClass="btn btn-save-custom" runat="server" Text="Guardar Cambios"></asp:Button>
                         </div>
                     </div>
@@ -114,7 +114,6 @@
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label" for="address">Dirección</label>
-                                            <asp:TextBox ID="txtDomicilio" runat="server" cssclass="form-control" />
                                         </div>
                                         <div class="col-12">
                                              <label class="form-label" for="address">Calle</label>

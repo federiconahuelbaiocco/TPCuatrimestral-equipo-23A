@@ -62,5 +62,14 @@ namespace TPCuatrimestral_equipo_23A
                 Response.Redirect("~/DetallePaciente.aspx?id=" + id, false);
             }
         }
+
+        protected void gvPacientes_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvPacientes.PageIndex = e.NewPageIndex;
+
+            List<Paciente> lista = (List<Paciente>)Session["listaPacientes"];
+            gvPacientes.DataSource = lista;
+            gvPacientes.DataBind();
+        }
     }
 }
