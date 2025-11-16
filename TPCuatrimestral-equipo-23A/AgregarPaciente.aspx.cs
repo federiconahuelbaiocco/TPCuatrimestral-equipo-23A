@@ -16,13 +16,6 @@ namespace TPCuatrimestral_equipo_23A
             if (!IsPostBack)
             {
                 CargarCoberturas();
-
-                if (Request.QueryString["id"] != null)
-                {
-                    CargarDatosParaEditar();
-
-
-                }
             }
 
         }
@@ -40,7 +33,7 @@ namespace TPCuatrimestral_equipo_23A
                 ddlCoberturas.DataValueField = "IdCoberturaMedica";
                 ddlCoberturas.DataTextField = "Nombre";
                 ddlCoberturas.DataBind();
-                ddlCoberturas.Items.Insert(0, new ListItem("--Seleccione Coberura--", "0"));
+                ddlCoberturas.Items.Insert(0, new ListItem("Seleccione", "0"));
             }
             catch (Exception ex)
             {
@@ -49,48 +42,45 @@ namespace TPCuatrimestral_equipo_23A
             }
         }
 
-        private void CargarDatosParaEditar()
-        {
-            try
-            {
-                int id;
-                if (int.TryParse(Request.QueryString["id"], out id))
-                {
-                    var temporal = Session["listaPacientes"] as List<Paciente>;
-                    if (temporal != null)
-                    {
-                        var seleccionado = temporal.Find(x => x.IdPersona == id);
-                        if (seleccionado != null)
-                        {
-                            txtApellido.Text = seleccionado.Apellido;
-                            txtNombre.Text = seleccionado.Nombre;
-                            txtDni.Text = seleccionado.Dni;
-                            ddlSexo.Text = seleccionado.Sexo;
-                            txtFechaNac.Text = seleccionado.FechaNacimiento.ToString();
-                            txtTelefono.Text = seleccionado.Telefono;
-                            txtEmailContacto.Text = seleccionado.Email;
-                            ddlCoberturas.SelectedValue = seleccionado.Cobertura.ToString();
-                            txtCalle.Text = seleccionado.Domicilio.Calle;
-                            txtNumero.Text = seleccionado.Domicilio.Altura;
-                            txtDepartamento.Text = seleccionado.Domicilio.Departamento;
-                            txtLocalidad.Text = seleccionado.Domicilio.Localidad;
-                            txtProvincia.Text = seleccionado.Domicilio.Provincia;
-                            txtCP.Text = seleccionado.Domicilio.CodigoPostal;
-                        }
-                    }
-                }
-            }
 
-            catch (Exception ex)
-            {
-                Session["error"] = ex;
-                Response.Redirect("~/Error.aspx", false);
-            }
-        }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            try
+            {
+                Paciente nuevo = new Paciente();
+                PacienteNegocio negocio = new PacienteNegocio();
 
+                nuevo.Nombre = txtNombre.Text;
+                nuevo.Apellido = txtApellido.Text;
+                nuevo.Dni = txtDni.Text;
+                nuevo.Sexo = ddlSexo.SelectedValue;
+                if (string.IsNullOrEmpty(nuevo.Sexo))
+                    nuevo.Sexo = "No especificado";
+                nuevo.FechaNacimiento = DateTime.Parse (txtFechaNac.Text);
+                nuevo.Telefono = txtTelefono.Text;
+                nuevo.Email = txtEmailContacto.Text;
+
+                nuevo.Cobertura = new CoberturaMedica();
+                nuevo.Cobertura.IdCoberturaMedica = int.Parse(ddlCoberturas.SelectedValue);
+
+                nuevo.Domicilio = new Domicilio();
+                nuevo.Domicilio.Calle = txtCalle.Text;
+                nuevo.Domicilio.Altura = txtNumero.Text;
+                nuevo.Domicilio.Piso = txtPiso.Text;
+                nuevo.Domicilio.Departamento = txtDepartamento.Text;
+                nuevo.Domicilio.Localidad = txtLocalidad.Text;
+                nuevo.Domicilio.Provincia = txtProvincia.Text;
+                nuevo.Domicilio.CodigoPostal = txtCP.Text;
+
+                negocio.AgregarPaciente(nuevo);
+                Response.Redirect("Gestion_de_Pacientes.aspx", false);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

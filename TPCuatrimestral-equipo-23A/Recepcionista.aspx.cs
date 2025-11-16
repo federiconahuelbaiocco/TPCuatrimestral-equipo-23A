@@ -58,8 +58,8 @@ namespace TPCuatrimestral_equipo_23A
         {
             if (e.CommandName == "Editar")
             {
-                int idPaciente = Convert.ToInt32(e.CommandArgument);
-                Response.Redirect("~/AgregarPaciente.aspx?id=" + idPaciente, false);
+                string id = e.CommandArgument.ToString();
+                Response.Redirect("~/DetallePaciente.aspx?id=" + id, false);
             }
         }
     }

@@ -40,11 +40,12 @@
                             <asp:TextBox ID="txtDni" runat="server" CssClass="form-control cyan-focus" placeholder="Ingrese DNI sin puntos"></asp:TextBox>
                         </div>
                         <div class="col-md-6">
-                            <label for="<%= ddlSexo.ClientID %>" class="form-label">Sexo</label>
+                            <label for="<%= ddlSexo %>" class="form-label">Sexo</label>
                             <asp:DropDownList ID="ddlSexo" CssClass="form-select cyan-focus" runat="server">
-                                <asp:ListItem Value="Masculino">MASCULINO</asp:ListItem>
-                                <asp:ListItem Value="Femenino">FEMENINO</asp:ListItem>
-                                <asp:ListItem Value="Otro">OTRO</asp:ListItem>
+                                 <asp:ListItem Value="">Seleccione</asp:ListItem>
+                                 <asp:ListItem Value="Masculino">Masculino</asp:ListItem>
+                                 <asp:ListItem Value="Femenino">Femenino</asp:ListItem>
+                                <asp:ListItem Value="No especificado">No especificado</asp:ListItem>
                             </asp:DropDownList>
                         </div>
                         <div class="col-md-6">

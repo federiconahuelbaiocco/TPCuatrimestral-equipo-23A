@@ -14,23 +14,12 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Configuración</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Cerrar Sesión</a>
-                            </li>
-                        </ul>
+                       
                     </div>
                 </div>
             </nav>
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Pacientes</a></li>
-                    <li aria-current="page" class="breadcrumb-item active">Juan Pérez</li>
-                </ol>
+               
             </nav>
         </header>
         <main>
@@ -39,15 +28,15 @@
                     <div class="d-flex flex-column flex-md-row align-items-center">
                         <div class="d-flex align-items-center flex-grow-1 mb-3 mb-md-0">
                             <div class="profile-img rounded-circle me-4"></div>
-                            <div>
-                                <h1 class="h4 fw-bold mb-0">Juan Pérez</h1>
-                                <p class="text-muted mb-0">DNI: 12.345.678</p>
-                                <p class="text-muted mb-0">Edad: 45 años</p>
+                            <div class="d-flex flex-column">
+                                 <asp:Label ID="lblNombreCompleto" runat="server" CssClass="h4 fw-bold mb-0"></asp:Label>
+                                 <asp:Label ID="lblEdad" runat="server" CssClass="text-muted"></asp:Label>
                             </div>
+
                         </div>
                         <div class="d-flex gap-2">
-                            <button class="btn btn-secondary" type="button">Cancelar</button>
-                            <button class="btn btn-primary" type="button">Guardar Cambios</button>
+                            <asp:Button ID="btnCancelar" CssClass="btn btn-secondary" runat="server" type="button" Text="Cancelar"></asp:Button>
+                            <asp:Button ID="btnGuardarCambios" OnClick="btnGuardarCambios_Click" CssClass="btn btn-save-custom" runat="server" Text="Guardar Cambios"></asp:Button>
                         </div>
                     </div>
                 </div>
@@ -70,30 +59,39 @@
                             <div class="card h-100 shadow-sm">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">Datos Personales</h5>
-                                    <button class="btn btn-sm btn-outline-primary">Editar</button>
                                 </div>
                                 <div class="card-body">
                                     <class="row g-3">
                                         <div class="col-md-6">
-                                            <label class="form-label" for="fullName">Nombre Completo</label>
-                                            <input class="form-control" id="fullName" type="text" value="Juan Pérez" />
+                                            <label class="form-label" for="Name">Nombre</label>
+                                            <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="Apellido">Apellido</label>
+                                            <asp:TextBox ID="txtApellido" runat="server" CssClass="form-control" />
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label" for="dni">DNI</label>
-                                            <input class="form-control" id="dni" type="text" value="12.345.678" />
+                                            <asp:TextBox ID ="txtDni" runat="server" CssClass="form-control" />
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label" for="birthDate">Fecha de Nacimiento</label>
-                                            <input class="form-control" id="birthDate" type="date" value="1979-05-15" />
+                                            <asp:TextBox ID="txtFechaNac" runat="server" CssClass="form-control" />
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label" for="gender">Género</label>
-                                            <select class="form-select" id="gender">
-                                                <option selected="">Masculino</option>
-                                                <option>Femenino</option>
-                                                <option>Otro</option>
-                                            </select>
+                                            <asp:DropDownList ID="ddlSexo" CssClass="form-select cyan-focus" runat="server">
+                                                 <asp:ListItem Value="Seleccione">Seleccione</asp:ListItem>
+                                                 <asp:ListItem Value="Masculino">Masculino</asp:ListItem>
+                                                 <asp:ListItem Value="Femenino">Femenino</asp:ListItem>
+                                                 <asp:ListItem Value="No especificado">No especificado</asp:ListItem>
+                                            </asp:DropDownList>
                                         </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Cobertura Medica</label>
+                                            <asp:DropDownList ID="ddlCoberturas" CssClass="form-select cyan-focus" runat="server"></asp:DropDownList>
+                                        </div>    
+
                                     </>
                                 </div>
                             </div>
@@ -102,23 +100,50 @@
                             <div class="card h-100 shadow-sm">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">Información de Contacto</h5>
-                                    <button class="btn btn-sm btn-outline-primary">Editar</button>
                                 </div>
                                 <div class="card-body">
                                     <class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label" for="phone">Teléfono</label>
-                                            <input class="form-control" id="phone" type="tel" value="+54 9 11 1234-5678" />
+                                            <asp:TextBox ID="txtTelefono" runat="server" cssclass="form-control" />
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label" for="email">Email</label>
-                                            <input class="form-control" id="email" type="email" value="juan.perez@example.com" />
+                                            <asp:TextBox ID="txtMail" runat="server" cssclass="form-control" />
+
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label" for="address">Dirección</label>
-                                            <input class="form-control" id="address" type="text" value="Av. Corrientes 1234, CABA, Argentina" />
+                                            <asp:TextBox ID="txtDomicilio" runat="server" cssclass="form-control" />
                                         </div>
-                                    </>
+                                        <div class="col-12">
+                                             <label class="form-label" for="address">Calle</label>
+                                             <asp:TextBox ID="txtCalle" runat="server" cssclass="form-control" />
+                                        </div>
+                                        <div class="col-12">
+                                             <label class="form-label" for="address">Altura</label>
+                                             <asp:TextBox ID="txtAltura" runat="server" cssclass="form-control" />
+                                        </div>
+                                        <div class="col-12">
+                                             <label class="form-label" for="address">Piso</label>
+                                             <asp:TextBox ID="txtPiso" runat="server" cssclass="form-control" />
+                                         </div>
+                                        <div class="col-12">
+                                             <label class="form-label" for="address">Departamento</label>
+                                             <asp:TextBox ID="txtDepartamento" runat="server" cssclass="form-control" />
+                                          </div>
+                                        <div class="col-12">
+                                             <label class="form-label" for="address">Localidad</label>
+                                             <asp:TextBox ID="txtLocalidad" runat="server" cssclass="form-control" />
+                                        </div>
+                                        <div class="col-12">
+                                             <label class="form-label" for="address">Provincia</label>
+                                             <asp:TextBox ID="txtProvincia" runat="server" cssclass="form-control" />
+                                        </div>
+                                        <div class="col-12">
+                                             <label class="form-label" for="address">CP</label>
+                                             <asp:TextBox ID="txtCodigoPostal" runat="server" cssclass="form-control" />
+                                        </div>
                                 </div>
                             </div>
                         </div>

@@ -44,7 +44,7 @@ namespace TPCuatrimestral_equipo_23A
         protected void dgvPacientes_SelectedIndexChanged(object sender, EventArgs e)
         {
 			var id = dgvPacientes.SelectedDataKey.Value.ToString();
-			Response.Redirect("AgregarPaciente.aspx?id=" + id);
+			Response.Redirect("DetallePaciente.aspx?id=" + id, false);
         }
     }
 }
