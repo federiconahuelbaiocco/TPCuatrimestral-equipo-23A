@@ -12,5 +12,7 @@ namespace dominio
 		public DayOfWeek DiaSemana { get; set; }
 		public TimeSpan HoraEntrada { get; set; }
 		public TimeSpan HoraSalida { get; set; }
-	}
+       // public int IntervaloMinutos { get; set; } = 60;
+
+    }
 }
