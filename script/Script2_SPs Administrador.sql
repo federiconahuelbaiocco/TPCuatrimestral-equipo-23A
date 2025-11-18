@@ -540,6 +540,7 @@ GO
 IF OBJECT_ID('dbo.sp_AgregarTurnoTrabajo', 'P') IS NOT NULL
     DROP PROCEDURE dbo.sp_AgregarTurnoTrabajo;
 GO
+
 CREATE PROCEDURE dbo.sp_AgregarTurnoTrabajo
     @IdMedico INT,
     @DiaSemana TINYINT,
@@ -548,6 +549,7 @@ CREATE PROCEDURE dbo.sp_AgregarTurnoTrabajo
 AS
 BEGIN
     SET NOCOUNT ON;
+    
     INSERT INTO TurnosTrabajo (IdMedico, DiaSemana, HoraEntrada, HoraSalida, Activo)
     VALUES (@IdMedico, @DiaSemana, @HoraEntrada, @HoraSalida, 1);
 END
@@ -556,27 +558,42 @@ GO
 IF OBJECT_ID('dbo.sp_ObtenerTurnosTrabajoPorMedico', 'P') IS NOT NULL
     DROP PROCEDURE dbo.sp_ObtenerTurnosTrabajoPorMedico;
 GO
+
 CREATE PROCEDURE dbo.sp_ObtenerTurnosTrabajoPorMedico
     @IdMedico INT
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT IdTurnoTrabajo, IdMedico, DiaSemana, HoraEntrada, HoraSalida, Activo
+    
+    SELECT 
+        IdTurnoTrabajo, 
+        IdMedico, 
+        DiaSemana, 
+        HoraEntrada, 
+        HoraSalida, 
+        Activo
     FROM TurnosTrabajo
-    WHERE IdMedico = @IdMedico AND Activo = 1;
+    WHERE IdMedico = @IdMedico AND Activo = 1
+    ORDER BY DiaSemana, HoraEntrada;
 END
 GO
 
 IF OBJECT_ID('dbo.sp_EliminarTurnoTrabajo', 'P') IS NOT NULL
     DROP PROCEDURE dbo.sp_EliminarTurnoTrabajo;
 GO
+
 CREATE PROCEDURE dbo.sp_EliminarTurnoTrabajo
     @IdTurnoTrabajo INT
 AS
 BEGIN
     SET NOCOUNT ON;
+    
     UPDATE TurnosTrabajo
     SET Activo = 0
     WHERE IdTurnoTrabajo = @IdTurnoTrabajo;
 END
 GO
+
+PRINT 'Script de TurnosTrabajo ejecutado correctamente'
+GO
+

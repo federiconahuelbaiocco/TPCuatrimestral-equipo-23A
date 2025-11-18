@@ -242,7 +242,6 @@
   <ItemGroup>
     <Content Include="Site.Master" />
     <Content Include="Medico.Master" />
-    <Content Include="IMPLEMENTACION_HORARIOS_MEDICOS.md" />
     <None Include="packages.config" />
     <Content Include="Recepcionista.Master" />
     <Content Include="Admin.Master" />
@@ -255,6 +254,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="TPCuatrimestral-equipo-23A\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

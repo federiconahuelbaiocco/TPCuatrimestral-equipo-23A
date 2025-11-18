@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace dominio
 {
+	[Serializable]
 	public class TurnoTrabajo
 	{
 		public int IdTurnoTrabajo { get; set; }
 		public DayOfWeek DiaSemana { get; set; }
 		public TimeSpan HoraEntrada { get; set; }
 		public TimeSpan HoraSalida { get; set; }
-       // public int IntervaloMinutos { get; set; } = 60;
-
-    }
+	}
 }

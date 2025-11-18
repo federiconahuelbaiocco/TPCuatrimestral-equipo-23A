@@ -25,6 +25,7 @@ namespace negocio
                     aux.DiaSemana = (DayOfWeek)Convert.ToInt32(datos.Lector["DiaSemana"]);
                     aux.HoraEntrada = (TimeSpan)datos.Lector["HoraEntrada"];
                     aux.HoraSalida = (TimeSpan)datos.Lector["HoraSalida"];
+
                     lista.Add(aux);
                 }
                 return lista;
@@ -79,14 +80,13 @@ namespace negocio
                 datos.cerrarConexion();
             }
         }
-
         public List<string> GenerarOpcionesHorario()
         {
             List<string> opciones = new List<string>();
             for (int hora = 6; hora <= 22; hora++)
             {
                 opciones.Add($"{hora:D2}:00");
-                opciones.Add($"{hora:D2}:30");
+                opciones.Add($"{hora:D2}:30"); 
             }
             return opciones;
         }

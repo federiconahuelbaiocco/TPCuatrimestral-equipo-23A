@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Agregar Nuevo Empleado" Language="C#" MasterPageFile="~/Admin.master" AutoEventWireup="true" CodeBehind="AgregarEmpleado.aspx.cs" Inherits="TPCuatrimestral_equipo_23A.AgregarEmpleado" %>
+<%@ Page Title="Agregar Nuevo Empleado" Language="C#" MasterPageFile="~/Admin.master" AutoEventWireup="true" CodeBehind="AgregarEmpleado.aspx.cs" Inherits="TPCuatrimestral_equipo_23A.AgregarEmpleado" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -28,11 +28,6 @@
                     </h2>
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label for="<%=ddlRol.ClientID %>" class="form-label">Rol en el Sistema</label>
-                            <asp:DropDownList ID="ddlRol" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="ddlRol_SelectedIndexChanged">
-                            </asp:DropDownList>
-                        </div>
-                        <div class="col-md-6">
                             <label for="<%= txtNombre.ClientID %>" class="form-label">Nombre</label>
                             <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control" placeholder="Ingrese el nombre"></asp:TextBox>
                         </div>
@@ -45,7 +40,7 @@
                             <asp:TextBox ID="txtDni" runat="server" CssClass="form-control" placeholder="Ingrese DNI sin puntos"></asp:TextBox>
                         </div>
                         <div class="col-md-6">
-                            <label for="<%= ddlSexo %>" class="form-label">Sexo</label>
+                            <label for="<%= ddlSexo.ClientID %>" class="form-label">Sexo</label>
                             <asp:DropDownList ID="ddlSexo" CssClass="form-select cyan-focus" runat="server">
                                 <asp:ListItem Value="">Seleccione</asp:ListItem>
                                 <asp:ListItem Value="Masculino">Masculino</asp:ListItem>
@@ -63,6 +58,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="form-section">
                     <h2>
                         <i class="bi bi-geo-alt cyan-icon"></i>
@@ -100,67 +96,87 @@
                     </div>
                 </div>
 
-                <asp:Panel ID="Panel1" runat="server" Visible="false">
-                    <div class="form-section">
-                        <h2>
-                            <i class="bi bi-briefcase"></i>
-                            Información Laboral
-                        </h2>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="<%=txtMatricula.ClientID %>" class="form-label">Matricula</label>
-                                <asp:TextBox ID="txtMatricula" runat="server" CssClass="form-control"></asp:TextBox>
-                            </div>
-                            <div class="col-12">
-                                <label for="<%=chkEspecialidades.ClientID %>" class="form-label">Especialidad</label>
-                                <asp:CheckBoxList ID="chkEspecialidades" runat="server" CssClass="table table-borderless"
-                                    RepeatDirection="Horizontal"
-                                    RepeatLayout="Table"
-                                    RepeatColumns="3">
-                                </asp:CheckBoxList>
-                            </div>
-                            <hr />
-                            <div class="form-group">
-                                <label class="form-label">Horario de trabajo</label>
-                                <div class="row g-3">
-                                    <div class="col-md-4">
-                                        <asp:Label Text="Día:" runat="server" />
-                                        <asp:DropDownList ID="ddlDia" runat="server" CssClass="form-select">
-                                            <asp:ListItem Text="Lunes" Value="1" />
-                                            <asp:ListItem Text="Martes" Value="2" />
-                                            <asp:ListItem Text="Miercoles" Value="3" />
-                                            <asp:ListItem Text="Jueves" Value="4" />
-                                            <asp:ListItem Text="Viernes" Value="5" />
-                                            <asp:ListItem Text="Sabado" Value="6" />
-                                        </asp:DropDownList>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <asp:Label Text="Desde:" runat="server" />
-                                        <asp:DropDownList ID="ddlDesde" runat="server" TextMode="TimeSpan" CssClass="form-select"></asp:DropDownList>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <asp:Label Text="Hasta:" runat="server" />
-                                        <asp:DropDownList ID="ddlHasta" runat="server" CssClass="form-select"></asp:DropDownList>
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="d-flex justify-content-end">
-                                    <asp:Button ID="btnAgregarHorario" runat="server"
-                                        Text="Agregar Horario"
-                                        CssClass="btn btn-secondary" />
-                                </div>
-                                <asp:Label ID="lblErrorHorario" runat="server" ForeColor="Red" />
-                            </div>
-                            <hr />
-                            <h5>Horarios de Trabajo Cargados</h5>
-                            <asp:GridView ID="gvHorarios" runat="server" AutoGenerateColumns="true"
-                                EmptyDataText="Aún no se han agregado horarios para este médico."
-                                CssClass="table table-bordered" />
-                            <br />
-                        </div>
-                    </div>
-                </asp:Panel>
+                <asp:UpdatePanel ID="updPanelLaboral" runat="server">
+                    <ContentTemplate>
 
+                        <div class="form-section">
+                            <h2>
+                                <i class="bi bi-briefcase"></i>
+                                Información Laboral
+                            </h2>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="<%= ddlRol.ClientID %>" class="form-label">Rol en el Sistema</label>
+                                    <asp:DropDownList ID="ddlRol" runat="server" CssClass="form-select" 
+                                        AutoPostBack="true" OnSelectedIndexChanged="ddlRol_SelectedIndexChanged">
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                        </div>
+
+                        <asp:Panel ID="Panel1" runat="server" Visible="false">
+                            <div class="form-section">
+                                <h2>
+                                    <i class="bi bi-briefcase"></i>
+                                    Datos del Médico
+                                </h2>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="<%=txtMatricula.ClientID %>" class="form-label">Matricula</label>
+                                        <asp:TextBox ID="txtMatricula" runat="server" CssClass="form-control"></asp:TextBox>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Especialidad</label>
+                                        <asp:CheckBoxList ID="chkEspecialidades" runat="server" CssClass="table table-borderless"
+                                            RepeatDirection="Horizontal"
+                                            RepeatLayout="Table"
+                                            RepeatColumns="3">
+                                        </asp:CheckBoxList>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group">
+                                        <label class="form-label">Horario de trabajo</label>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <asp:Label Text="Día:" runat="server" />
+                                                <asp:DropDownList ID="ddlDia" runat="server" CssClass="form-select">
+                                                    <asp:ListItem Text="Lunes" Value="1" />
+                                                    <asp:ListItem Text="Martes" Value="2" />
+                                                    <asp:ListItem Text="Miercoles" Value="3" />
+                                                    <asp:ListItem Text="Jueves" Value="4" />
+                                                    <asp:ListItem Text="Viernes" Value="5" />
+                                                    <asp:ListItem Text="Sabado" Value="6" />
+                                                </asp:DropDownList>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <asp:Label Text="Desde:" runat="server" />
+                                                <asp:DropDownList ID="ddlDesde" runat="server" CssClass="form-select"></asp:DropDownList>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <asp:Label Text="Hasta:" runat="server" />
+                                                <asp:DropDownList ID="ddlHasta" runat="server" CssClass="form-select"></asp:DropDownList>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="d-flex justify-content-end">
+                                            <asp:Button ID="btnAgregarHorario" runat="server"
+                                                Text="Agregar Horario"
+                                                CssClass="btn btn-secondary" OnClick="btnAgregarHorario_Click" />
+                                        </div>
+                                        <asp:Label ID="lblErrorHorario" runat="server" ForeColor="Red" />
+                                    </div>
+                                    <hr />
+                                    <h5>Horarios de Trabajo Cargados</h5>
+                                    <asp:GridView ID="gvHorarios" runat="server" AutoGenerateColumns="true"
+                                        EmptyDataText="Aún no se han agregado horarios para este médico."
+                                        CssClass="table table-bordered" />
+                                    <br />
+                                </div>
+                            </div>
+                        </asp:Panel>
+
+                    </ContentTemplate>
+                </asp:UpdatePanel>
                 <div class="form-section">
                     <h2>
                         <i class="bi bi-shield-lock"></i>
