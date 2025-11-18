@@ -10,7 +10,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
     SELECT
-        P.IdPersona, P.Dni, P.Nombre, P.Apellido, P.Email, P.Telefono, P.Activo,
+        P.IdPersona, P.Dni, P.Nombre, P.Apellido, P.Email,P.Sexo, P.Telefono, P.Activo,
         PAC.FechaNacimiento, C.Nombre as Cobertura,
         D.Calle, D.Altura, D.Localidad
     FROM Personas P
@@ -26,7 +26,7 @@ IF OBJECT_ID('dbo.sp_InsertarPaciente', 'P') IS NOT NULL
     DROP PROCEDURE dbo.sp_InsertarPaciente;
 GO
 CREATE PROCEDURE dbo.sp_InsertarPaciente
-    @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20),
+    @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20),@Sexo VARCHAR(20),
     @Mail VARCHAR(255) = NULL, @Telefono VARCHAR(50)= NULL,
     @Calle VARCHAR(200)= NULL, @Altura VARCHAR(20)= NULL, @Piso VARCHAR(10)= NULL,
     @Departamento VARCHAR(10)= NULL, @Localidad VARCHAR(100)= NULL,
@@ -54,8 +54,8 @@ BEGIN
             SET @NuevoIdDomicilio = SCOPE_IDENTITY();
         END
 
-        INSERT INTO PERSONAS (Nombre, Apellido, DNI, Email, Telefono, IdDomicilio)
-        VALUES (@Nombre, @Apellido, @DNI, @Mail, @Telefono, @NuevoIdDomicilio);
+        INSERT INTO PERSONAS (Nombre, Apellido, DNI,Sexo, Email, Telefono, IdDomicilio)
+        VALUES (@Nombre, @Apellido, @DNI,@Sexo, @Mail, @Telefono, @NuevoIdDomicilio);
         SET @NuevoIdPersona = SCOPE_IDENTITY();
 
         INSERT INTO PACIENTES (idPersona, FechaNacimiento, idCobertura)
@@ -114,7 +114,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
     SELECT
-        P.IdPersona, P.Nombre, P.Apellido, P.Dni, P.Email, P.Telefono, P.IdDomicilio,
+        P.IdPersona, P.Nombre, P.Apellido, P.Dni,P.Sexo, P.Email, P.Telefono, P.IdDomicilio,
         D.Calle, D.Altura, D.Piso, D.Departamento, D.Localidad, D.Provincia, D.CodigoPostal,
         PAC.idCobertura, C.Nombre AS NombreCobertura, PAC.FechaNacimiento
     FROM Personas P
@@ -130,7 +130,7 @@ IF OBJECT_ID('dbo.sp_ModificarPaciente', 'P') IS NOT NULL
 GO
 CREATE PROCEDURE dbo.sp_ModificarPaciente
     @IdPaciente INT,
-    @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20),
+    @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20), @Sexo VARCHAR(20),
     @Mail VARCHAR(255) = NULL, @Telefono VARCHAR(50) = NULL,
     @Calle VARCHAR(200) = NULL, @Altura VARCHAR(20) = NULL, @Piso VARCHAR(10) = NULL,
     @Departamento VARCHAR(10) = NULL, @Localidad VARCHAR(100) = NULL,
@@ -159,7 +159,7 @@ BEGIN
         END
 
         UPDATE Personas
-        SET Nombre = @Nombre, Apellido = @Apellido, Dni = @DNI, Email = @Mail,
+        SET Nombre = @Nombre, Apellido = @Apellido, Dni = @DNI, @Sexo = Sexo, Email = @Mail,
             Telefono = @Telefono, IdDomicilio = @IdDomicilio
         WHERE IdPersona = @IdPaciente;
 

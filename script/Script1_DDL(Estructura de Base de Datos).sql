@@ -52,6 +52,7 @@ CREATE TABLE dbo.Personas (
     Nombre VARCHAR(100) NOT NULL,
     Apellido VARCHAR(100) NOT NULL,
     Dni VARCHAR(20) NOT NULL,
+    Sexo VARCHAR(20) NULL DEFAULT 'No especificado',
     Email VARCHAR(255) NULL,
     Telefono VARCHAR(50) NULL,
     Activo BIT NOT NULL DEFAULT 1,
