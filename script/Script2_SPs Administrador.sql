@@ -519,3 +519,64 @@ BEGIN
     WHERE idCoberturaMedica = @IdCoberturaMedica;
 END
 GO
+
+-- turno trabajo 
+
+IF OBJECT_ID('dbo.TurnosTrabajo', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.TurnosTrabajo (
+        IdTurnoTrabajo INT IDENTITY(1,1) NOT NULL,
+        IdMedico INT NOT NULL,
+        DiaSemana TINYINT NOT NULL,
+        HoraEntrada TIME NOT NULL,
+        HoraSalida TIME NOT NULL,
+        Activo BIT NOT NULL DEFAULT 1,
+        CONSTRAINT PK_TurnosTrabajo PRIMARY KEY CLUSTERED (IdTurnoTrabajo ASC),
+        CONSTRAINT FK_TurnosTrabajo_Medicos FOREIGN KEY (IdMedico) REFERENCES dbo.Medicos(IdPersona)
+    );
+END
+GO
+
+IF OBJECT_ID('dbo.sp_AgregarTurnoTrabajo', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_AgregarTurnoTrabajo;
+GO
+CREATE PROCEDURE dbo.sp_AgregarTurnoTrabajo
+    @IdMedico INT,
+    @DiaSemana TINYINT,
+    @HoraEntrada TIME,
+    @HoraSalida TIME
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO TurnosTrabajo (IdMedico, DiaSemana, HoraEntrada, HoraSalida, Activo)
+    VALUES (@IdMedico, @DiaSemana, @HoraEntrada, @HoraSalida, 1);
+END
+GO
+
+IF OBJECT_ID('dbo.sp_ObtenerTurnosTrabajoPorMedico', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_ObtenerTurnosTrabajoPorMedico;
+GO
+CREATE PROCEDURE dbo.sp_ObtenerTurnosTrabajoPorMedico
+    @IdMedico INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT IdTurnoTrabajo, IdMedico, DiaSemana, HoraEntrada, HoraSalida, Activo
+    FROM TurnosTrabajo
+    WHERE IdMedico = @IdMedico AND Activo = 1;
+END
+GO
+
+IF OBJECT_ID('dbo.sp_EliminarTurnoTrabajo', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_EliminarTurnoTrabajo;
+GO
+CREATE PROCEDURE dbo.sp_EliminarTurnoTrabajo
+    @IdTurnoTrabajo INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE TurnosTrabajo
+    SET Activo = 0
+    WHERE IdTurnoTrabajo = @IdTurnoTrabajo;
+END
+GO
