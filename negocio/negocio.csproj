@@ -54,6 +54,7 @@
     <Compile Include="RolNegocio.cs" />
     <Compile Include="TurnoNegocio.cs" />
     <Compile Include="TurnoTrabajoNegocio.cs" />
+    <Compile Include="UsuarioNegocio.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\conexion\conexion.csproj">

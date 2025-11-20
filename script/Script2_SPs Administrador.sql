@@ -611,6 +611,40 @@ BEGIN
 END
 GO
 
-PRINT 'Script de TurnosTrabajo ejecutado correctamente'
+IF OBJECT_ID('dbo.sp_ValidarUsuario', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_ValidarUsuario;
+GO
+CREATE PROCEDURE dbo.sp_ValidarUsuario
+    @NombreUsuario VARCHAR(50),
+    @Clave VARCHAR(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    SELECT 
+        U.IdUsuario,
+        U.NombreUsuario,
+        U.IdRol,
+        R.Nombre AS NombreRol,
+        U.IdPersona,
+        P.Nombre,
+        P.Apellido,
+        P.Email,
+        P.Dni,
+        P.Telefono,
+        P.Sexo,
+        M.Matricula
+    FROM Usuarios U
+    INNER JOIN Roles R ON U.IdRol = R.IdRol
+    INNER JOIN Personas P ON U.IdPersona = P.IdPersona
+    LEFT JOIN Medicos M ON U.IdPersona = M.IdPersona
+    WHERE U.NombreUsuario = @NombreUsuario 
+        AND U.Clave = @Clave 
+        AND U.Activo = 1 
+        AND P.Activo = 1;
+END
+GO
+
+PRINT 'Script de TurnosTrabajo y ValidarUsuario ejecutado correctamente'
 GO
 

@@ -78,6 +78,7 @@
     <Content Include="Gestion_de_Turnos.aspx" />
     <Content Include="Global.asax" />
     <Content Include="ListadoMedicos.aspx" />
+    <Content Include="Logout.aspx" />
     <Content Include="Medico.aspx" />
     <Content Include="PerfilMedico.aspx" />
     <Content Include="Recepcionista.aspx" />
@@ -183,6 +184,13 @@
     </Compile>
     <Compile Include="ListadoMedicos.aspx.designer.cs">
       <DependentUpon>ListadoMedicos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
     </Compile>
     <Compile Include="Medico.aspx.cs">
       <DependentUpon>Medico.aspx</DependentUpon>

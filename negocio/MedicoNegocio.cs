@@ -2,9 +2,6 @@
 using dominio;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace negocio
 {
@@ -54,6 +51,12 @@ namespace negocio
             {
                 datos.cerrarConexion();
             }
+        }
+
+        public Medico ObtenerPorId(int idPersona)
+        {
+            List<Medico> listaMedicos = ListarActivos();
+            return listaMedicos.Find(m => m.IdPersona == idPersona);
         }
 
         public int Agregar(Medico nuevo)

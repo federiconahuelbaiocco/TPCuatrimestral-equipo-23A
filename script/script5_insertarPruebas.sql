@@ -102,8 +102,89 @@ BEGIN TRY
             @Matricula = 'MN1005', @Mail = 'cmolina@clinica.com', @Telefono = '1188880005';
     END
 
+    DECLARE @IdRolMedico INT;
+    SELECT @IdRolMedico = IdRol FROM Roles WHERE Nombre = 'Medico';
+
+    IF @IdRolMedico IS NULL
+    BEGIN
+        INSERT INTO Roles (Nombre, Activo) VALUES ('Medico', 1);
+        SET @IdRolMedico = SCOPE_IDENTITY();
+        PRINT 'Rol Medico creado';
+    END
+
+    DECLARE @IdPersonaLaura INT = (SELECT IdPersona FROM Personas WHERE Dni = '25111222');
+    DECLARE @IdPersonaDiego INT = (SELECT IdPersona FROM Personas WHERE Dni = '26222333');
+    DECLARE @IdPersonaValeria INT = (SELECT IdPersona FROM Personas WHERE Dni = '27333444');
+    DECLARE @IdPersonaJorge INT = (SELECT IdPersona FROM Personas WHERE Dni = '28444555');
+    DECLARE @IdPersonaClara INT = (SELECT IdPersona FROM Personas WHERE Dni = '29555666');
+
+    IF @IdPersonaLaura IS NOT NULL AND NOT EXISTS (SELECT 1 FROM Usuarios WHERE IdPersona = @IdPersonaLaura)
+    BEGIN
+        INSERT INTO Usuarios (NombreUsuario, Clave, IdRol, IdPersona, Activo)
+        VALUES ('ltorres', 'clave123', @IdRolMedico, @IdPersonaLaura, 1);
+        
+        UPDATE Medicos SET IdUsuario = SCOPE_IDENTITY() WHERE IdPersona = @IdPersonaLaura;
+        PRINT 'Usuario ltorres creado';
+    END
+
+    IF @IdPersonaDiego IS NOT NULL AND NOT EXISTS (SELECT 1 FROM Usuarios WHERE IdPersona = @IdPersonaDiego)
+    BEGIN
+        INSERT INTO Usuarios (NombreUsuario, Clave, IdRol, IdPersona, Activo)
+        VALUES ('dramirez', 'clave123', @IdRolMedico, @IdPersonaDiego, 1);
+        
+        UPDATE Medicos SET IdUsuario = SCOPE_IDENTITY() WHERE IdPersona = @IdPersonaDiego;
+        PRINT 'Usuario dramirez creado';
+    END
+
+    IF @IdPersonaValeria IS NOT NULL AND NOT EXISTS (SELECT 1 FROM Usuarios WHERE IdPersona = @IdPersonaValeria)
+    BEGIN
+        INSERT INTO Usuarios (NombreUsuario, Clave, IdRol, IdPersona, Activo)
+        VALUES ('vcastro', 'clave123', @IdRolMedico, @IdPersonaValeria, 1);
+        
+        UPDATE Medicos SET IdUsuario = SCOPE_IDENTITY() WHERE IdPersona = @IdPersonaValeria;
+        PRINT 'Usuario vcastro creado';
+    END
+
+    IF @IdPersonaJorge IS NOT NULL AND NOT EXISTS (SELECT 1 FROM Usuarios WHERE IdPersona = @IdPersonaJorge)
+    BEGIN
+        INSERT INTO Usuarios (NombreUsuario, Clave, IdRol, IdPersona, Activo)
+        VALUES ('jortega', 'clave123', @IdRolMedico, @IdPersonaJorge, 1);
+        
+        UPDATE Medicos SET IdUsuario = SCOPE_IDENTITY() WHERE IdPersona = @IdPersonaJorge;
+        PRINT 'Usuario jortega creado';
+    END
+
+    IF @IdPersonaClara IS NOT NULL AND NOT EXISTS (SELECT 1 FROM Usuarios WHERE IdPersona = @IdPersonaClara)
+    BEGIN
+        INSERT INTO Usuarios (NombreUsuario, Clave, IdRol, IdPersona, Activo)
+        VALUES ('cmolina', 'clave123', @IdRolMedico, @IdPersonaClara, 1);
+        
+        UPDATE Medicos SET IdUsuario = SCOPE_IDENTITY() WHERE IdPersona = @IdPersonaClara;
+        PRINT 'Usuario cmolina creado';
+    END
+
+    DECLARE @IdPaciente1 INT = (SELECT IdPersona FROM Personas WHERE Dni = '40111222');
+    DECLARE @IdPaciente2 INT = (SELECT IdPersona FROM Personas WHERE Dni = '41222333');
+    DECLARE @IdPaciente3 INT = (SELECT IdPersona FROM Personas WHERE Dni = '42333444');
+
+    IF @IdPersonaLaura IS NOT NULL AND @IdPaciente1 IS NOT NULL
+    BEGIN
+        IF NOT EXISTS (SELECT 1 FROM Turnos WHERE IdMedico = @IdPersonaLaura AND CAST(FechaHora AS DATE) = CAST(GETDATE() AS DATE))
+        BEGIN
+            DECLARE @FechaBase DATETIME = CAST(CAST(GETDATE() AS DATE) AS DATETIME);
+            
+            INSERT INTO Turnos (IdPaciente, IdMedico, FechaHora, IdEstadoTurno, Observaciones, Activo)
+            VALUES 
+                (@IdPaciente1, @IdPersonaLaura, DATEADD(HOUR, 9, @FechaBase), 1, 'Control general', 1),
+                (@IdPaciente2, @IdPersonaLaura, DATEADD(MINUTE, 30, DATEADD(HOUR, 10, @FechaBase)), 1, 'Primera consulta', 1),
+                (@IdPaciente3, @IdPersonaLaura, DATEADD(HOUR, 14, @FechaBase), 1, 'Seguimiento de tratamiento', 1);
+            
+            PRINT 'Turnos de prueba creados para Laura Torres';
+        END
+    END
+
     COMMIT TRANSACTION;
-    PRINT 'Script de inserción de datos completado.';
+    PRINT '--- Script de inserción de datos completado exitosamente ---';
 
 END TRY
 BEGIN CATCH
@@ -128,4 +209,6 @@ SELECT 'Personas' AS Tabla, COUNT(*) AS Total FROM Personas;
 SELECT 'Pacientes' AS Tabla, COUNT(*) AS Total FROM PACIENTES;
 SELECT 'Medicos' AS Tabla, COUNT(*) AS Total FROM Medicos;
 SELECT 'Usuarios' AS Tabla, COUNT(*) AS Total FROM Usuarios;
+SELECT 'Turnos' AS Tabla, COUNT(*) AS Total FROM Turnos;
+
 GO
