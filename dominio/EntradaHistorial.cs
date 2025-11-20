@@ -10,7 +10,8 @@ namespace dominio
 	{
 		public int IdEntradaHistorial { get; set; }
 		public DateTime Fecha { get; set; } 
-		public string Diagnostico { get; set; } 
+		public string Diagnostico { get; set; }
+		public string Observaciones { get; set; }
 		public Medico MedicoTratante { get; set; }
 		public Turno TurnoAsociado { get; set; }
 	}

@@ -38,5 +38,25 @@ namespace negocio
 				datos.cerrarConexion();
 			}
 		}
+
+		public void CambiarRolUsuario(int idUsuario, int idNuevoRol)
+		{
+			AccesoDatos datos = new AccesoDatos();
+			try
+			{
+				datos.setearProcedimiento("sp_CambiarRolUsuario");
+				datos.setearParametro("@IdUsuario", idUsuario);
+				datos.setearParametro("@IdNuevoRol", idNuevoRol);
+				datos.ejecutarAccion();
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error al cambiar rol de usuario.", ex);
+			}
+			finally
+			{
+				datos.cerrarConexion();
+			}
+		}
 	}
 }

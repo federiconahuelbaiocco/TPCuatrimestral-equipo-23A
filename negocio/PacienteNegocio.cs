@@ -192,7 +192,7 @@ namespace negocio
                 datos.setearParametro("@Calle", paciente.Domicilio.Calle);
                 datos.setearParametro("@Altura", paciente.Domicilio.Altura);
                 datos.setearParametro("@Piso", paciente.Domicilio.Piso);
-                datos.setearParametro("@Departamento", paciente.Domicilio.Departamento);
+                datos.setearParametro("@Apartamento", paciente.Domicilio.Departamento);
                 datos.setearParametro("@Localidad", paciente.Domicilio.Localidad);
                 datos.setearParametro("@Provincia", paciente.Domicilio.Provincia);
                 datos.setearParametro("@CodigoPostal", paciente.Domicilio.CodigoPostal);
@@ -205,6 +205,63 @@ namespace negocio
             {
 
                 throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public List<Paciente> BuscarPacientes(string dni = null, string apellido = null, string nombre = null)
+        {
+            List<Paciente> lista = new List<Paciente>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearProcedimiento("sp_BuscarPacientes");
+                datos.setearParametro("@DNI", (object)dni ?? DBNull.Value);
+                datos.setearParametro("@Apellido", (object)apellido ?? DBNull.Value);
+                datos.setearParametro("@Nombre", (object)nombre ?? DBNull.Value);
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Paciente aux = new Paciente();
+                    aux.IdPersona = (int)datos.Lector["IdPersona"];
+                    aux.Dni = (string)datos.Lector["Dni"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Apellido = (string)datos.Lector["Apellido"];
+                    
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("FechaNacimiento")))
+                        aux.FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"];
+
+                    lista.Add(aux);
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al buscar pacientes.", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void EliminarPaciente(int idPaciente)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearProcedimiento("sp_EliminarPaciente");
+                datos.setearParametro("@IdPaciente", idPaciente);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar paciente.", ex);
             }
             finally
             {

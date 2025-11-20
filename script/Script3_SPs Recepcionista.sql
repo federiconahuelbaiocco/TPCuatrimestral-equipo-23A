@@ -190,3 +190,103 @@ BEGIN
     ORDER BY Nombre ASC;
 END
 GO
+
+-- ALTA DE TURNO (ASIGNACIÓN)
+CREATE OR ALTER PROCEDURE dbo.sp_AltaTurno
+    @IdPaciente INT,
+    @IdMedico INT,
+    @FechaHora DATETIME,
+    @Observaciones VARCHAR(255) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    BEGIN TRY
+        IF EXISTS (SELECT 1 FROM Turnos WHERE IdMedico = @IdMedico AND FechaHora = @FechaHora AND Activo = 1)
+        BEGIN
+            RAISERROR('El médico ya tiene un turno asignado en ese horario.', 16, 1);
+        END
+
+        IF EXISTS (SELECT 1 FROM Turnos WHERE IdPaciente = @IdPaciente AND FechaHora = @FechaHora AND Activo = 1)
+        BEGIN
+            RAISERROR('El paciente ya tiene un turno asignado en ese horario.', 16, 1);
+        END
+
+        INSERT INTO Turnos (IdPaciente, IdMedico, FechaHora, IdEstadoTurno, Observaciones, Activo)
+        VALUES (@IdPaciente, @IdMedico, @FechaHora, 1, @Observaciones, 1);
+        
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        DECLARE @ErrorSeverity INT;
+        DECLARE @ErrorState INT;
+
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(),
+            @ErrorSeverity = ERROR_SEVERITY(),
+            @ErrorState = ERROR_STATE();
+
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END
+GO
+
+-- LISTAR TURNOS
+
+CREATE OR ALTER PROCEDURE dbo.sp_ListarTurnos
+    @IdMedico INT = NULL,
+    @Fecha DATE = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    SELECT 
+        T.IdTurno,
+        T.FechaHora,
+        T.Observaciones,
+        E.Descripcion AS Estado,
+        -- Datos Paciente
+        P.IdPersona AS IdPaciente,
+        P.Nombre AS NombrePaciente,
+        P.Apellido AS ApellidoPaciente,
+        P.Dni AS DniPaciente,
+        -- Datos Medico
+        PM.IdPersona AS IdMedico,
+        PM.Apellido AS ApellidoMedico,
+        PM.Nombre AS NombreMedico
+    FROM Turnos T
+    INNER JOIN EstadosTurno E ON T.IdEstadoTurno = E.IdEstadoTurno
+    INNER JOIN Personas P ON T.IdPaciente = P.IdPersona
+    INNER JOIN Personas PM ON T.IdMedico = PM.IdPersona
+    WHERE T.Activo = 1
+      AND (@IdMedico IS NULL OR T.IdMedico = @IdMedico)
+      AND (@Fecha IS NULL OR CAST(T.FechaHora AS DATE) = @Fecha)
+    ORDER BY T.FechaHora ASC;
+END
+GO
+
+-- MODIFICAR ESTADO (Cancelar/Reprogramar)
+CREATE OR ALTER PROCEDURE dbo.sp_ModificarEstadoTurno
+    @IdTurno INT,
+    @IdNuevoEstado INT,
+    @Observaciones VARCHAR(255) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    UPDATE Turnos
+    SET 
+        IdEstadoTurno = @IdNuevoEstado,
+        Observaciones = ISNULL(@Observaciones, Observaciones)
+    WHERE IdTurno = @IdTurno;
+END
+GO
+
+-- LISTAR ESTADOS (Para cargar un DropDownList)
+CREATE OR ALTER PROCEDURE dbo.sp_ListarEstadosTurno
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT IdEstadoTurno, Descripcion FROM EstadosTurno;
+END
+GO

@@ -4,7 +4,6 @@ GO
 BEGIN TRANSACTION;
 BEGIN TRY
 
-    -- DATOS INICIALES OBLIGATORIOS (Catálogos base)
     IF NOT EXISTS (SELECT 1 FROM dbo.Roles)
         INSERT INTO dbo.Roles (Nombre) VALUES ('Administrador'), ('Recepcionista'), ('Medico');
         
@@ -52,15 +51,15 @@ BEGIN TRY
 
     --  PACIENTES 
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '40111222')
-        EXEC dbo.sp_InsertarPaciente 'Roberto', 'García', '40111222', 'rgarcia@email.com', '1177770001', 'Calle Falsa', '123', NULL, NULL, 'Springfield', 'Buenos Aires', '1610', '1980-05-10', 2;
+        EXEC dbo.sp_InsertarPaciente 'Roberto', 'García', '40111222', 'Masculino', 'rgarcia@email.com', '1177770001', 'Calle Falsa', '123', NULL, NULL, 'Springfield', 'Buenos Aires', '1610', '1980-05-10', 2;
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '41222333')
-        EXEC dbo.sp_InsertarPaciente 'Carmen', 'Ruiz', '41222333', 'cruiz@email.com', '1177770002', 'Av. Rivadavia', '2030', '1A', NULL, 'CABA', 'CABA', '1033', '1995-11-20', 3;
+        EXEC dbo.sp_InsertarPaciente 'Carmen', 'Ruiz', '41222333', 'Femenino', 'cruiz@email.com', '1177770002', 'Av. Rivadavia', '2030', '1A', NULL, 'CABA', 'CABA', '1033', '1995-11-20', 3;
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '42333444')
-        EXEC dbo.sp_InsertarPaciente 'Pablo', 'Alonso', '42333444', 'palonso@email.com', '1177770003', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2001-01-15', 1;
+        EXEC dbo.sp_InsertarPaciente 'Pablo', 'Alonso', '42333444', 'Masculino', 'palonso@email.com', '1177770003', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2001-01-15', 1;
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '43444555')
-        EXEC dbo.sp_InsertarPaciente 'Isabel', 'Gutiérrez', '43444555', 'igutierrez@email.com', '1177770004', 'Calle Sol', '800', NULL, NULL, 'Quilmes', 'Buenos Aires', '1878', '1988-07-30', 4;
+        EXEC dbo.sp_InsertarPaciente 'Isabel', 'Gutiérrez', '43444555', 'Femenino', 'igutierrez@email.com', '1177770004', 'Calle Sol', '800', NULL, NULL, 'Quilmes', 'Buenos Aires', '1878', '1988-07-30', 4;
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '44555666')
-        EXEC dbo.sp_InsertarPaciente 'Marcos', 'Navarro', '44555666', 'mnavarro@email.com', '1177770005', 'Av. Corrientes', '1500', '8B', NULL, 'CABA', 'CABA', '1042', '1999-03-05', 2;
+        EXEC dbo.sp_InsertarPaciente 'Marcos', 'Navarro', '44555666', 'Masculino', 'mnavarro@email.com', '1177770005', 'Av. Corrientes', '1500', '8B', NULL, 'CABA', 'CABA', '1042', '1999-03-05', 2;
 
     -- MEDICOS 
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '25111222')

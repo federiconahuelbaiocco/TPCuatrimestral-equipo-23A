@@ -248,6 +248,7 @@ GO
 IF OBJECT_ID('dbo.sp_AgregarRecepcionista', 'P') IS NOT NULL
     DROP PROCEDURE dbo.sp_AgregarRecepcionista;
 GO
+
 CREATE PROCEDURE dbo.sp_AgregarRecepcionista
     @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20),
     @Mail VARCHAR(255), @Telefono VARCHAR(50),
@@ -257,16 +258,25 @@ BEGIN
     SET NOCOUNT ON;
     BEGIN TRANSACTION;
     BEGIN TRY
+        DECLARE @IdRolRecep INT;
+        SELECT @IdRolRecep = IdRol FROM dbo.Roles WHERE Nombre = 'Recepcionista';
+
+        IF @IdRolRecep IS NULL
+            THROW 50002, 'El rol "Recepcionista" no existe en la base de datos.', 1;
+
         INSERT INTO Personas (Nombre, Apellido, Dni, Email, Telefono)
         VALUES (@Nombre, @Apellido, @DNI, @Mail, @Telefono);
+        
         DECLARE @IdPersona INT = SCOPE_IDENTITY();
         
         INSERT INTO Usuarios (NombreUsuario, Clave, IdRol, IdPersona)
-        VALUES (@NombreUsuario, @Clave, 2, @IdPersona);
+        VALUES (@NombreUsuario, @Clave, @IdRolRecep, @IdPersona);
+
         COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
-        ROLLBACK TRANSACTION; THROW;
+        ROLLBACK TRANSACTION; 
+        THROW;
     END CATCH
 END
 GO
@@ -339,6 +349,7 @@ GO
 IF OBJECT_ID('dbo.sp_AgregarAdministrador', 'P') IS NOT NULL
     DROP PROCEDURE dbo.sp_AgregarAdministrador;
 GO
+
 CREATE PROCEDURE dbo.sp_AgregarAdministrador
     @Nombre VARCHAR(100),
     @Apellido VARCHAR(100),
@@ -355,13 +366,19 @@ BEGIN
         IF EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = @NombreUsuario)
             THROW 50001, 'El nombre de usuario ya está en uso.', 1;
 
+        DECLARE @IdRolAdmin INT;
+        SELECT @IdRolAdmin = IdRol FROM dbo.Roles WHERE Nombre = 'Administrador';
+        
+        IF @IdRolAdmin IS NULL
+            THROW 50002, 'El rol "Administrador" no existe en la base de datos.', 1;
+
         INSERT INTO dbo.Personas (Nombre, Apellido, Dni, Email, Telefono)
         VALUES (@Nombre, @Apellido, @DNI, @Mail, @Telefono);
 
         DECLARE @NuevoIdPersona INT = SCOPE_IDENTITY();
 
         INSERT INTO dbo.Usuarios (NombreUsuario, Clave, IdRol, IdPersona, Activo)
-        VALUES (@NombreUsuario, @Clave, 1, @NuevoIdPersona, 1);
+        VALUES (@NombreUsuario, @Clave, @IdRolAdmin, @NuevoIdPersona, 1);
 
         COMMIT TRANSACTION;
     END TRY
