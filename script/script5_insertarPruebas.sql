@@ -1,15 +1,20 @@
 ﻿USE ClinicaDB;
 GO
 
+SET XACT_ABORT ON;
+
 BEGIN TRANSACTION;
 BEGIN TRY
 
+    -- ROLES
     IF NOT EXISTS (SELECT 1 FROM dbo.Roles)
         INSERT INTO dbo.Roles (Nombre) VALUES ('Administrador'), ('Recepcionista'), ('Medico');
         
+    -- COBERTURAS
     IF NOT EXISTS (SELECT 1 FROM dbo.COBERTURA)
         INSERT INTO dbo.COBERTURA (Nombre) VALUES ('Particular'), ('OSDE'), ('Galeno'), ('PAMI');
     
+    -- ESPECIALIDADES
     IF NOT EXISTS (SELECT 1 FROM dbo.Especialidades)
         INSERT INTO dbo.Especialidades (Descripcion) VALUES ('Clínica Médica'), ('Pediatría'), ('Cardiología'), ('Dermatología'), ('Ginecología'), ('Traumatología');
 
@@ -102,9 +107,15 @@ BEGIN TRY
 
 END TRY
 BEGIN CATCH
-    ROLLBACK TRANSACTION;
-    PRINT 'Error durante la inserción de datos. Se revirtió la transacción.';
-    THROW;
+    IF @@TRANCOUNT > 0
+    BEGIN
+        ROLLBACK TRANSACTION;
+    END
+    
+    PRINT 'Error durante la inserción de datos. Se intentó revertir la transacción.';
+    
+    DECLARE @Msg NVARCHAR(4000) = ERROR_MESSAGE();
+    RAISERROR(@Msg, 16, 1);
 END CATCH
 GO
 

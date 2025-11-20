@@ -11,6 +11,13 @@
 *.sln.docstates
 *.env
 
+# Local environment configuration files (machine-specific settings)
+**/project-config.txt
+**/build-settings.txt
+**/deployment-notes.md
+**/environment-*.txt
+**/local-*.md
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
