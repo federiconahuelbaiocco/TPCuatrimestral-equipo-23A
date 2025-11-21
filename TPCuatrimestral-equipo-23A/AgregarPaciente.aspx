@@ -96,7 +96,7 @@
                             <label for="<%= txtNumero.ClientID %>" class="form-label">Número</label>
                             <asp:TextBox ID="txtNumero" runat="server" CssClass="form-control cyan-focus" placeholder="1234"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvNumero" runat="server" ControlToValidate="txtNumero" ErrorMessage="El número es requerido." CssClass="text-danger small" Display="Dynamic" />
-                            <asp:RegularExpressionValidator ID="revNumero" runat="server" ControlToValidate="txtNumero" ErrorMessage="Solo números." ValidationExpression="^\d+$" CssClass="text-danger small" Display="Dynamic" />
+                            <asp:RegularExpressionValidator ID="revNumero" runat="server" ControlToValidate="txtNumero" ErrorMessage="Ingrese solo números." ValidationExpression="^\d+$" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                         <div class="col-md-1-5">
                             <label for="<%= txtPiso.ClientID %>" class="form-label">Piso</label>
@@ -122,7 +122,7 @@
                             <label for="<%= txtCP.ClientID %>" class="form-label">Código Postal</label>
                             <asp:TextBox ID="txtCP" runat="server" CssClass="form-control cyan-focus" placeholder="1234"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvCP" runat="server" ControlToValidate="txtCP" ErrorMessage="El CP es requerido." CssClass="text-danger small" Display="Dynamic" />
-                            <asp:RegularExpressionValidator ID="revCP" runat="server" ControlToValidate="txtCP" ErrorMessage="Solo números." ValidationExpression="^\d+$" CssClass="text-danger small" Display="Dynamic" />
+                            <asp:RegularExpressionValidator ID="revCP" runat="server" ControlToValidate="txtCP" ErrorMessage="Ingrese solo números." ValidationExpression="^\d+$" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                     </div>
                 </div>
