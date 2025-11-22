@@ -30,14 +30,20 @@
                         <div class="col-md-6">
                             <label for="<%= txtNombre.ClientID %>" class="form-label">Nombre</label>
                             <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control" placeholder="Ingrese el nombre"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txtNombre" ErrorMessage="El nombre es requerido." CssClass="text-danger small" Display="Dynamic" />
+                            <asp:RegularExpressionValidator ID="revNombre" runat="server" ControlToValidate="txtNombre" ErrorMessage="El nombre solo puede contener letras." ValidationExpression="^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                         <div class="col-md-6">
                             <label for="<%= txtApellido.ClientID %>" class="form-label">Apellido</label>
                             <asp:TextBox ID="txtApellido" runat="server" CssClass="form-control" placeholder="Ingrese el apellido"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvApellido" runat="server" ControlToValidate="txtApellido" ErrorMessage="El apellido es requerido." CssClass="text-danger small" Display="Dynamic" />
+                            <asp:RegularExpressionValidator ID="revApellido" runat="server" ControlToValidate="txtApellido" ErrorMessage="El apellido solo puede contener letras." ValidationExpression="^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                         <div class="col-md-6">
                             <label for="<%= txtDni.ClientID %>" class="form-label">DNI</label>
                             <asp:TextBox ID="txtDni" runat="server" CssClass="form-control" placeholder="Ingrese DNI sin puntos"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvDni" runat="server" ControlToValidate="txtDni" ErrorMessage="El DNI es requerido." CssClass="text-danger small" Display="Dynamic" />
+                            <asp:RegularExpressionValidator ID="revDni" runat="server" ControlToValidate="txtDni" ErrorMessage="Ingrese solo números." ValidationExpression="^\d+$" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                         <div class="col-md-6">
                             <label for="<%= ddlSexo.ClientID %>" class="form-label">Sexo</label>
@@ -47,14 +53,19 @@
                                 <asp:ListItem Value="Femenino">Femenino</asp:ListItem>
                                 <asp:ListItem Value="No especificado">No especificado</asp:ListItem>
                             </asp:DropDownList>
+                            <asp:RequiredFieldValidator ID="rfvSexo" runat="server" ControlToValidate="ddlSexo" ErrorMessage="Debe seleccionar un sexo." InitialValue="" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                         <div class="col-md-6">
                             <label for="<%= txtTelefono.ClientID %>" class="form-label">Teléfono</label>
                             <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control" placeholder="Ingrese el teléfono" TextMode="Phone"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvTelefono" runat="server" ControlToValidate="txtTelefono" ErrorMessage="El teléfono es requerido." CssClass="text-danger small" Display="Dynamic" />
+                            <asp:RegularExpressionValidator ID="revTelefono" runat="server" ControlToValidate="txtTelefono" ErrorMessage="Ingrese un teléfono válido (solo números)." ValidationExpression="^[0-9\-\s]{7,15}$" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                         <div class="col-12">
                             <label for="<%= txtEmailContacto.ClientID %>" class="form-label">Email de Contacto</label>
                             <asp:TextBox ID="txtEmailContacto" runat="server" CssClass="form-control" placeholder="ejemplo@dominio.com" TextMode="Email"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmailContacto" ErrorMessage="El email es requerido." CssClass="text-danger small" Display="Dynamic" />
+                            <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmailContacto" ErrorMessage="Formato de email inválido." ValidationExpression="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                     </div>
                 </div>
@@ -68,10 +79,13 @@
                         <div class="col-md-6">
                             <label for="<%= txtCalle.ClientID %>" class="form-label">Calle</label>
                             <asp:TextBox ID="txtCalle" runat="server" CssClass="form-control cyan-focus" placeholder="Nombre de la calle"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvCalle" runat="server" ControlToValidate="txtCalle" ErrorMessage="La calle es requerida." CssClass="text-danger small" Display="Dynamic" />
                         </div>
                         <div class="col-md-3">
                             <label for="<%= txtNumero.ClientID %>" class="form-label">Número</label>
                             <asp:TextBox ID="txtNumero" runat="server" CssClass="form-control cyan-focus" placeholder="1234"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvNumero" runat="server" ControlToValidate="txtNumero" ErrorMessage="El número es requerido." CssClass="text-danger small" Display="Dynamic" />
+                            <asp:RegularExpressionValidator ID="revNumero" runat="server" ControlToValidate="txtNumero" ErrorMessage="Ingrese solo números." ValidationExpression="^\d+$" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                         <div class="col-md-4">
                             <label for="<%= txtPiso.ClientID %>" class="form-label">Piso</label>
@@ -84,14 +98,20 @@
                         <div class="col-md-4">
                             <label for="<%= txtCP.ClientID %>" class="form-label">Código Postal</label>
                             <asp:TextBox ID="txtCP" runat="server" CssClass="form-control cyan-focus" placeholder="1234"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvCP" runat="server" ControlToValidate="txtCP" ErrorMessage="El CP es requerido." CssClass="text-danger small" Display="Dynamic" />
+                            <asp:RegularExpressionValidator ID="revCP" runat="server" ControlToValidate="txtCP" ErrorMessage="Ingrese solo números." ValidationExpression="^\d+$" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                         <div class="col-md-6">
                             <label for="<%= txtLocalidad.ClientID %>" class="form-label">Localidad</label>
                             <asp:TextBox ID="txtLocalidad" runat="server" CssClass="form-control cyan-focus" placeholder="Ciudad"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvLocalidad" runat="server" ControlToValidate="txtLocalidad" ErrorMessage="La localidad es requerida." CssClass="text-danger small" Display="Dynamic" />
+                            <asp:RegularExpressionValidator ID="revLocalidad" runat="server" ControlToValidate="txtLocalidad" ErrorMessage="La localidad solo puede contener letras." ValidationExpression="^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s.]+$" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                         <div class="col-md-6">
                             <label for="<%= txtProvincia.ClientID %>" class="form-label">Provincia</label>
                             <asp:TextBox ID="txtProvincia" runat="server" CssClass="form-control cyan-focus" placeholder="Buenos Aires"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvProvincia" runat="server" ControlToValidate="txtProvincia" ErrorMessage="La provincia es requerida." CssClass="text-danger small" Display="Dynamic" />
+                            <asp:RegularExpressionValidator ID="revProvincia" runat="server" ControlToValidate="txtProvincia" ErrorMessage="La provincia solo puede contener letras" ValidationExpression="^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s.]+$" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                     </div>
                 </div>
@@ -110,6 +130,7 @@
                                     <asp:DropDownList ID="ddlRol" runat="server" CssClass="form-select" 
                                         AutoPostBack="true" OnSelectedIndexChanged="ddlRol_SelectedIndexChanged">
                                     </asp:DropDownList>
+                                    <asp:RequiredFieldValidator ID="rfvRol" runat="server" ControlToValidate="ddlRol" ErrorMessage="Debe asignar un rol." InitialValue="0" CssClass="text-danger small" Display="Dynamic" />
                                 </div>
                             </div>
                         </div>
@@ -124,6 +145,7 @@
                                     <div class="col-md-6">
                                         <label for="<%=txtMatricula.ClientID %>" class="form-label">Matricula</label>
                                         <asp:TextBox ID="txtMatricula" runat="server" CssClass="form-control"></asp:TextBox>
+                                        <asp:RequiredFieldValidator ID="rfvMatricula" runat="server" ControlToValidate="txtMatricula" ErrorMessage="La matrícula es obligatoria para médicos." CssClass="text-danger small" Display="Dynamic" />
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label">Especialidad</label>
@@ -186,11 +208,13 @@
                         <div class="col-md-6">
                             <label for="<%= txtNombreUsuario.ClientID %>" class="form-label">Nombre de Usuario (Login)</label>
                             <asp:TextBox ID="txtNombreUsuario" runat="server" CssClass="form-control" placeholder="ej. jperez"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvUsuario" runat="server" ControlToValidate="txtNombreUsuario" ErrorMessage="El nombre de usuario es requerido." CssClass="text-danger small" Display="Dynamic" />
                         </div>
                         <div class="col-md-6">
                             <label for="<%= txtContrasena.ClientID %>" class="form-label">Contraseña</label>
                             <asp:TextBox ID="txtContrasena" runat="server" CssClass="form-control" placeholder="Crear una contraseña segura" TextMode="Password"></asp:TextBox>
                             <asp:Label ID="lblAvisoClave" runat="server" CssClass="form-text" Text="Dejar en blanco para no modificar la contraseña actual." Visible="false"></asp:Label>
+                            <asp:RequiredFieldValidator ID="rfvClave" runat="server" ControlToValidate="txtContrasena" ErrorMessage="La contraseña es requerida para nuevos usuarios." CssClass="text-danger small" Display="Dynamic" Enabled="true" />
                         </div>
                     </div>
                 </div>

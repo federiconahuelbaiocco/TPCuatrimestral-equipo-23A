@@ -16,8 +16,11 @@ namespace TPCuatrimestral_equipo_23A
             if (!IsPostBack)
             {
                 CargarCoberturas();
-            }
 
+                // Configurar validador de fecha: Desde el año 1900 hasta HOY
+                rvFechaNac.MinimumValue = "1900-01-01";
+                rvFechaNac.MaximumValue = DateTime.Today.ToString("yyyy-MM-dd");
+            }
         }
 
 
