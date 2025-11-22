@@ -16,7 +16,6 @@ namespace dominio
 		public Rol Rol { get; set; }
 		public int IdPersona { get; set; }
 		public Persona Persona { get; set; }
-		public Medico Medico { get; set; }
 
 		public Usuario()
 		{

@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using dominio;
 using negocio;
+using MedicoModel = dominio.Medico;
 
 namespace TPCuatrimestral_equipo_23A
 {
@@ -33,9 +34,9 @@ namespace TPCuatrimestral_equipo_23A
 				{
 					Session["usuario"] = usuario;
 
-					if (usuario.Rol.Nombre == "Medico" && usuario.Medico != null)
+					if (usuario.Rol.Nombre == "Medico" && usuario.Persona is MedicoModel)
 					{
-						Session["medicoActual"] = usuario.Medico;
+						Session["medicoActual"] = (MedicoModel)usuario.Persona;
 					}
 
 					RedirigirSegunRol(usuario);

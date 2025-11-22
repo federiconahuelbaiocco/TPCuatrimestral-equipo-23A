@@ -33,7 +33,7 @@ namespace negocio
                     if (usuario.Rol.Nombre == "Medico")
                     {
                         Medico medico = new Medico();
-						medico.IdPersona = usuario.IdPersona;
+                        medico.IdPersona = usuario.IdPersona;
                         medico.Nombre = (string)datos.Lector["Nombre"];
                         medico.Apellido = (string)datos.Lector["Apellido"];
                         medico.Dni = (string)datos.Lector["Dni"];
@@ -50,8 +50,26 @@ namespace negocio
                         if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Matricula")))
                             medico.Matricula = (string)datos.Lector["Matricula"];
                         
-                        usuario.Medico = medico;
                         usuario.Persona = medico;
+                    }
+                    else if (usuario.Rol.Nombre == "Recepcionista")
+                    {
+                        Recepcionista recep = new Recepcionista();
+                        recep.IdPersona = usuario.IdPersona;
+                        recep.Nombre = (string)datos.Lector["Nombre"];
+                        recep.Apellido = (string)datos.Lector["Apellido"];
+                        recep.Dni = (string)datos.Lector["Dni"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Email")))
+                            recep.Email = (string)datos.Lector["Email"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Telefono")))
+                            recep.Telefono = (string)datos.Lector["Telefono"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Sexo")))
+                            recep.Sexo = (string)datos.Lector["Sexo"];
+
+                        usuario.Persona = recep;
                     }
                     else
                     {

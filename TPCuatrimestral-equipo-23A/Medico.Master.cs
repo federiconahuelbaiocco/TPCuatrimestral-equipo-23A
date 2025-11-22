@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using dominio;
+using MedicoModel = dominio.Medico;
 
 namespace TPCuatrimestral_equipo_23A
 {
@@ -26,9 +27,9 @@ namespace TPCuatrimestral_equipo_23A
                 return;
             }
 
-            if (Session["medicoActual"] == null && usuario.Medico != null)
+            if (Session["medicoActual"] == null && usuario.Persona is MedicoModel)
             {
-                Session["medicoActual"] = usuario.Medico;
+                Session["medicoActual"] = (MedicoModel)usuario.Persona;
             }
         }
     }
