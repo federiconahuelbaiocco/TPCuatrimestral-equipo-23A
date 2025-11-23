@@ -41,8 +41,7 @@ namespace TPCuatrimestral_equipo_23A
         {
             try
             {
-                MedicoNegocio medicoNegocio = new MedicoNegocio();
-                MedicoModel medico = medicoNegocio.ObtenerPorId(MedicoActual.IdPersona);
+                MedicoModel medico = MedicoActual;
 
                 if (medico != null)
                 {
@@ -53,10 +52,12 @@ namespace TPCuatrimestral_equipo_23A
                     if (medico.Especialidades != null && medico.Especialidades.Count > 0)
                     {
                         especialidades = string.Join(", ", medico.Especialidades.Select(e => e.Descripcion));
+                        ddlEspecialidad.SelectedValue = medico.Especialidades[0].IdEspecialidad.ToString();
                     }
                     else
                     {
                         especialidades = "Sin especialidad asignada";
+                        ddlEspecialidad.SelectedIndex = 0;
                     }
                     lblEspecialidades.Text = especialidades;
 
@@ -64,7 +65,7 @@ namespace TPCuatrimestral_equipo_23A
                     txtApellido.Text = medico.Apellido;
                     txtDni.Text = medico.Dni;
                     txtSexo.Text = medico.Sexo ?? "No especificado";
-                    txtFechaNacimiento.Text = "No disponible";
+                    txtFechaNacimiento.Text = medico.FechaNacimiento.HasValue ? medico.FechaNacimiento.Value.ToString("yyyy-MM-dd") : "No disponible";
                     txtTelefono.Text = medico.Telefono ?? "";
                     txtEmail.Text = medico.Email ?? "";
 
@@ -90,24 +91,7 @@ namespace TPCuatrimestral_equipo_23A
                     }
 
                     txtMatriculaProfesional.Text = medico.Matricula;
-
-                    if (medico.Especialidades != null && medico.Especialidades.Count > 0)
-                    {
-                        ddlEspecialidad.SelectedValue = medico.Especialidades[0].IdEspecialidad.ToString();
-
-                        foreach (var esp in medico.Especialidades)
-                        {
-                            foreach (ListItem item in cblEspecialidades.Items)
-                            {
-                                if (item.Value == esp.IdEspecialidad.ToString())
-                                {
-                                    item.Selected = true;
-                                }
-                            }
-                        }
-                    }
-
-                    txtUsuario.Text = medico.Usuario.NombreUsuario;
+                    txtUsuario.Text = medico.Usuario != null ? medico.Usuario.NombreUsuario : string.Empty;
 
                     MedicoActual = medico;
                 }
@@ -130,11 +114,6 @@ namespace TPCuatrimestral_equipo_23A
                 ddlEspecialidad.DataValueField = "IdEspecialidad";
                 ddlEspecialidad.DataBind();
                 ddlEspecialidad.Items.Insert(0, new ListItem("-- Seleccionar --", "0"));
-
-                cblEspecialidades.DataSource = especialidades;
-                cblEspecialidades.DataTextField = "Descripcion";
-                cblEspecialidades.DataValueField = "IdEspecialidad";
-                cblEspecialidades.DataBind();
             }
             catch (Exception ex)
             {
@@ -228,22 +207,19 @@ namespace TPCuatrimestral_equipo_23A
 
                 medico.Matricula = txtMatriculaProfesional.Text.Trim();
 
-                List<int> especialidadesSeleccionadas = new List<int>();
-                foreach (ListItem item in cblEspecialidades.Items)
+                // Solo una especialidad principal seleccionada
+                int idEspecialidadPrincipal = int.Parse(ddlEspecialidad.SelectedValue);
+                if (idEspecialidadPrincipal == 0)
                 {
-                    if (item.Selected)
-                    {
-                        especialidadesSeleccionadas.Add(int.Parse(item.Value));
-                    }
-                }
-
-                if (especialidadesSeleccionadas.Count == 0)
-                {
-                    MostrarMensaje("Debe seleccionar al menos una especialidad", false);
+                    MostrarMensaje("Debe seleccionar una especialidad principal", false);
                     return;
                 }
+                var especialidadesSeleccionadas = new List<int> { idEspecialidadPrincipal };
 
                 medicoNegocio.ActualizarDatosProfesionales(medico.IdPersona, medico.Matricula, especialidadesSeleccionadas);
+
+                var medicoActualizado = medicoNegocio.ObtenerPorId(medico.IdPersona);
+                MedicoActual = medicoActualizado;
 
                 HabilitarEdicionProfesional(false);
                 CargarDatosMedico();
@@ -251,7 +227,7 @@ namespace TPCuatrimestral_equipo_23A
             }
             catch (Exception ex)
             {
-                MostrarMensaje("Error al guardar: " + ex.Message, false);
+                throw new Exception("Error al actualizar datos profesionales: " + ex.Message, ex);
             }
         }
 
@@ -274,7 +250,6 @@ namespace TPCuatrimestral_equipo_23A
         {
             txtMatriculaProfesional.Enabled = habilitar;
             ddlEspecialidad.Enabled = habilitar;
-            cblEspecialidades.Enabled = habilitar;
             pnlBotonesProfesional.Visible = habilitar;
             btnEditarProfesional.Visible = !habilitar;
         }

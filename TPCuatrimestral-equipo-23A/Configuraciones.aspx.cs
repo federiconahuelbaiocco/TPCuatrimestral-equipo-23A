@@ -6,29 +6,11 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using dominio;
+using negocio;
 
 namespace TPCuatrimestral_equipo_23A
 {
-	public class HorarioConfig
-	{
-		public List<DayOfWeek> DiasLaborables { get; set; } = new List<DayOfWeek>();
-		public TimeSpan HoraApertura { get; set; }
-		public TimeSpan HoraCierre { get; set; }
-		public int DuracionTurnoMin { get; set; }
-	}
-
-	public class NotificacionConfig
-	{
-		public bool Email { get; set; }
-		public bool Sms { get; set; }
-	}
-
-	public class IntegracionConfig
-	{
-		public string GoogleApiKey { get; set; }
-		public string StripeApiKey { get; set; }
-	}
-
 	public partial class Configuraciones : System.Web.UI.Page
 	{
 		protected void Page_Load(object sender, EventArgs e)
@@ -59,37 +41,34 @@ namespace TPCuatrimestral_equipo_23A
 				cfg.DuracionTurnoMin = min;
 
 			Application["HorarioConfig"] = cfg;
+
+			var data = AppConfigStorage.Load() ?? new AppConfigData();
+			data.Horario = cfg;
+			AppConfigStorage.Save(data);
+
+			var turnoNegocio = new TurnoTrabajoNegocio();
+			var horariosPrevios = turnoNegocio.ListarHorariosPorMedico(0);
+			foreach (var turno in horariosPrevios)
+			{
+				turnoNegocio.EliminarTurnoTrabajoAdmin(turno.IdTurnoTrabajo);
+			}
+			foreach (var dia in cfg.DiasLaborables)
+			{
+				try
+				{
+					turnoNegocio.AgregarTurnoTrabajoAdmin(
+						0, 
+						(int)dia,
+						cfg.HoraApertura,
+						cfg.HoraCierre
+					);
+				}
+				catch (Exception)
+				{
+				}
+			}
+
 			ClientScript.RegisterStartupScript(GetType(), "ok1", "alert('Horarios guardados');", true);
-		}
-
-		protected void btnGuardarNotificaciones_Click(object sender, EventArgs e)
-		{
-			var cph = (ContentPlaceHolder)Master.FindControl("ContentPlaceHolder1");
-			var chkEmail = (CheckBox)cph.FindControl("chkNotifEmail");
-			var chkSms = (CheckBox)cph.FindControl("chkNotifSms");
-
-			var cfg = new NotificacionConfig
-			{
-				Email = chkEmail.Checked,
-				Sms = chkSms.Checked
-			};
-			Application["NotificacionConfig"] = cfg;
-			ClientScript.RegisterStartupScript(GetType(), "ok2", "alert('Notificaciones guardadas');", true);
-		}
-
-		protected void btnGuardarIntegraciones_Click(object sender, EventArgs e)
-		{
-			var cph = (ContentPlaceHolder)Master.FindControl("ContentPlaceHolder1");
-			var txtGoogle = (TextBox)cph.FindControl("txtGoogleApiKey");
-			var txtStripe = (TextBox)cph.FindControl("txtStripeApiKey");
-
-			var cfg = new IntegracionConfig
-			{
-				GoogleApiKey = txtGoogle.Text,
-				StripeApiKey = txtStripe.Text
-			};
-			Application["IntegracionConfig"] = cfg;
-			ClientScript.RegisterStartupScript(GetType(), "ok3", "alert('Integraciones guardadas');", true);
 		}
 
 		protected void btnSubirLogo_Click(object sender, EventArgs e)
@@ -109,6 +88,40 @@ namespace TPCuatrimestral_equipo_23A
 				img.ImageUrl = url;
 				ClientScript.RegisterStartupScript(GetType(), "ok4", "alert('Logo subido');", true);
 			}
+		}
+
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
+			if (!IsPostBack)
+			{
+				CargarUsuariosMensajeInterno();
+			}
+		}
+
+		private void CargarUsuariosMensajeInterno()
+		{
+		}
+
+		protected void btnGuardarMensajeInterno_Click(object sender, EventArgs e)
+		{
+			var cph = (ContentPlaceHolder)Master.FindControl("ContentPlaceHolder1");
+			var txtMensaje = (TextBox)cph.FindControl("txtMensajeInterno");
+			var ddlRol = (DropDownList)cph.FindControl("ddlDestinatarioRol");
+
+			var cfg = new MensajeInternoConfig
+			{
+				Mensaje = txtMensaje.Text,
+				DestinatarioRol = ddlRol.SelectedValue,
+				DestinatarioUsuarioId = null
+			};
+			Application["MensajeInternoConfig"] = cfg;
+
+			var data = AppConfigStorage.Load() ?? new AppConfigData();
+			data.Mensaje = cfg;
+			AppConfigStorage.Save(data);
+
+			ClientScript.RegisterStartupScript(GetType(), "okMsg", "alert('Mensaje interno guardado');", true);
 		}
 	}
 }

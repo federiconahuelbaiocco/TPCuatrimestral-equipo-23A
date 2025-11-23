@@ -2,7 +2,6 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
-        /* Estilos auxiliares para las tarjetas de perfil */
         .profile-header-card {
             background: white;
             border-radius: 12px;
@@ -161,20 +160,9 @@
                             <asp:TextBox ID="txtMatriculaProfesional" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold small text-secondary">ESPECIALIDAD PRINCIPAL *</label>
+                            <label class="form-label fw-bold small text-secondary">ESPECIALIDAD</label>
                             <asp:DropDownList ID="ddlEspecialidad" runat="server" CssClass="form-select" Enabled="false">
                             </asp:DropDownList>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label fw-bold small text-secondary">ESPECIALIDADES ADICIONALES</label>
-                            <div class="p-3 bg-light rounded border">
-                                <asp:CheckBoxList ID="cblEspecialidades" runat="server" 
-                                    CssClass="d-flex flex-wrap gap-3" 
-                                    RepeatDirection="Horizontal"
-                                    Enabled="false">
-                                </asp:CheckBoxList>
-                                <small class="text-muted d-block mt-2">Selecciona todas las especialidades en las que estás habilitado</small>
-                            </div>
                         </div>
 
                         <asp:Panel ID="pnlBotonesProfesional" runat="server" CssClass="col-12 text-end mt-4" Visible="false">

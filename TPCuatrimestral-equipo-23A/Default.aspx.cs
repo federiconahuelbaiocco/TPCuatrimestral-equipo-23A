@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 using dominio;
 using negocio;
 using MedicoModel = dominio.Medico;
+using RecepcionistaModel = dominio.Recepcionista;
+using AdministradorModel = dominio.Administrador;
 
 namespace TPCuatrimestral_equipo_23A
 {
@@ -29,7 +31,21 @@ namespace TPCuatrimestral_equipo_23A
 
 					if (usuario.Rol.Nombre == "Medico" && usuario.Persona is MedicoModel)
 					{
-						Session["medicoActual"] = (MedicoModel)usuario.Persona;
+						var medico = (MedicoModel)usuario.Persona;
+						medico.Usuario = usuario;
+						Session["medicoActual"] = medico;
+					}
+					else if (usuario.Rol.Nombre == "Recepcionista" && usuario.Persona is RecepcionistaModel)
+					{
+						var recepcionista = (RecepcionistaModel)usuario.Persona;
+						recepcionista.Usuario = usuario;
+						Session["recepcionistaActual"] = recepcionista;
+					}
+					else if (usuario.Rol.Nombre == "Administrador" && usuario.Persona is AdministradorModel)
+					{
+						var admin = (AdministradorModel)usuario.Persona;
+						admin.Usuario = usuario;
+						Session["adminActual"] = admin;
 					}
 
 					RedirigirSegunRol(usuario);

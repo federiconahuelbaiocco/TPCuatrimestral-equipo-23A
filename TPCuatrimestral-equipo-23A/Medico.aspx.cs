@@ -29,12 +29,56 @@ namespace TPCuatrimestral_equipo_23A
 
                     CargarEstadisticas(medicoActual.IdPersona);
                     CargarTurnosDelDia(medicoActual.IdPersona);
+                    MostrarHorarioTrabajo();
+                    MostrarMensajeInternoMedico();
                 }
                 catch (Exception ex)
                 {
                     Session["error"] = ex;
                     Response.Redirect("Error.aspx", false);
                 }
+            }
+        }
+
+        private void MostrarToast(string mensaje, string tipo = "info")
+        {
+            string safeMensaje = HttpUtility.JavaScriptStringEncode(mensaje);
+            string toastScript = $@"
+            <script>
+                if (window.mostrarToastMensaje) {{
+                    window.mostrarToastMensaje('{safeMensaje}', '{tipo}');
+                }} else {{
+                    window.addEventListener('load', function() {{
+                        window.mostrarToastMensaje('{safeMensaje}', '{tipo}');
+                    }});
+                }}
+            </script>";
+            litToast.Text = toastScript;
+        }
+
+        private void MostrarHorarioTrabajo()
+        {
+            try
+            {
+                var turnoNegocio = new TurnoTrabajoNegocio();
+                var horarios = turnoNegocio.ObtenerHorarioGeneralClinica();
+                var diaHoy = DateTime.Now.DayOfWeek;
+                var horarioHoy = horarios.FirstOrDefault(h => h.DiaSemana == diaHoy);
+                if (horarioHoy != null)
+                {
+                    string mensaje = $"Hoy ({horarioHoy.NombreDia ?? diaHoy.ToString()}) la clínica atiende de {horarioHoy.HoraEntrada:hh\\:mm} a {horarioHoy.HoraSalida:hh\\:mm}.";
+                    lblHorarioFijo.Text = mensaje;
+                    panelHorarioFijo.Visible = true;
+                }
+                else
+                {
+                    lblHorarioFijo.Text = $"Hoy ({ObtenerNombreDia(diaHoy)}) la clínica permanece cerrada.";
+                    panelHorarioFijo.Visible = true;
+                }
+            }
+            catch
+            {
+                panelHorarioFijo.Visible = false;
             }
         }
 
@@ -68,7 +112,7 @@ namespace TPCuatrimestral_equipo_23A
                     TipoConsulta = turno.MotivoConsulta ?? "Consulta General",
                     Estado = turno.Estado.Descripcion,
                     IdPaciente = turno.Paciente.IdPersona,
-                    Dni = turno.Paciente.Dni // <-- Agregado para el GridView
+                    Dni = turno.Paciente.Dni
                 });
             }
 
@@ -105,6 +149,39 @@ namespace TPCuatrimestral_equipo_23A
                     return "badge rounded-pill text-bg-warning";
                 default:
                     return "badge rounded-pill text-bg-secondary";
+            }
+        }
+        
+        protected void MostrarMensajeInterno(string mensaje)
+        {
+            MostrarToast(mensaje, "warning");
+        }
+
+        private void MostrarMensajeInternoMedico()
+        {
+            var msgCfg = Application["MensajeInternoConfig"] as MensajeInternoConfig;
+            if (msgCfg != null)
+            {
+                if (msgCfg.DestinatarioRol == "Todos" || msgCfg.DestinatarioRol == "Medico")
+                {
+                    if (!string.IsNullOrWhiteSpace(msgCfg.Mensaje))
+                        MostrarToast(msgCfg.Mensaje, "warning");
+                }
+            }
+        }
+
+        private string ObtenerNombreDia(DayOfWeek dia)
+        {
+            switch (dia)
+            {
+                case DayOfWeek.Monday: return "Lunes";
+                case DayOfWeek.Tuesday: return "Martes";
+                case DayOfWeek.Wednesday: return "Miércoles";
+                case DayOfWeek.Thursday: return "Jueves";
+                case DayOfWeek.Friday: return "Viernes";
+                case DayOfWeek.Saturday: return "Sábado";
+                case DayOfWeek.Sunday: return "Domingo";
+                default: return dia.ToString();
             }
         }
     }

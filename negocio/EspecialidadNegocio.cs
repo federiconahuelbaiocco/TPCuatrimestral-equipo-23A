@@ -139,5 +139,44 @@ namespace negocio
                 datos.cerrarConexion();
             }
         }
+
+        public void AgregarEspecialidadAMedico(int idMedico, int idEspecialidad)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearProcedimiento("sp_AgregarEspecialidadAMedico");
+                datos.setearParametro("@IdMedico", idMedico);
+                datos.setearParametro("@IdEspecialidad", idEspecialidad);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al agregar especialidad al médico.", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void EliminarEspecialidadesDeMedico(int idMedico)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearProcedimiento("sp_EliminarEspecialidadesDeMedico");
+                datos.setearParametro("@IdMedico", idMedico);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar especialidades del médico.", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }

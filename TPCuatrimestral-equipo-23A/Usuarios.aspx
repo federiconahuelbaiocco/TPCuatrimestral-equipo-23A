@@ -12,7 +12,7 @@
     <div class="card shadow-sm p-4 mb-4"> 
         <div class="row g-3 align-items-center">
             <div class="col-auto">
-                <asp:Image ID="imgAvatarGrande" runat="server" CssClass="rounded-circle object-fit-cover" Width="96" Height="96" ImageUrl="https://via.placeholder.com/96" AlternateText="Avatar"/>
+                <asp:Image ID="imgAvatarGrande" runat="server" CssClass="rounded-circle object-fit-cover" Width="96" Height="96" ImageUrl="https://cdn-icons-png.flaticon.com/512/149/149071.png" AlternateText="Avatar"/>
             </div>
             <div class="col">
                 <h2 class="h5 fw-bold mb-1">
@@ -24,9 +24,6 @@
                 <small class="text-muted d-block">
                     ID: <asp:Label ID="lblIdUsuarioTitulo" runat="server" Text="123456"></asp:Label>
                 </small>
-            </div>
-            <div class="col-12 col-md-auto mt-3 mt-md-0"> 
-                <asp:FileUpload ID="fuCambiarFoto" runat="server" CssClass="form-control" />
             </div>
         </div>
     </div>

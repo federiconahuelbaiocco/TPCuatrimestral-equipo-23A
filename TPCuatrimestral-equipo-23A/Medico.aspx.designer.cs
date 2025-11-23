@@ -24,6 +24,15 @@ namespace TPCuatrimestral_equipo_23A
         protected global::System.Web.UI.WebControls.Label lblBienvenida;
 
         /// <summary>
+        /// Control litToast.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litToast;
+
+        /// <summary>
         /// Control lblTurnosHoy.
         /// </summary>
         /// <remarks>
@@ -94,5 +103,23 @@ namespace TPCuatrimestral_equipo_23A
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink hlQuickPerfil;
+
+        /// <summary>
+        /// Control panelHorarioFijo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel panelHorarioFijo;
+
+        /// <summary>
+        /// Control lblHorarioFijo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblHorarioFijo;
     }
 }

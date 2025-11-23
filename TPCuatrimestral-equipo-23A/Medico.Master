@@ -124,6 +124,7 @@
     
     <script src="scripts_js/especialidades.js" type="text/javascript" charset="utf-8"></script>
     <script src="scripts_js/consultorios.js" type="text/javascript" charset="utf-8"></script>
+    <script src="scripts_js/toast-mensajes.js" type="text/javascript" charset="utf-8"></script>
     
     <asp:ContentPlaceHolder ID="ScriptsPlaceHolder" runat="server"></asp:ContentPlaceHolder>
 </body>

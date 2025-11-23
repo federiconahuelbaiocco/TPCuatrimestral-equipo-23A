@@ -58,6 +58,12 @@ Recepcionista
  <span>Reportes</span>
  </asp:HyperLink>
  </li>
+ <li class="nav-item">
+ <asp:HyperLink ID="hlPerfilRecepcionista" runat="server" CssClass="nav-link" NavigateUrl="~/PerfilRecepcionista.aspx">
+ <i class="bi bi-person-circle"></i>
+ <span>Mi Perfil</span>
+ </asp:HyperLink>
+ </li>
  </ul>
  </nav>
  <div class="px-3 pb-3">
@@ -86,6 +92,7 @@ Recepcionista
  
  <script src="scripts_js/especialidades.js" type="text/javascript" charset="utf-8"></script>
  <script src="scripts_js/consultorios.js" type="text/javascript" charset="utf-8"></script>
+ <script src="scripts_js/toast-mensajes.js" type="text/javascript" charset="utf-8"></script>
  
  <asp:ContentPlaceHolder ID="ScriptsPlaceHolder" runat="server"></asp:ContentPlaceHolder>
 </body>

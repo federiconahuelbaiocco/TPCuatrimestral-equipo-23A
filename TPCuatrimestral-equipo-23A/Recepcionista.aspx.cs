@@ -17,6 +17,8 @@ namespace TPCuatrimestral_equipo_23A
             {
                 CargarContadores();
                 CargarPacientes();
+                MostrarMensajeInternoRecepcionista();
+                MostrarHorarioTrabajoFijo();
             }
         }
 
@@ -70,6 +72,76 @@ namespace TPCuatrimestral_equipo_23A
             List<Paciente> lista = (List<Paciente>)Session["listaPacientes"];
             gvPacientes.DataSource = lista;
             gvPacientes.DataBind();
+        }
+        
+        private void MostrarToast(string mensaje, string tipo = "info")
+        {
+            string safeMensaje = HttpUtility.JavaScriptStringEncode(mensaje);
+            string toastScript = $@"
+            <script>
+                if (window.mostrarToastMensaje) {{
+                    window.mostrarToastMensaje('{safeMensaje}', '{tipo}');
+                }} else {{
+                    window.addEventListener('load', function() {{
+                        window.mostrarToastMensaje('{safeMensaje}', '{tipo}');
+                    }});
+                }}
+            </script>";
+            litToast.Text = toastScript;
+        }
+
+        private void MostrarMensajeInternoRecepcionista()
+        {
+            var msgCfg = Application["MensajeInternoConfig"] as MensajeInternoConfig;
+            if (msgCfg != null)
+            {
+                if (msgCfg.DestinatarioRol == "Todos" || msgCfg.DestinatarioRol == "Recepcionista")
+                {
+                    if (!string.IsNullOrWhiteSpace(msgCfg.Mensaje))
+                        MostrarToast(msgCfg.Mensaje, "warning");
+                }
+            }
+        }
+
+        private void MostrarHorarioTrabajoFijo()
+        {
+            try
+            {
+                var turnoNegocio = new TurnoTrabajoNegocio();
+                var horarios = turnoNegocio.ObtenerHorarioGeneralClinica();
+                var diaHoy = DateTime.Now.DayOfWeek;
+                var horarioHoy = horarios.FirstOrDefault(h => h.DiaSemana == diaHoy);
+                if (horarioHoy != null)
+                {
+                    string mensaje = $"Hoy ({horarioHoy.NombreDia ?? diaHoy.ToString()}) la clínica atiende de {horarioHoy.HoraEntrada:hh\\:mm} a {horarioHoy.HoraSalida:hh\\:mm}.";
+                    lblHorarioFijo.Text = mensaje;
+                    panelHorarioFijo.Visible = true;
+                }
+                else
+                {
+                    lblHorarioFijo.Text = $"Hoy ({ObtenerNombreDia(diaHoy)}) la clínica permanece cerrada.";
+                    panelHorarioFijo.Visible = true;
+                }
+            }
+            catch
+            {
+                panelHorarioFijo.Visible = false;
+            }
+        }
+
+        private string ObtenerNombreDia(DayOfWeek dia)
+        {
+            switch (dia)
+            {
+                case DayOfWeek.Monday: return "Lunes";
+                case DayOfWeek.Tuesday: return "Martes";
+                case DayOfWeek.Wednesday: return "Miércoles";
+                case DayOfWeek.Thursday: return "Jueves";
+                case DayOfWeek.Friday: return "Viernes";
+                case DayOfWeek.Saturday: return "Sábado";
+                case DayOfWeek.Sunday: return "Domingo";
+                default: return dia.ToString();
+            }
         }
     }
 }

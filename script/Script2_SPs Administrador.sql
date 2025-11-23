@@ -2,10 +2,7 @@
 GO
 
 -- ESPECIALIDADES
-IF OBJECT_ID('dbo.sp_ListarEspecialidades', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ListarEspecialidades;
-GO
-CREATE PROCEDURE dbo.sp_ListarEspecialidades
+CREATE OR ALTER PROCEDURE dbo.sp_ListarEspecialidades
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -13,10 +10,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_AgregarEspecialidad', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_AgregarEspecialidad;
-GO
-CREATE PROCEDURE dbo.sp_AgregarEspecialidad
+CREATE OR ALTER PROCEDURE dbo.sp_AgregarEspecialidad
     @Descripcion VARCHAR(100)
 AS
 BEGIN
@@ -25,10 +19,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_ModificarEspecialidad', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ModificarEspecialidad;
-GO
-CREATE PROCEDURE dbo.sp_ModificarEspecialidad
+CREATE OR ALTER PROCEDURE dbo.sp_ModificarEspecialidad
     @IdEspecialidad INT,
     @NuevaDescripcion VARCHAR(100),
     @Activo BIT
@@ -44,10 +35,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_EliminarLogicoEspecialidad', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_EliminarLogicoEspecialidad;
-GO
-CREATE PROCEDURE dbo.sp_EliminarLogicoEspecialidad
+CREATE OR ALTER PROCEDURE dbo.sp_EliminarLogicoEspecialidad
     @IdEspecialidad INT
 AS
 BEGIN
@@ -57,10 +45,7 @@ END
 GO
 
 -- CONSULTORIOS
-IF OBJECT_ID('dbo.sp_ListarConsultorios', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ListarConsultorios;
-GO
-CREATE PROCEDURE dbo.sp_ListarConsultorios
+CREATE OR ALTER PROCEDURE dbo.sp_ListarConsultorios
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -68,10 +53,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_AgregarConsultorio', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_AgregarConsultorio;
-GO
-CREATE PROCEDURE dbo.sp_AgregarConsultorio
+CREATE OR ALTER PROCEDURE dbo.sp_AgregarConsultorio
     @Nombre VARCHAR(100)
 AS
 BEGIN
@@ -80,10 +62,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_ModificarConsultorio', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ModificarConsultorio;
-GO
-CREATE PROCEDURE dbo.sp_ModificarConsultorio
+CREATE OR ALTER PROCEDURE dbo.sp_ModificarConsultorio
     @IdConsultorio INT,
     @Nombre VARCHAR(100),
     @Activo BIT
@@ -99,10 +78,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_EliminarLogicoConsultorio', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_EliminarLogicoConsultorio;
-GO
-CREATE PROCEDURE dbo.sp_EliminarLogicoConsultorio
+CREATE OR ALTER PROCEDURE dbo.sp_EliminarLogicoConsultorio
     @IdConsultorio INT
 AS
 BEGIN
@@ -112,10 +88,7 @@ END
 GO
 
 -- MEDICOS
-IF OBJECT_ID('dbo.sp_ListarMedicosActivos', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ListarMedicosActivos;
-GO
-CREATE PROCEDURE dbo.sp_ListarMedicosActivos
+CREATE OR ALTER PROCEDURE dbo.sp_ListarMedicosActivos
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -128,10 +101,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_AgregarMedico', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_AgregarMedico;
-GO
-CREATE PROCEDURE dbo.sp_AgregarMedico
+CREATE OR ALTER PROCEDURE dbo.sp_AgregarMedico
     @Nombre VARCHAR(100),
     @Apellido VARCHAR(100),
     @DNI VARCHAR(20),
@@ -169,10 +139,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_AgregarMedicoConUsuario', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_AgregarMedicoConUsuario;
-GO
-CREATE PROCEDURE dbo.sp_AgregarMedicoConUsuario
+CREATE OR ALTER PROCEDURE dbo.sp_AgregarMedicoConUsuario
     @Nombre VARCHAR(100),
     @Apellido VARCHAR(100),
     @DNI VARCHAR(20),
@@ -222,10 +189,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_ModificarMedico', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ModificarMedico;
-GO
-CREATE PROCEDURE dbo.sp_ModificarMedico
+CREATE OR ALTER PROCEDURE dbo.sp_ModificarMedico
     @IdPersona INT,
     @Nombre VARCHAR(100),
     @Apellido VARCHAR(100),
@@ -269,10 +233,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_EliminarLogicoMedico', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_EliminarLogicoMedico;
-GO
-CREATE PROCEDURE dbo.sp_EliminarLogicoMedico
+CREATE OR ALTER PROCEDURE dbo.sp_EliminarLogicoMedico
     @IdPersona INT
 AS
 BEGIN
@@ -282,10 +243,7 @@ END
 GO
 
 -- RECEPCIONISTAS
-IF OBJECT_ID('dbo.sp_ListarRecepcionistas', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ListarRecepcionistas;
-GO
-CREATE PROCEDURE dbo.sp_ListarRecepcionistas
+CREATE OR ALTER PROCEDURE dbo.sp_ListarRecepcionistas
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -304,11 +262,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_AgregarRecepcionista', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_AgregarRecepcionista;
-GO
-
-CREATE PROCEDURE dbo.sp_AgregarRecepcionista
+CREATE OR ALTER PROCEDURE dbo.sp_AgregarRecepcionista
     @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20),
     @Sexo VARCHAR(20) = 'No especificado', @FechaNacimiento DATE = NULL,
     @Mail VARCHAR(255), @Telefono VARCHAR(50),
@@ -341,10 +295,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_ModificarRecepcionista', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ModificarRecepcionista;
-GO
-CREATE PROCEDURE dbo.sp_ModificarRecepcionista
+CREATE OR ALTER PROCEDURE dbo.sp_ModificarRecepcionista
     @IdUsuario INT,
     @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20),
     @Sexo VARCHAR(20) = 'No especificado', @FechaNacimiento DATE = NULL,
@@ -374,10 +325,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_EliminarRecepcionista', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_EliminarRecepcionista;
-GO
-CREATE PROCEDURE dbo.sp_EliminarRecepcionista
+CREATE OR ALTER PROCEDURE dbo.sp_EliminarRecepcionista
     @IdUsuario INT
 AS
 BEGIN
@@ -387,10 +335,7 @@ END
 GO
 
 -- ADMINISTRADORES
-IF OBJECT_ID('dbo.sp_ListarAdministradores', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ListarAdministradores;
-GO
-CREATE PROCEDURE dbo.sp_ListarAdministradores
+CREATE OR ALTER PROCEDURE dbo.sp_ListarAdministradores
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -410,11 +355,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_AgregarAdministrador', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_AgregarAdministrador;
-GO
-
-CREATE PROCEDURE dbo.sp_AgregarAdministrador
+CREATE OR ALTER PROCEDURE dbo.sp_AgregarAdministrador
     @Nombre VARCHAR(100),
     @Apellido VARCHAR(100),
     @DNI VARCHAR(20),
@@ -455,10 +396,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_ModificarAdministrador', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ModificarAdministrador;
-GO
-CREATE PROCEDURE dbo.sp_ModificarAdministrador
+CREATE OR ALTER PROCEDURE dbo.sp_ModificarAdministrador
     @IdUsuario INT,
     @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20),
     @Mail VARCHAR(255) = NULL, @Telefono VARCHAR(50) = NULL,
@@ -494,10 +432,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_EliminarAdministrador', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_EliminarAdministrador;
-GO
-CREATE PROCEDURE dbo.sp_EliminarAdministrador
+CREATE OR ALTER PROCEDURE dbo.sp_EliminarAdministrador
     @IdUsuario INT
 AS
 BEGIN
@@ -509,10 +444,7 @@ END
 GO
 
 -- ROLES
-IF OBJECT_ID('dbo.sp_ListarRoles', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ListarRoles;
-GO
-CREATE PROCEDURE dbo.sp_ListarRoles
+CREATE OR ALTER PROCEDURE dbo.sp_ListarRoles
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -520,10 +452,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_CambiarRolUsuario', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_CambiarRolUsuario;
-GO
-CREATE PROCEDURE dbo.sp_CambiarRolUsuario
+CREATE OR ALTER PROCEDURE dbo.sp_CambiarRolUsuario
     @IdUsuario INT,
     @IdNuevoRol INT
 AS
@@ -546,10 +475,7 @@ END
 GO
 
 -- COBERTURAS
-IF OBJECT_ID('dbo.sp_ListarTodasCoberturas', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ListarTodasCoberturas;
-GO
-CREATE PROCEDURE dbo.sp_ListarTodasCoberturas
+CREATE OR ALTER PROCEDURE dbo.sp_ListarTodasCoberturas
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -559,10 +485,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_AgregarCobertura', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_AgregarCobertura;
-GO
-CREATE PROCEDURE dbo.sp_AgregarCobertura
+CREATE OR ALTER PROCEDURE dbo.sp_AgregarCobertura
     @Nombre VARCHAR(50)
 AS
 BEGIN
@@ -572,10 +495,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_ModificarCobertura', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ModificarCobertura;
-GO
-CREATE PROCEDURE dbo.sp_ModificarCobertura
+CREATE OR ALTER PROCEDURE dbo.sp_ModificarCobertura
     @IdCoberturaMedica INT,
     @Nombre VARCHAR(50),
     @Activo BIT
@@ -589,10 +509,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('dbo.sp_EliminarLogicoCobertura', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_EliminarLogicoCobertura;
-GO
-CREATE PROCEDURE dbo.sp_EliminarLogicoCobertura
+CREATE OR ALTER PROCEDURE dbo.sp_EliminarLogicoCobertura
     @IdCoberturaMedica INT
 AS
 BEGIN
@@ -603,28 +520,8 @@ BEGIN
 END
 GO
 
--- turno trabajo 
-
-IF OBJECT_ID('dbo.TurnosTrabajo', 'U') IS NULL
-BEGIN
-    CREATE TABLE dbo.TurnosTrabajo (
-        IdTurnoTrabajo INT IDENTITY(1,1) NOT NULL,
-        IdMedico INT NOT NULL,
-        DiaSemana TINYINT NOT NULL,
-        HoraEntrada TIME NOT NULL,
-        HoraSalida TIME NOT NULL,
-        Activo BIT NOT NULL DEFAULT 1,
-        CONSTRAINT PK_TurnosTrabajo PRIMARY KEY CLUSTERED (IdTurnoTrabajo ASC),
-        CONSTRAINT FK_TurnosTrabajo_Medicos FOREIGN KEY (IdMedico) REFERENCES dbo.Medicos(IdPersona)
-    );
-END
-GO
-
-IF OBJECT_ID('dbo.sp_AgregarTurnoTrabajo', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_AgregarTurnoTrabajo;
-GO
-
-CREATE PROCEDURE dbo.sp_AgregarTurnoTrabajo
+-- TURNOS DE TRABAJO (HORARIOS MEDICOS)
+CREATE OR ALTER PROCEDURE dbo.sp_AgregarTurnoTrabajo
     @IdMedico INT,
     @DiaSemana TINYINT,
     @HoraEntrada TIME,
@@ -632,55 +529,89 @@ CREATE PROCEDURE dbo.sp_AgregarTurnoTrabajo
 AS
 BEGIN
     SET NOCOUNT ON;
-    
-    INSERT INTO TurnosTrabajo (IdMedico, DiaSemana, HoraEntrada, HoraSalida, Activo)
-    VALUES (@IdMedico, @DiaSemana, @HoraEntrada, @HoraSalida, 1);
+    BEGIN TRY
+        IF @HoraEntrada >= @HoraSalida
+        BEGIN
+            RAISERROR('La hora de salida debe ser posterior a la hora de entrada.', 16, 1);
+            RETURN;
+        END
+
+        IF EXISTS (
+            SELECT 1 FROM TurnosTrabajo 
+            WHERE IdMedico = @IdMedico 
+            AND DiaSemana = @DiaSemana
+            AND Activo = 1
+            AND (
+                (@HoraEntrada >= HoraEntrada AND @HoraEntrada < HoraSalida) OR
+                (@HoraSalida > HoraEntrada AND @HoraSalida <= HoraSalida) OR
+                (@HoraEntrada <= HoraEntrada AND @HoraSalida >= HoraSalida)
+            )
+        )
+        BEGIN
+            RAISERROR('El médico ya posee un horario asignado que se superpone con este rango.', 16, 1);
+            RETURN;
+        END
+
+        INSERT INTO TurnosTrabajo (IdMedico, DiaSemana, HoraEntrada, HoraSalida, Activo)
+        VALUES (@IdMedico, @DiaSemana, @HoraEntrada, @HoraSalida, 1);
+
+        SELECT SCOPE_IDENTITY() as IdGenerado;
+
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        RAISERROR(@ErrorMessage, 16, 1);
+    END CATCH
 END
 GO
 
-IF OBJECT_ID('dbo.sp_ObtenerTurnosTrabajoPorMedico', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ObtenerTurnosTrabajoPorMedico;
-GO
-
-CREATE PROCEDURE dbo.sp_ObtenerTurnosTrabajoPorMedico
+CREATE OR ALTER PROCEDURE dbo.sp_ObtenerTurnosTrabajoPorMedico
     @IdMedico INT
 AS
 BEGIN
     SET NOCOUNT ON;
     
     SELECT 
-        IdTurnoTrabajo, 
-        IdMedico, 
-        DiaSemana, 
-        HoraEntrada, 
-        HoraSalida, 
-        Activo
-    FROM TurnosTrabajo
-    WHERE IdMedico = @IdMedico AND Activo = 1
-    ORDER BY DiaSemana, HoraEntrada;
+        TT.IdTurnoTrabajo,
+        TT.IdMedico,
+        TT.DiaSemana,
+        CASE TT.DiaSemana
+            WHEN 1 THEN 'Domingo'
+            WHEN 2 THEN 'Lunes'
+            WHEN 3 THEN 'Martes'
+            WHEN 4 THEN 'Miércoles'
+            WHEN 5 THEN 'Jueves'
+            WHEN 6 THEN 'Viernes'
+            WHEN 7 THEN 'Sábado'
+        END AS NombreDia,
+        CONVERT(VARCHAR(5), TT.HoraEntrada, 108) AS HoraEntrada,
+        CONVERT(VARCHAR(5), TT.HoraSalida, 108) AS HoraSalida,
+        TT.Activo
+    FROM TurnosTrabajo TT
+    WHERE TT.IdMedico = @IdMedico AND TT.Activo = 1
+    ORDER BY TT.DiaSemana, TT.HoraEntrada;
 END
 GO
 
-IF OBJECT_ID('dbo.sp_EliminarTurnoTrabajo', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_EliminarTurnoTrabajo;
-GO
-
-CREATE PROCEDURE dbo.sp_EliminarTurnoTrabajo
+CREATE OR ALTER PROCEDURE dbo.sp_EliminarTurnoTrabajo
     @IdTurnoTrabajo INT
 AS
 BEGIN
     SET NOCOUNT ON;
-    
-    UPDATE TurnosTrabajo
-    SET Activo = 0
-    WHERE IdTurnoTrabajo = @IdTurnoTrabajo;
+    BEGIN TRY
+        UPDATE TurnosTrabajo
+        SET Activo = 0
+        WHERE IdTurnoTrabajo = @IdTurnoTrabajo;
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        RAISERROR(@ErrorMessage, 16, 1);
+    END CATCH
 END
 GO
 
-IF OBJECT_ID('dbo.sp_ValidarUsuario', 'P') IS NOT NULL
-    DROP PROCEDURE dbo.sp_ValidarUsuario;
-GO
-CREATE PROCEDURE dbo.sp_ValidarUsuario
+-- LOGIN
+CREATE OR ALTER PROCEDURE dbo.sp_ValidarUsuario
     @NombreUsuario VARCHAR(50),
     @Clave VARCHAR(50)
 AS
@@ -711,6 +642,5 @@ BEGIN
 END
 GO
 
-PRINT 'Script de TurnosTrabajo y ValidarUsuario ejecutado correctamente'
+PRINT 'Script 2: SPs Administrador ejecutados correctamente'
 GO
-

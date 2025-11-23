@@ -11,6 +11,20 @@
                 <p class="text-secondary fs-5">Bienvenido, aquí puedes gestionar pacientes y turnos.</p>
             </div>
 
+            <div class="row">
+                <div class="col-12">
+                    <asp:Literal ID="litToast" runat="server"></asp:Literal>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <asp:Panel ID="panelHorarioFijo" runat="server" CssClass="alert alert-info text-center mt-3 mb-3" Visible="false">
+                        <asp:Label ID="lblHorarioFijo" runat="server"></asp:Label>
+                    </asp:Panel>
+                </div>
+            </div>
+
             <div class="row g-4 mb-4">
                 <div class="col-md-4">
                     <div class="stats-card admin-card">

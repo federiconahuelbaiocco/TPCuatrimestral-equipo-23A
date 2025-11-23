@@ -90,5 +90,115 @@ namespace negocio
             }
             return opciones;
         }
+
+        public int AgregarTurnoTrabajoAdmin(int idMedico, int diaSemana, TimeSpan horaEntrada, TimeSpan horaSalida)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearProcedimiento("sp_AltaTurnoTrabajo");
+                datos.setearParametro("@IdMedico", idMedico);
+                datos.setearParametro("@DiaSemana", diaSemana);
+                datos.setearParametro("@HoraEntrada", horaEntrada);
+                datos.setearParametro("@HoraSalida", horaSalida);
+                datos.ejecutarLectura();
+                if (datos.Lector.Read())
+                    return Convert.ToInt32(datos.Lector["IdGenerado"]);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al agregar turno de trabajo (admin).", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public List<TurnoTrabajo> ListarHorariosPorMedico(int idMedico)
+        {
+            List<TurnoTrabajo> lista = new List<TurnoTrabajo>();
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearProcedimiento("sp_ListarHorariosPorMedico");
+                datos.setearParametro("@IdMedico", idMedico);
+                datos.ejecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    var turno = new TurnoTrabajo
+                    {
+                        IdTurnoTrabajo = (int)datos.Lector["IdTurnoTrabajo"],
+                        DiaSemana = (DayOfWeek)((int)datos.Lector["DiaSemana"] % 7),
+                        HoraEntrada = TimeSpan.Parse((string)datos.Lector["HoraEntrada"]),
+                        HoraSalida = TimeSpan.Parse((string)datos.Lector["HoraSalida"]),
+                        NombreDia = datos.Lector["NombreDia"] as string
+                    };
+                    lista.Add(turno);
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar horarios por médico (admin).", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void EliminarTurnoTrabajoAdmin(int idTurnoTrabajo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearProcedimiento("sp_EliminarTurnoTrabajo");
+                datos.setearParametro("@IdTurnoTrabajo", idTurnoTrabajo);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar turno de trabajo (admin).", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public List<TurnoTrabajo> ObtenerHorarioGeneralClinica()
+        {
+            List<TurnoTrabajo> lista = new List<TurnoTrabajo>();
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearProcedimiento("sp_ListarHorariosPorMedico");
+                datos.setearParametro("@IdMedico", 0);
+                datos.ejecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    var turno = new TurnoTrabajo
+                    {
+                        IdTurnoTrabajo = (int)datos.Lector["IdTurnoTrabajo"],
+                        DiaSemana = (DayOfWeek)((int)datos.Lector["DiaSemana"] % 7),
+                        HoraEntrada = TimeSpan.Parse((string)datos.Lector["HoraEntrada"]),
+                        HoraSalida = TimeSpan.Parse((string)datos.Lector["HoraSalida"]),
+                        NombreDia = datos.Lector["NombreDia"] as string
+                    };
+                    lista.Add(turno);
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener horario general de la clínica.", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }

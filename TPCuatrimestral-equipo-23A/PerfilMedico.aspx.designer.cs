@@ -240,15 +240,6 @@ namespace TPCuatrimestral_equipo_23A
         protected global::System.Web.UI.WebControls.DropDownList ddlEspecialidad;
 
         /// <summary>
-        /// Control cblEspecialidades.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList cblEspecialidades;
-
-        /// <summary>
         /// Control pnlBotonesProfesional.
         /// </summary>
         /// <remarks>

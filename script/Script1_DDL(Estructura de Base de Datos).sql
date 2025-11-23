@@ -220,6 +220,22 @@ BEGIN
 END
 GO
 
+IF OBJECT_ID('dbo.TurnosTrabajo', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.TurnosTrabajo (
+        IdTurnoTrabajo INT IDENTITY(1,1) NOT NULL,
+        IdMedico INT NOT NULL,
+        DiaSemana TINYINT NOT NULL,
+        HoraEntrada TIME NOT NULL,
+        HoraSalida TIME NOT NULL,
+        Activo BIT NOT NULL DEFAULT 1,
+        CONSTRAINT PK_TurnosTrabajo PRIMARY KEY CLUSTERED (IdTurnoTrabajo ASC),
+        CONSTRAINT FK_TurnosTrabajo_Medicos FOREIGN KEY (IdMedico) REFERENCES dbo.Medicos(IdPersona)
+    );
+END
+GO
+
+
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE name = 'FK_Pacientes_Cobertura')
 BEGIN
     IF OBJECT_ID('dbo.COBERTURA', 'U') IS NOT NULL

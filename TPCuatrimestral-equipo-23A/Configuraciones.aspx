@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="Configuración del Sistema" Language="C#" MasterPageFile="~/Admin.master" AutoEventWireup="true" CodeBehind="Configuraciones.aspx.cs" Inherits="TPCuatrimestral_equipo_23A.Configuraciones" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <link href="~/styles/styles.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -53,57 +52,27 @@
             </div>
         </div>
         <div class="col-12">
-            <div class="card shadow-sm overflow-hidden">
-                 <div class="card-body p-4">
-                    <h2 class="card-title h5 fw-bold mb-1">Notificaciones Automáticas</h2>
-                    <p class="card-subtitle text-muted mb-4">Activa y personaliza las notificaciones por email y SMS para los pacientes.</p>
-
-                    <div class="d-flex flex-column gap-4">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <p class="fw-medium mb-0">Notificaciones por Email</p>
-                                <small class="text-muted d-block">Enviar confirmaciones y recordatorios por email.</small>
-                            </div>
-                            <label class="form-switch">
-                                <asp:CheckBox ID="chkNotifEmail" runat="server" CssClass="opacity-0 w-0 h-0" Checked="true"/>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                         <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <p class="fw-medium mb-0">Notificaciones por SMS</p>
-                                <small class="text-muted d-block">Enviar confirmaciones y recordatorios por SMS.</small>
-                            </div>
-                            <label class="form-switch">
-                                 <asp:CheckBox ID="chkNotifSms" runat="server" CssClass="opacity-0 w-0 h-0"/>
-                                 <span class="slider"></span>
-                             </label>
-                        </div>
-                    </div>
-                 </div>
-                 <div class="card-footer text-end bg-light">
-                    <asp:Button ID="btnGuardarNotificaciones" runat="server" Text="Guardar Cambios" CssClass="btn btn-primary" OnClick="btnGuardarNotificaciones_Click" />
-                </div>
-            </div>
-        </div>
-        <div class="col-12">
              <div class="card shadow-sm overflow-hidden">
                  <div class="card-body p-4">
-                    <h2 class="card-title h5 fw-bold mb-1">Integraciones de Terceros</h2>
-                    <p class="card-subtitle text-muted mb-4">Conecta con servicios externos.</p>
-                     <div class="d-flex flex-column gap-4">
-                         <div>
-                            <label for="<%= txtGoogleApiKey.ClientID %>" class="form-label fw-medium">Google Calendar API Key</label>
-                            <asp:TextBox ID="txtGoogleApiKey" runat="server" CssClass="form-control" placeholder="Ingresa tu clave de API"></asp:TextBox>
+                    <h2 class="card-title h5 fw-bold mb-1">Mensaje Interno Global</h2>
+                    <p class="card-subtitle text-muted mb-4">Envía un mensaje interno a médicos, recepcionistas o a un usuario específico.</p>
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label for="txtMensajeInterno" class="form-label fw-medium">Mensaje</label>
+                            <asp:TextBox ID="txtMensajeInterno" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="2" MaxLength="250" placeholder="Escribe el mensaje interno..."></asp:TextBox>
                         </div>
-                        <div>
-                             <label for="<%= txtStripeApiKey.ClientID %>" class="form-label fw-medium">Stripe API Key</label>
-                            <asp:TextBox ID="txtStripeApiKey" runat="server" CssClass="form-control" placeholder="Ingresa tu clave secreta" TextMode="Password"></asp:TextBox>
+                        <div class="col-md-6">
+                            <label for="ddlDestinatarioRol" class="form-label fw-medium">Destinatario (Rol)</label>
+                            <asp:DropDownList ID="ddlDestinatarioRol" runat="server" CssClass="form-select">
+                                <asp:ListItem Text="Todos" Value="Todos" />
+                                <asp:ListItem Text="Médicos" Value="Medico" />
+                                <asp:ListItem Text="Recepcionistas" Value="Recepcionista" />
+                            </asp:DropDownList>
                         </div>
                     </div>
-                 </div>
-                  <div class="card-footer text-end bg-light">
-                    <asp:Button ID="btnGuardarIntegraciones" runat="server" Text="Guardar Cambios" CssClass="btn btn-primary" OnClick="btnGuardarIntegraciones_Click" />
+                </div>
+                <div class="card-footer text-end bg-light">
+                    <asp:Button ID="btnGuardarMensajeInterno" runat="server" Text="Guardar Mensaje" CssClass="btn btn-primary" OnClick="btnGuardarMensajeInterno_Click" />
                 </div>
             </div>
         </div>

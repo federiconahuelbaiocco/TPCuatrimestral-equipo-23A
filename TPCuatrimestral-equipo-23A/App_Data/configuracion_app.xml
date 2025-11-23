@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<AppConfigData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Horario>
+    <DiasLaborables>
+      <DayOfWeek>Monday</DayOfWeek>
+      <DayOfWeek>Tuesday</DayOfWeek>
+      <DayOfWeek>Wednesday</DayOfWeek>
+      <DayOfWeek>Thursday</DayOfWeek>
+      <DayOfWeek>Friday</DayOfWeek>
+    </DiasLaborables>
+    <HoraApertura />
+    <HoraCierre />
+    <DuracionTurnoMin>30</DuracionTurnoMin>
+  </Horario>
+</AppConfigData>
