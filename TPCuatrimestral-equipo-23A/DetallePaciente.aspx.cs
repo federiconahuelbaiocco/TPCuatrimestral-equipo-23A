@@ -62,13 +62,13 @@ namespace TPCuatrimestral_equipo_23A
                             return;
 
                             lblNombreCompleto.Text = seleccionado.Nombre + " " + seleccionado.Apellido;
-                            lblEdad.Text = CalularEdad(seleccionado.FechaNacimiento).ToString() + " Años";
+                            lblEdad.Text = seleccionado.FechaNacimiento.HasValue ? CalularEdad(seleccionado.FechaNacimiento.Value).ToString() + " Años" : "No especificada";
 
                             txtNombre.Text = seleccionado.Nombre;
                             txtApellido.Text = seleccionado.Apellido;
                             txtDni.Text = seleccionado.Dni;
                             ddlSexo.Text = seleccionado.Sexo;
-                            txtFechaNac.Text = seleccionado.FechaNacimiento.ToString("d");
+                            txtFechaNac.Text = seleccionado.FechaNacimiento.HasValue ? seleccionado.FechaNacimiento.Value.ToString("d") : "";
                             txtTelefono.Text = seleccionado.Telefono;
                             txtMail.Text = seleccionado.Email;
                             ddlCoberturas.SelectedValue = seleccionado.Cobertura.IdCoberturaMedica.ToString();
@@ -83,9 +83,9 @@ namespace TPCuatrimestral_equipo_23A
 
                         int CalularEdad(DateTime fechaNac)
                         {
-                            int edad = DateTime.Today.Year - seleccionado.FechaNacimiento.Year;
+                            int edad = DateTime.Today.Year - fechaNac.Year;
 
-                            if (seleccionado.FechaNacimiento.Date > DateTime.Today.AddYears(-edad))
+                            if (fechaNac.Date > DateTime.Today.AddYears(-edad))
                             {
                                 edad--;
                             }

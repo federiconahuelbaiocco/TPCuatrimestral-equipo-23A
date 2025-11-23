@@ -1,4 +1,4 @@
-﻿USE master;
+USE master;
 GO
 
 IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'ClinicaDB')
@@ -71,6 +71,7 @@ BEGIN
         Apellido VARCHAR(100) NOT NULL,
         Dni VARCHAR(20) NOT NULL,
         Sexo VARCHAR(20) NULL DEFAULT 'No especificado',
+        FechaNacimiento DATE NULL,
         Email VARCHAR(255) NULL,
         Telefono VARCHAR(50) NULL,
         Activo BIT NOT NULL DEFAULT 1,
@@ -96,15 +97,26 @@ BEGIN
 END
 GO
 
+IF OBJECT_ID('dbo.Medico_Especialidad', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Medico_Especialidad (
+        IdMedico INT NOT NULL,
+        IdEspecialidad INT NOT NULL,
+        CONSTRAINT PK_Medico_Especialidad PRIMARY KEY CLUSTERED (IdMedico ASC, IdEspecialidad ASC),
+        CONSTRAINT FK_MedicoEspecialidad_Medicos FOREIGN KEY (IdMedico) REFERENCES dbo.Medicos(IdPersona),
+        CONSTRAINT FK_MedicoEspecialidad_Especialidades FOREIGN KEY (IdEspecialidad) REFERENCES dbo.Especialidades(IdEspecialidad)
+    );
+    PRINT 'Tabla Medico_Especialidad creada.';
+END
+GO
+
 IF OBJECT_ID('dbo.PACIENTES', 'U') IS NULL
 BEGIN
-    CREATE TABLE dbo.PACIENTES(
+    CREATE TABLE dbo.PACIENTES (
         idPersona INT NOT NULL,
-        FechaNacimiento DATE NULL,
-        idCobertura INT NULL,
+        IdCoberturaMedica INT NULL,
         CONSTRAINT PK_Pacientes PRIMARY KEY CLUSTERED (idPersona ASC),
-        CONSTRAINT FK_Pacientes_Personas FOREIGN KEY (idPersona) REFERENCES dbo.Personas(IdPersona),
-        CONSTRAINT FK_Pacientes_Cobertura FOREIGN KEY (idCobertura) REFERENCES dbo.COBERTURA(idCoberturaMedica)
+        CONSTRAINT FK_Pacientes_Personas FOREIGN KEY (idPersona) REFERENCES dbo.Personas(IdPersona)
     );
     PRINT 'Tabla PACIENTES creada.';
 END
@@ -193,6 +205,7 @@ BEGIN
         IdPaciente INT NOT NULL,
         IdMedico INT NOT NULL,
         FechaHora DATETIME NOT NULL,
+        MotivoConsulta VARCHAR(255) NULL,
         IdEstadoTurno INT NOT NULL,
         Observaciones VARCHAR(255) NULL,
         Activo BIT NOT NULL DEFAULT 1,
@@ -205,4 +218,22 @@ BEGIN
         CONSTRAINT UQ_Medico_Horario UNIQUE (IdMedico, FechaHora) 
     );
 END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE name = 'FK_Pacientes_Cobertura')
+BEGIN
+    IF OBJECT_ID('dbo.COBERTURA', 'U') IS NOT NULL
+    BEGIN
+        ALTER TABLE dbo.PACIENTES
+        ADD CONSTRAINT FK_Pacientes_Cobertura 
+        FOREIGN KEY (IdCoberturaMedica) REFERENCES dbo.COBERTURA(idCoberturaMedica);
+        
+        PRINT 'FK de Pacientes a Cobertura creada.';
+    END
+END
+GO
+
+PRINT '========================================';
+PRINT '✓ Script 1: Estructura de Base de Datos completada';
+PRINT '========================================';
 GO

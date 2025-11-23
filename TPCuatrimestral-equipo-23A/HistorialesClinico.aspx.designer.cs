@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 // <generado automáticamente>
 //     Este código fue generado por una herramienta.
 //
@@ -11,142 +11,178 @@ namespace TPCuatrimestral_equipo_23A
 {
 
 
-    public partial class CalendarioMaster
+    public partial class HistorialesClinico
     {
 
         /// <summary>
-        /// Control lblMesAnio.
+        /// Control txtBuscarDni.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMesAnio;
+        protected global::System.Web.UI.WebControls.TextBox txtBuscarDni;
 
         /// <summary>
-        /// Control rptSemanas.
+        /// Control btnBuscarDni.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptSemanas;
+        protected global::System.Web.UI.WebControls.Button btnBuscarDni;
 
         /// <summary>
-        /// Control pnlDetallesTurno.
+        /// Control pnlPacienteInfo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlDetallesTurno;
+        protected global::System.Web.UI.WebControls.Panel pnlPacienteInfo;
 
         /// <summary>
-        /// Control lblPacienteNombre.
+        /// Control lblNombrePaciente.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPacienteNombre;
+        protected global::System.Web.UI.WebControls.Label lblNombrePaciente;
 
         /// <summary>
-        /// Control lblPacienteDni.
+        /// Control lblDniPaciente.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPacienteDni;
+        protected global::System.Web.UI.WebControls.Label lblDniPaciente;
 
         /// <summary>
-        /// Control lblTurnoFecha.
+        /// Control lblEmailPaciente.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTurnoFecha;
+        protected global::System.Web.UI.WebControls.Label lblEmailPaciente;
 
         /// <summary>
-        /// Control lblTurnoHora.
+        /// Control btnNuevaEntrada.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTurnoHora;
+        protected global::System.Web.UI.WebControls.Button btnNuevaEntrada;
 
         /// <summary>
-        /// Control lblTurnoTipo.
+        /// Control pnlFormulario.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTurnoTipo;
+        protected global::System.Web.UI.WebControls.Panel pnlFormulario;
 
         /// <summary>
-        /// Control lblTurnoObraSocial.
+        /// Control txtDiagnostico.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTurnoObraSocial;
+        protected global::System.Web.UI.WebControls.TextBox txtDiagnostico;
 
         /// <summary>
-        /// Control pnlObservaciones.
+        /// Control rfvDiagnostico.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlObservaciones;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDiagnostico;
 
         /// <summary>
-        /// Control lblTurnoObservaciones.
+        /// Control txtObservaciones.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTurnoObservaciones;
+        protected global::System.Web.UI.WebControls.TextBox txtObservaciones;
 
         /// <summary>
-        /// Control lnkVerHistorial.
+        /// Control btnCancelar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkVerHistorial;
+        protected global::System.Web.UI.WebControls.Button btnCancelar;
 
         /// <summary>
-        /// Control lnkAtender.
+        /// Control btnGuardar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkAtender;
+        protected global::System.Web.UI.WebControls.Button btnGuardar;
 
         /// <summary>
-        /// Control lnkCancelar.
+        /// Control pnlHistorial.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkCancelar;
+        protected global::System.Web.UI.WebControls.Panel pnlHistorial;
 
         /// <summary>
-        /// Control pnlSinSeleccion.
+        /// Control rptHistorial.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlSinSeleccion;
+        protected global::System.Web.UI.WebControls.Repeater rptHistorial;
+
+        /// <summary>
+        /// Control lblSinHistorial.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSinHistorial;
+
+        /// <summary>
+        /// Control pnlBusqueda.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlBusqueda;
+
+        /// <summary>
+        /// Control rptPacientes.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptPacientes;
+
+        /// <summary>
+        /// Control pnlSinPacientes.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlSinPacientes;
     }
 }

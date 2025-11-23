@@ -54,6 +54,8 @@ namespace negocio
 				datos.setearParametro("@Nombre", nuevo.Nombre);
 				datos.setearParametro("@Apellido", nuevo.Apellido);
 				datos.setearParametro("@DNI", nuevo.Dni);
+				datos.setearParametro("@Sexo", (object)nuevo.Sexo ?? DBNull.Value);
+				datos.setearParametro("@FechaNacimiento", nuevo.FechaNacimiento.HasValue ? (object)nuevo.FechaNacimiento.Value : DBNull.Value);
 				datos.setearParametro("@Mail", (object)nuevo.Email ?? DBNull.Value);
 				datos.setearParametro("@Telefono", (object)nuevo.Telefono ?? DBNull.Value);
 				datos.setearParametro("@NombreUsuario", nuevo.Usuario.NombreUsuario);
@@ -80,6 +82,8 @@ namespace negocio
 				datos.setearParametro("@Nombre", mod.Nombre);
 				datos.setearParametro("@Apellido", mod.Apellido);
 				datos.setearParametro("@DNI", mod.Dni);
+				datos.setearParametro("@Sexo", (object)mod.Sexo ?? DBNull.Value);
+				datos.setearParametro("@FechaNacimiento", mod.FechaNacimiento.HasValue ? (object)mod.FechaNacimiento.Value : DBNull.Value);
 				datos.setearParametro("@Mail", (object)mod.Email ?? DBNull.Value);
 				datos.setearParametro("@Telefono", (object)mod.Telefono ?? DBNull.Value);
 				datos.setearParametro("@NuevaClave", (object)mod.Usuario.Clave ?? DBNull.Value);

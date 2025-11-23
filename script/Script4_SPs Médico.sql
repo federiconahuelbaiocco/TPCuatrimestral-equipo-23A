@@ -1,4 +1,5 @@
-﻿USE ClinicaDB;
+
+USE ClinicaDB;
 GO
 
 IF OBJECT_ID('dbo.sp_CrearHistorialMedico', 'P') IS NOT NULL
@@ -92,4 +93,150 @@ BEGIN
     WHERE H.IdPaciente = @IdPaciente AND E.Activo = 1
     ORDER BY E.Fecha DESC;
 END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_ListarPacientesPorMedico
+    @IdMedico INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    BEGIN TRY
+        SELECT DISTINCT
+            P.IdPersona,
+            P.Nombre,
+            P.Apellido,
+            P.Dni,
+            P.Email,
+            P.Telefono,
+            P.Sexo,
+            P.Activo,
+            D.IdDomicilio,
+            D.Calle,
+            D.Altura,
+            D.Piso,
+            D.Departamento,
+            D.Localidad,
+            D.Provincia,
+            D.CodigoPostal,
+            ISNULL(CM.IdCoberturaMedica, 0) AS IdCoberturaMedica,
+            ISNULL(CM.Nombre, 'Particular') AS NombreCobertura
+        FROM Turnos T
+        INNER JOIN Personas P ON T.IdPaciente = P.IdPersona
+        LEFT JOIN Domicilios D ON P.IdDomicilio = D.IdDomicilio
+        LEFT JOIN PACIENTES PA ON P.IdPersona = PA.idPersona
+        LEFT JOIN COBERTURA CM ON PA.IdCoberturaMedica = CM.idCoberturaMedica
+        WHERE T.IdMedico = @IdMedico
+          AND T.Activo = 1
+          AND P.Activo = 1
+        ORDER BY P.Apellido, P.Nombre;
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_ListarTurnosDelDia
+    @IdMedico INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    BEGIN TRY
+        DECLARE @FechaHoy DATE = CAST(GETDATE() AS DATE);
+        
+        SELECT 
+            T.IdTurno,
+            T.FechaHora,
+            FORMAT(T.FechaHora, 'HH:mm') AS HoraFormateada,
+            T.MotivoConsulta AS TipoConsulta,
+            T.Observaciones,
+            E.Descripcion AS Estado,
+            -- Datos Paciente
+            P.IdPersona AS IdPaciente,
+            P.Nombre AS NombrePaciente,
+            P.Apellido AS ApellidoPaciente,
+            P.Dni AS DniPaciente,
+            (P.Apellido + ', ' + P.Nombre) AS NombreCompletoPaciente,
+            -- Datos Médico
+            PM.IdPersona AS IdMedico,
+            PM.Apellido AS ApellidoMedico,
+            PM.Nombre AS NombreMedico
+        FROM Turnos T
+        INNER JOIN EstadosTurno E ON T.IdEstadoTurno = E.IdEstadoTurno
+        INNER JOIN Personas P ON T.IdPaciente = P.IdPersona
+        INNER JOIN Personas PM ON T.IdMedico = PM.IdPersona
+        WHERE T.Activo = 1
+          AND T.IdMedico = @IdMedico
+          AND CAST(T.FechaHora AS DATE) = @FechaHoy
+        ORDER BY T.FechaHora ASC;
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_ContarTurnosDelDia
+    @IdMedico INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    BEGIN TRY
+        DECLARE @FechaHoy DATE = CAST(GETDATE() AS DATE);
+        
+        SELECT COUNT(*) AS TotalTurnos
+        FROM Turnos
+        WHERE IdMedico = @IdMedico
+          AND CAST(FechaHora AS DATE) = @FechaHoy
+          AND Activo = 1;
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_ContarTurnosPendientes
+    @IdMedico INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    BEGIN TRY
+        SELECT COUNT(*) AS TotalPendientes
+        FROM Turnos T
+        INNER JOIN EstadosTurno E ON T.IdEstadoTurno = E.IdEstadoTurno
+        WHERE T.IdMedico = @IdMedico
+          AND E.Descripcion = 'Pendiente'
+          AND T.Activo = 1
+          AND T.FechaHora >= GETDATE();
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_ContarPacientesPorMedico
+    @IdMedico INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    BEGIN TRY
+        SELECT COUNT(DISTINCT IdPaciente) AS TotalPacientes
+        FROM Turnos
+        WHERE IdMedico = @IdMedico
+          AND Activo = 1;
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+END
+GO
+
+PRINT '✓ Script 4: Stored Procedures para Médico creados exitosamente';
 GO

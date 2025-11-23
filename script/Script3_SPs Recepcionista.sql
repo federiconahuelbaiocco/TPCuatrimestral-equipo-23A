@@ -10,13 +10,13 @@ AS
 BEGIN
     SET NOCOUNT ON;
     SELECT
-        P.IdPersona, P.Dni, P.Nombre, P.Apellido, P.Email,P.Sexo, P.Telefono, P.Activo,
-        PAC.FechaNacimiento, C.Nombre as Cobertura,
+        P.IdPersona, P.Dni, P.Nombre, P.Apellido, P.Email, P.Sexo, P.FechaNacimiento, P.Telefono, P.Activo,
+        C.Nombre as Cobertura,
         D.Calle, D.Altura, D.Localidad
     FROM Personas P
-    INNER JOIN PACIENTES PAC ON P.IdPersona = PAC.IdPersona
+    INNER JOIN PACIENTES PAC ON P.IdPersona = PAC.idPersona
     LEFT JOIN Domicilios D ON P.IdDomicilio = D.IdDomicilio
-    LEFT JOIN COBERTURA C ON PAC.idCobertura = C.idCoberturaMedica
+    LEFT JOIN COBERTURA C ON PAC.IdCoberturaMedica = C.idCoberturaMedica
     WHERE P.Activo = 1
     ORDER BY P.Apellido, P.Nombre;
 END
@@ -26,7 +26,7 @@ IF OBJECT_ID('dbo.sp_InsertarPaciente', 'P') IS NOT NULL
     DROP PROCEDURE dbo.sp_InsertarPaciente;
 GO
 CREATE PROCEDURE dbo.sp_InsertarPaciente
-    @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20),@Sexo VARCHAR(20),
+    @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20), @Sexo VARCHAR(20),
     @Mail VARCHAR(255) = NULL, @Telefono VARCHAR(50)= NULL,
     @Calle VARCHAR(200)= NULL, @Altura VARCHAR(20)= NULL, @Piso VARCHAR(10)= NULL,
     @Departamento VARCHAR(10)= NULL, @Localidad VARCHAR(100)= NULL,
@@ -35,7 +35,7 @@ CREATE PROCEDURE dbo.sp_InsertarPaciente
 AS
 BEGIN
     SET NOCOUNT ON;
-    DECLARE @NuevoIdDomicilio INT;
+    DECLARE @NuevoIdDomicilio INT = NULL;
     DECLARE @NuevoIdPersona INT;
 
     BEGIN TRY
@@ -54,12 +54,13 @@ BEGIN
             SET @NuevoIdDomicilio = SCOPE_IDENTITY();
         END
 
-        INSERT INTO PERSONAS (Nombre, Apellido, DNI,Sexo, Email, Telefono, IdDomicilio)
-        VALUES (@Nombre, @Apellido, @DNI,@Sexo, @Mail, @Telefono, @NuevoIdDomicilio);
+        INSERT INTO Personas (Nombre, Apellido, Dni, Sexo, FechaNacimiento, Email, Telefono, Activo, IdDomicilio)
+        VALUES (@Nombre, @Apellido, @DNI, @Sexo, @FechaNacimiento, @Mail, @Telefono, 1, @NuevoIdDomicilio);
+
         SET @NuevoIdPersona = SCOPE_IDENTITY();
 
-        INSERT INTO PACIENTES (idPersona, FechaNacimiento, idCobertura)
-        VALUES (@NuevoIdPersona, @FechaNacimiento, @idCobertura);
+        INSERT INTO PACIENTES (idPersona, IdCoberturaMedica)
+        VALUES (@NuevoIdPersona, @idCobertura);
 
         COMMIT TRANSACTION;
         SELECT @NuevoIdPersona AS IdPersona;
@@ -81,8 +82,8 @@ CREATE PROCEDURE dbo.sp_BuscarPacientes
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT P.IdPersona, P.Dni, P.Nombre, P.Apellido, PAC.FechaNacimiento FROM Personas P
-    INNER JOIN PACIENTES PAC ON P.IdPersona = PAC.IdPersona
+    SELECT P.IdPersona, P.Dni, P.Nombre, P.Apellido, P.FechaNacimiento FROM Personas P
+    INNER JOIN PACIENTES PAC ON P.IdPersona = PAC.idPersona
     WHERE P.Activo = 1
         AND (@DNI IS NULL OR P.Dni LIKE '%' + @DNI + '%')
         AND (@Apellido IS NULL OR P.Apellido LIKE '%' + @Apellido + '%')
@@ -114,14 +115,14 @@ AS
 BEGIN
     SET NOCOUNT ON;
     SELECT
-        P.IdPersona, P.Nombre, P.Apellido, P.Dni,P.Sexo, P.Email, P.Telefono, P.IdDomicilio,
-        D.Calle, D.Altura, D.Piso, D.Departamento, D.Localidad, D.Provincia, D.CodigoPostal,
-        PAC.idCobertura, C.Nombre AS NombreCobertura, PAC.FechaNacimiento
-    FROM Personas P
-    INNER JOIN PACIENTES PAC ON P.IdPersona = PAC.IdPersona
-    LEFT JOIN Domicilios D ON P.IdDomicilio = D.IdDomicilio
-    LEFT JOIN COBERTURA C ON PAC.idCobertura = C.idCoberturaMedica
-    WHERE P.IdPersona = @IdPaciente;
+    P.IdPersona, P.Nombre, P.Apellido, P.Dni, P.Sexo, P.FechaNacimiento, P.Email, P.Telefono, P.IdDomicilio,
+    D.Calle, D.Altura, D.Piso, D.Departamento, D.Localidad, D.Provincia, D.CodigoPostal,
+    PAC.IdCoberturaMedica AS idCobertura, C.Nombre AS NombreCobertura
+	FROM Personas P
+	INNER JOIN PACIENTES PAC ON P.IdPersona = PAC.idPersona
+	LEFT JOIN Domicilios D ON P.IdDomicilio = D.IdDomicilio
+	LEFT JOIN COBERTURA C ON PAC.IdCoberturaMedica = C.idCoberturaMedica
+WHERE P.IdPersona = @IdPaciente;
 END
 GO
 
@@ -159,12 +160,12 @@ BEGIN
         END
 
         UPDATE Personas
-        SET Nombre = @Nombre, Apellido = @Apellido, Dni = @DNI, @Sexo = Sexo, Email = @Mail,
-            Telefono = @Telefono, IdDomicilio = @IdDomicilio
+        SET Nombre = @Nombre, Apellido = @Apellido, Dni = @DNI, Sexo = @Sexo, FechaNacimiento = @FechaNacimiento,
+            Email = @Mail, Telefono = @Telefono, IdDomicilio = @IdDomicilio
         WHERE IdPersona = @IdPaciente;
 
         UPDATE PACIENTES
-        SET FechaNacimiento = @FechaNacimiento, idCobertura = @idCobertura
+        SET IdCoberturaMedica = @idCobertura
         WHERE idPersona = @IdPaciente;
 
         COMMIT TRANSACTION;
@@ -196,6 +197,7 @@ CREATE OR ALTER PROCEDURE dbo.sp_AltaTurno
     @IdPaciente INT,
     @IdMedico INT,
     @FechaHora DATETIME,
+    @MotivoConsulta VARCHAR(255) = NULL,
     @Observaciones VARCHAR(255) = NULL
 AS
 BEGIN
@@ -212,8 +214,8 @@ BEGIN
             RAISERROR('El paciente ya tiene un turno asignado en ese horario.', 16, 1);
         END
 
-        INSERT INTO Turnos (IdPaciente, IdMedico, FechaHora, IdEstadoTurno, Observaciones, Activo)
-        VALUES (@IdPaciente, @IdMedico, @FechaHora, 1, @Observaciones, 1);
+        INSERT INTO Turnos (IdPaciente, IdMedico, FechaHora, MotivoConsulta, IdEstadoTurno, Observaciones, Activo)
+        VALUES (@IdPaciente, @IdMedico, @FechaHora, @MotivoConsulta, 1, @Observaciones, 1);
         
     END TRY
     BEGIN CATCH
@@ -243,6 +245,7 @@ BEGIN
     SELECT 
         T.IdTurno,
         T.FechaHora,
+        T.MotivoConsulta,
         T.Observaciones,
         E.Descripcion AS Estado,
         -- Datos Paciente

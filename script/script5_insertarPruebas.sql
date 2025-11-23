@@ -1,4 +1,4 @@
-﻿USE ClinicaDB;
+USE ClinicaDB;
 GO
 
 SET XACT_ABORT ON;
@@ -6,19 +6,20 @@ SET XACT_ABORT ON;
 BEGIN TRANSACTION;
 BEGIN TRY
 
-    -- ROLES
     IF NOT EXISTS (SELECT 1 FROM dbo.Roles)
         INSERT INTO dbo.Roles (Nombre) VALUES ('Administrador'), ('Recepcionista'), ('Medico');
         
-    -- COBERTURAS
     IF NOT EXISTS (SELECT 1 FROM dbo.COBERTURA)
         INSERT INTO dbo.COBERTURA (Nombre) VALUES ('Particular'), ('OSDE'), ('Galeno'), ('PAMI');
     
-    -- ESPECIALIDADES
     IF NOT EXISTS (SELECT 1 FROM dbo.Especialidades)
         INSERT INTO dbo.Especialidades (Descripcion) VALUES ('Clínica Médica'), ('Pediatría'), ('Cardiología'), ('Dermatología'), ('Ginecología'), ('Traumatología');
 
-    -- CONSULTORIOS 
+    DECLARE @IdOSDE INT = (SELECT idCoberturaMedica FROM COBERTURA WHERE Nombre = 'OSDE');
+    DECLARE @IdGaleno INT = (SELECT idCoberturaMedica FROM COBERTURA WHERE Nombre = 'Galeno');
+    DECLARE @IdPAMI INT = (SELECT idCoberturaMedica FROM COBERTURA WHERE Nombre = 'PAMI');
+    DECLARE @IdParticular INT = (SELECT idCoberturaMedica FROM COBERTURA WHERE Nombre = 'Particular');
+
     IF NOT EXISTS (SELECT 1 FROM CONSULTORIOS WHERE Nombre = 'Consultorio 101')
         EXEC dbo.sp_AgregarConsultorio @Nombre = 'Consultorio 101';
     IF NOT EXISTS (SELECT 1 FROM CONSULTORIOS WHERE Nombre = 'Consultorio 102')
@@ -30,139 +31,55 @@ BEGIN TRY
     IF NOT EXISTS (SELECT 1 FROM CONSULTORIOS WHERE Nombre = 'Laboratorio')
         EXEC dbo.sp_AgregarConsultorio @Nombre = 'Laboratorio';
 
-    -- ADMINISTRADORES 
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'admin_gonzalez')
-        EXEC dbo.sp_AgregarAdministrador 'Carlos', 'González', '20111222', 'cgonzalez@clinica.com', '1155550001', 'admin_gonzalez', 'clave123';
+        EXEC dbo.sp_AgregarAdministrador 'Carlos', 'González', '20111222', 'Masculino', NULL, 'cgonzalez@clinica.com', '1155550001', 'admin_gonzalez', 'clave123';
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'admin_rodriguez')
-        EXEC dbo.sp_AgregarAdministrador 'Ana', 'Rodríguez', '21222333', 'arodriguez@clinica.com', '1155550002', 'admin_rodriguez', 'clave123';
+        EXEC dbo.sp_AgregarAdministrador 'Ana', 'Rodríguez', '21222333', 'Femenino', NULL, 'arodriguez@clinica.com', '1155550002', 'admin_rodriguez', 'clave123';
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'admin_lopez')
-        EXEC dbo.sp_AgregarAdministrador 'Luis', 'López', '22333444', 'llopez@clinica.com', '1155550003', 'admin_lopez', 'clave123';
+        EXEC dbo.sp_AgregarAdministrador 'Luis', 'López', '22333444', 'Masculino', NULL, 'llopez@clinica.com', '1155550003', 'admin_lopez', 'clave123';
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'admin_martinez')
-        EXEC dbo.sp_AgregarAdministrador 'Maria', 'Martínez', '23444555', 'mmartinez@clinica.com', '1155550004', 'admin_martinez', 'clave123';
+        EXEC dbo.sp_AgregarAdministrador 'Maria', 'Martínez', '23444555', 'Femenino', NULL, 'mmartinez@clinica.com', '1155550004', 'admin_martinez', 'clave123';
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'admin_sanchez')
-        EXEC dbo.sp_AgregarAdministrador 'Javier', 'Sánchez', '24555666', 'jsanchez@clinica.com', '1155550005', 'admin_sanchez', 'clave123';
+        EXEC dbo.sp_AgregarAdministrador 'Javier', 'Sánchez', '24555666', 'Masculino', NULL, 'jsanchez@clinica.com', '1155550005', 'admin_sanchez', 'clave123';
 
-    -- RECEPCIONISTAS 
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'recep_diaz')
-        EXEC dbo.sp_AgregarRecepcionista 'Lucía', 'Díaz', '30111222', 'ldiaz@clinica.com', '1166660001', 'recep_diaz', 'clave123';
+        EXEC dbo.sp_AgregarRecepcionista 'Lucía', 'Díaz', '30111222', 'Femenino', NULL, 'ldiaz@clinica.com', '1166660001', 'recep_diaz', 'clave123';
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'recep_perez')
-        EXEC dbo.sp_AgregarRecepcionista 'Miguel', 'Pérez', '31222333', 'mperez@clinica.com', '1166660002', 'recep_perez', 'clave123';
+        EXEC dbo.sp_AgregarRecepcionista 'Miguel', 'Pérez', '31222333', 'Masculino', NULL, 'mperez@clinica.com', '1166660002', 'recep_perez', 'clave123';
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'recep_gomez')
-        EXEC dbo.sp_AgregarRecepcionista 'Elena', 'Gómez', '32333444', 'egomez@clinica.com', '1166660003', 'recep_gomez', 'clave123';
+        EXEC dbo.sp_AgregarRecepcionista 'Elena', 'Gómez', '32333444', 'Femenino', NULL, 'egomez@clinica.com', '1166660003', 'recep_gomez', 'clave123';
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'recep_fernandez')
-        EXEC dbo.sp_AgregarRecepcionista 'David', 'Fernández', '33444555', 'dfernandez@clinica.com', '1166660004', 'recep_fernandez', 'clave123';
+        EXEC dbo.sp_AgregarRecepcionista 'David', 'Fernández', '33444555', 'Masculino', NULL, 'dfernandez@clinica.com', '1166660004', 'recep_fernandez', 'clave123';
     IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = 'recep_moreno')
-        EXEC dbo.sp_AgregarRecepcionista 'Sofía', 'Moreno', '34555666', 'smoreno@clinica.com', '1166660005', 'recep_moreno', 'clave123';
+        EXEC dbo.sp_AgregarRecepcionista 'Sofía', 'Moreno', '34555666', 'Femenino', NULL, 'smoreno@clinica.com', '1166660005', 'recep_moreno', 'clave123';
 
-    --  PACIENTES 
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '40111222')
-        EXEC dbo.sp_InsertarPaciente 'Roberto', 'García', '40111222', 'Masculino', 'rgarcia@email.com', '1177770001', 'Calle Falsa', '123', NULL, NULL, 'Springfield', 'Buenos Aires', '1610', '1980-05-10', 2;
+        EXEC dbo.sp_InsertarPaciente 'Roberto', 'García', '40111222', 'Masculino', 'rgarcia@email.com', '1177770001', 'Calle Falsa', '123', NULL, NULL, 'Springfield', 'Buenos Aires', '1610', '1980-05-10', @IdOSDE;
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '41222333')
-        EXEC dbo.sp_InsertarPaciente 'Carmen', 'Ruiz', '41222333', 'Femenino', 'cruiz@email.com', '1177770002', 'Av. Rivadavia', '2030', '1A', NULL, 'CABA', 'CABA', '1033', '1995-11-20', 3;
+        EXEC dbo.sp_InsertarPaciente 'Carmen', 'Ruiz', '41222333', 'Femenino', 'cruiz@email.com', '1177770002', 'Av. Rivadavia', '2030', '1A', NULL, 'CABA', 'CABA', '1033', '1995-11-20', @IdGaleno;
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '42333444')
-        EXEC dbo.sp_InsertarPaciente 'Pablo', 'Alonso', '42333444', 'Masculino', 'palonso@email.com', '1177770003', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2001-01-15', 1;
+        EXEC dbo.sp_InsertarPaciente 'Pablo', 'Alonso', '42333444', 'Masculino', 'palonso@email.com', '1177770003', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2001-01-15', @IdParticular;
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '43444555')
-        EXEC dbo.sp_InsertarPaciente 'Isabel', 'Gutiérrez', '43444555', 'Femenino', 'igutierrez@email.com', '1177770004', 'Calle Sol', '800', NULL, NULL, 'Quilmes', 'Buenos Aires', '1878', '1988-07-30', 4;
+        EXEC dbo.sp_InsertarPaciente 'Isabel', 'Gutiérrez', '43444555', 'Femenino', 'igutierrez@email.com', '1177770004', 'Calle Sol', '800', NULL, NULL, 'Quilmes', 'Buenos Aires', '1878', '1988-07-30', @IdPAMI;
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '44555666')
-        EXEC dbo.sp_InsertarPaciente 'Marcos', 'Navarro', '44555666', 'Masculino', 'mnavarro@email.com', '1177770005', 'Av. Corrientes', '1500', '8B', NULL, 'CABA', 'CABA', '1042', '1999-03-05', 2;
+        EXEC dbo.sp_InsertarPaciente 'Marcos', 'Navarro', '44555666', 'Masculino', 'mnavarro@email.com', '1177770005', 'Av. Corrientes', '1500', '8B', NULL, 'CABA', 'CABA', '1042', '1999-03-05', @IdOSDE;
 
-    -- MEDICOS 
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '25111222')
-    BEGIN
-        EXEC dbo.sp_AgregarMedico 
-            @Nombre = 'Laura', @Apellido = 'Torres', @DNI = '25111222', 
-            @Matricula = 'MN1001', @Mail = 'ltorres@clinica.com', @Telefono = '1188880001';
-    END
+        EXEC dbo.sp_AgregarMedicoConUsuario 'Laura', 'Torres', '25111222', 'Femenino', NULL, 'MN1001', 'ltorres@clinica.com', '1188880001', 'ltorres', 'clave123';
     
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '26222333')
-    BEGIN
-        EXEC dbo.sp_AgregarMedico 
-            @Nombre = 'Diego', @Apellido = 'Ramírez', @DNI = '26222333', 
-            @Matricula = 'MN1002', @Mail = 'dramirez@clinica.com', @Telefono = '1188880002';
-    END
+        EXEC dbo.sp_AgregarMedicoConUsuario 'Diego', 'Ramírez', '26222333', 'Masculino', NULL, 'MN1002', 'dramirez@clinica.com', '1188880002', 'dramirez', 'clave123';
 
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '27333444')
-    BEGIN
-        EXEC dbo.sp_AgregarMedico 
-            @Nombre = 'Valeria', @Apellido = 'Castro', @DNI = '27333444', 
-            @Matricula = 'MN1003', @Mail = 'vcastro@clinica.com', @Telefono = '1188880003';
-    END
+        EXEC dbo.sp_AgregarMedicoConUsuario 'Valeria', 'Castro', '27333444', 'Femenino', NULL, 'MN1003', 'vcastro@clinica.com', '1188880003', 'vcastro', 'clave123';
 
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '28444555')
-    BEGIN
-        EXEC dbo.sp_AgregarMedico 
-            @Nombre = 'Jorge', @Apellido = 'Ortega', @DNI = '28444555', 
-            @Matricula = 'MN1004', @Mail = 'jortega@clinica.com', @Telefono = '1188880004';
-    END
+        EXEC dbo.sp_AgregarMedicoConUsuario 'Jorge', 'Ortega', '28444555', 'Masculino', NULL, 'MN1004', 'jortega@clinica.com', '1188880004', 'jortega', 'clave123';
 
     IF NOT EXISTS (SELECT 1 FROM Personas WHERE Dni = '29555666')
-    BEGIN
-        EXEC dbo.sp_AgregarMedico 
-            @Nombre = 'Clara', @Apellido = 'Molina', @DNI = '29555666', 
-            @Matricula = 'MN1005', @Mail = 'cmolina@clinica.com', @Telefono = '1188880005';
-    END
-
-    DECLARE @IdRolMedico INT;
-    SELECT @IdRolMedico = IdRol FROM Roles WHERE Nombre = 'Medico';
-
-    IF @IdRolMedico IS NULL
-    BEGIN
-        INSERT INTO Roles (Nombre, Activo) VALUES ('Medico', 1);
-        SET @IdRolMedico = SCOPE_IDENTITY();
-        PRINT 'Rol Medico creado';
-    END
+        EXEC dbo.sp_AgregarMedicoConUsuario 'Mariana', 'Silva', '29555666', 'Femenino', NULL, 'MN1005', 'msilva@clinica.com', '1188880005', 'msilva', 'clave123';
 
     DECLARE @IdPersonaLaura INT = (SELECT IdPersona FROM Personas WHERE Dni = '25111222');
-    DECLARE @IdPersonaDiego INT = (SELECT IdPersona FROM Personas WHERE Dni = '26222333');
-    DECLARE @IdPersonaValeria INT = (SELECT IdPersona FROM Personas WHERE Dni = '27333444');
-    DECLARE @IdPersonaJorge INT = (SELECT IdPersona FROM Personas WHERE Dni = '28444555');
-    DECLARE @IdPersonaClara INT = (SELECT IdPersona FROM Personas WHERE Dni = '29555666');
-
-    IF @IdPersonaLaura IS NOT NULL AND NOT EXISTS (SELECT 1 FROM Usuarios WHERE IdPersona = @IdPersonaLaura)
-    BEGIN
-        INSERT INTO Usuarios (NombreUsuario, Clave, IdRol, IdPersona, Activo)
-        VALUES ('ltorres', 'clave123', @IdRolMedico, @IdPersonaLaura, 1);
-        
-        UPDATE Medicos SET IdUsuario = SCOPE_IDENTITY() WHERE IdPersona = @IdPersonaLaura;
-        PRINT 'Usuario ltorres creado';
-    END
-
-    IF @IdPersonaDiego IS NOT NULL AND NOT EXISTS (SELECT 1 FROM Usuarios WHERE IdPersona = @IdPersonaDiego)
-    BEGIN
-        INSERT INTO Usuarios (NombreUsuario, Clave, IdRol, IdPersona, Activo)
-        VALUES ('dramirez', 'clave123', @IdRolMedico, @IdPersonaDiego, 1);
-        
-        UPDATE Medicos SET IdUsuario = SCOPE_IDENTITY() WHERE IdPersona = @IdPersonaDiego;
-        PRINT 'Usuario dramirez creado';
-    END
-
-    IF @IdPersonaValeria IS NOT NULL AND NOT EXISTS (SELECT 1 FROM Usuarios WHERE IdPersona = @IdPersonaValeria)
-    BEGIN
-        INSERT INTO Usuarios (NombreUsuario, Clave, IdRol, IdPersona, Activo)
-        VALUES ('vcastro', 'clave123', @IdRolMedico, @IdPersonaValeria, 1);
-        
-        UPDATE Medicos SET IdUsuario = SCOPE_IDENTITY() WHERE IdPersona = @IdPersonaValeria;
-        PRINT 'Usuario vcastro creado';
-    END
-
-    IF @IdPersonaJorge IS NOT NULL AND NOT EXISTS (SELECT 1 FROM Usuarios WHERE IdPersona = @IdPersonaJorge)
-    BEGIN
-        INSERT INTO Usuarios (NombreUsuario, Clave, IdRol, IdPersona, Activo)
-        VALUES ('jortega', 'clave123', @IdRolMedico, @IdPersonaJorge, 1);
-        
-        UPDATE Medicos SET IdUsuario = SCOPE_IDENTITY() WHERE IdPersona = @IdPersonaJorge;
-        PRINT 'Usuario jortega creado';
-    END
-
-    IF @IdPersonaClara IS NOT NULL AND NOT EXISTS (SELECT 1 FROM Usuarios WHERE IdPersona = @IdPersonaClara)
-    BEGIN
-        INSERT INTO Usuarios (NombreUsuario, Clave, IdRol, IdPersona, Activo)
-        VALUES ('cmolina', 'clave123', @IdRolMedico, @IdPersonaClara, 1);
-        
-        UPDATE Medicos SET IdUsuario = SCOPE_IDENTITY() WHERE IdPersona = @IdPersonaClara;
-        PRINT 'Usuario cmolina creado';
-    END
-
     DECLARE @IdPaciente1 INT = (SELECT IdPersona FROM Personas WHERE Dni = '40111222');
     DECLARE @IdPaciente2 INT = (SELECT IdPersona FROM Personas WHERE Dni = '41222333');
     DECLARE @IdPaciente3 INT = (SELECT IdPersona FROM Personas WHERE Dni = '42333444');
@@ -173,11 +90,11 @@ BEGIN TRY
         BEGIN
             DECLARE @FechaBase DATETIME = CAST(CAST(GETDATE() AS DATE) AS DATETIME);
             
-            INSERT INTO Turnos (IdPaciente, IdMedico, FechaHora, IdEstadoTurno, Observaciones, Activo)
+            INSERT INTO Turnos (IdPaciente, IdMedico, FechaHora, MotivoConsulta, IdEstadoTurno, Observaciones, Activo)
             VALUES 
-                (@IdPaciente1, @IdPersonaLaura, DATEADD(HOUR, 9, @FechaBase), 1, 'Control general', 1),
-                (@IdPaciente2, @IdPersonaLaura, DATEADD(MINUTE, 30, DATEADD(HOUR, 10, @FechaBase)), 1, 'Primera consulta', 1),
-                (@IdPaciente3, @IdPersonaLaura, DATEADD(HOUR, 14, @FechaBase), 1, 'Seguimiento de tratamiento', 1);
+                (@IdPaciente1, @IdPersonaLaura, DATEADD(HOUR, 9, @FechaBase), 'Control general', 1, 'Primera visita del año', 1),
+                (@IdPaciente2, @IdPersonaLaura, DATEADD(MINUTE, 30, DATEADD(HOUR, 10, @FechaBase)), 'Primera consulta', 1, 'Paciente nuevo', 1),
+                (@IdPaciente3, @IdPersonaLaura, DATEADD(HOUR, 14, @FechaBase), 'Seguimiento', 1, 'Continuar tratamiento', 1);
             
             PRINT 'Turnos de prueba creados para Laura Torres';
         END

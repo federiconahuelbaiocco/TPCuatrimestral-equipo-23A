@@ -232,3 +232,20 @@
 .perfil-medico .form-check-label {
     padding-top: 0.125rem;
 }
+
+.form-control:disabled,
+.form-control[readonly],
+.form-select:disabled {
+    background-color: #ffffff !important; 
+    color: #495057 !important; 
+    border: 1px solid #dee2e6 !important; 
+    opacity: 1 !important;
+    cursor: default;
+    box-shadow: none;
+}
+
+
+.form-control:disabled:hover,
+.form-control[readonly]:hover {
+    background-color: #fcfcfc !important;
+}

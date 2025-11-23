@@ -422,69 +422,27 @@ color: #1e293b;
     transform: translateY(-1px);
 }
 
-.sidebar-btn-cancel {
-    background: white;
-    border: 2px solid #d1d5db;
-    border-radius: 12px;
-    padding: 1.125rem 1.5rem;
-    font-weight: 600;
- font-size: 1.05rem;
-    color: #6b7280;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+/* OVERRIDE BOOTSTRAP - ANCHO COMPLETO */
+.container-fluid {
+    max-width: 100% !important;
+    width: 100% !important;
 }
 
-.sidebar-btn-cancel:hover {
-    background: #f9fafb;
-    border-color: #9ca3af;
-    color: #374151;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+/* OVERRIDE para páginas de médicos - Expandir columnas */
+.content-area .container-fluid > .row > .col-lg-4 {
+    flex: 0 0 35% !important;
+    max-width: 35% !important;
 }
 
-.sidebar-btn-cancel:active {
-    transform: translateY(0);
+.content-area .container-fluid > .row > .col-lg-8 {
+    flex: 0 0 65% !important;
+    max-width: 65% !important;
 }
 
-.sidebar-info-box {
-    background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
-    border-left: 4px solid #667eea;
-    padding: 1.25rem 1.5rem;
-    border-radius: 12px;
-  margin-top: 2rem;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
-}
-
-.sidebar-info-box small {
-    color: #1e40af;
-    font-size: 0.9rem;
-    line-height: 1.6;
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-}
-
-.sidebar-info-box i {
-    font-size: 1rem;
-    margin-top: 0.125rem;
-    flex-shrink: 0;
-}
-
-.sidebar-fixed-body::-webkit-scrollbar {
-    width: 8px;
-}
-
-.sidebar-fixed-body::-webkit-scrollbar-track {
-    background: #f1f5f9;
-}
-
-.sidebar-fixed-body::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 10px;
-}
-
-.sidebar-fixed-body::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+/* Alternativa: Hacer que las columnas usen el 100% en lugar de dividirse */
+@media (min-width: 992px) {
+    .content-area .row.full-width-override > [class*="col-"] {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
 }

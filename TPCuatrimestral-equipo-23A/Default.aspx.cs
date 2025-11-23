@@ -14,13 +14,6 @@ namespace TPCuatrimestral_equipo_23A
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			if (!IsPostBack)
-			{
-				if (Session["usuario"] != null)
-				{
-					RedirigirSegunRol((Usuario)Session["usuario"]);
-				}
-			}
 		}
 
 		protected void btnLogin_Click(object sender, EventArgs e)

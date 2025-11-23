@@ -18,13 +18,12 @@ namespace TPCuatrimestral_equipo_23A
             {
                 try
                 {
-                    MedicoModel medicoActual = (MedicoModel)Session["medicoActual"];
-                    
-                    if (medicoActual == null)
+                    if (Session["medicoActual"] == null)
                     {
                         Response.Redirect("Default.aspx", false);
                         return;
                     }
+                    MedicoModel medicoActual = (MedicoModel)Session["medicoActual"];
 
                     lblBienvenida.Text = $"Bienvenido, Dr./Dra. {medicoActual.Nombre} {medicoActual.Apellido}. Aquí puedes gestionar tus consultas y pacientes.";
 
@@ -43,46 +42,37 @@ namespace TPCuatrimestral_equipo_23A
         {
             TurnoNegocio turnoNegocio = new TurnoNegocio();
             
-            List<Turno> turnosDelMedico = turnoNegocio.ListarTurnos(idMedico, null);
-            
-            List<Turno> turnosHoy = turnosDelMedico
-                .Where(t => t.FechaHora.Date == DateTime.Today)
-                .ToList();
-            
-            List<Turno> turnosPendientes = turnosDelMedico
-                .Where(t => t.Estado.Descripcion == "Programado" && t.FechaHora >= DateTime.Now)
-                .ToList();
+            int turnosHoy = turnoNegocio.ContarTurnosDelDia(idMedico);
+            int turnosPendientes = turnoNegocio.ContarTurnosPendientes(idMedico);
+            int totalPacientes = turnoNegocio.ContarPacientesPorMedico(idMedico);
 
-            List<int> pacientesUnicos = turnosDelMedico
-                .Select(t => t.Paciente.IdPersona)
-                .Distinct()
-                .ToList();
-
-            lblTurnosHoy.Text = turnosHoy.Count.ToString();
-            lblTotalPacientes.Text = pacientesUnicos.Count.ToString();
-            lblTurnosPendientes.Text = turnosPendientes.Count.ToString();
+            lblTurnosHoy.Text = turnosHoy.ToString();
+            lblTotalPacientes.Text = totalPacientes.ToString();
+            lblTurnosPendientes.Text = turnosPendientes.ToString();
         }
 
         private void CargarTurnosDelDia(int idMedico)
         {
             TurnoNegocio turnoNegocio = new TurnoNegocio();
             
-            List<Turno> turnosDelDia = turnoNegocio.ListarTurnos(idMedico, DateTime.Today);
+            List<Turno> turnosDelDia = turnoNegocio.ListarTurnosDelDia(idMedico);
             
-            var turnosOrdenados = turnosDelDia
-                .OrderBy(t => t.FechaHora)
-                .Select(t => new
+            var turnosParaGrid = new List<dynamic>();
+            foreach (var turno in turnosDelDia)
+            {
+                turnosParaGrid.Add(new
                 {
-                    IdTurno = t.IdTurno,
-                    HoraFormateada = t.FechaHora.ToString("HH:mm"),
-                    NombreCompletoPaciente = $"{t.Paciente.Nombre} {t.Paciente.Apellido}",
-                    TipoConsulta = DeterminarTipoConsulta(t),
-                    Estado = t.Estado.Descripcion,
-                    IdPaciente = t.Paciente.IdPersona
-                })
-                .ToList();
+                    IdTurno = turno.IdTurno,
+                    HoraFormateada = turno.FechaHora.ToString("HH:mm"),
+                    NombreCompletoPaciente = $"{turno.Paciente.Apellido}, {turno.Paciente.Nombre}",
+                    TipoConsulta = turno.MotivoConsulta ?? "Consulta General",
+                    Estado = turno.Estado.Descripcion,
+                    IdPaciente = turno.Paciente.IdPersona,
+                    Dni = turno.Paciente.Dni // <-- Agregado para el GridView
+                });
+            }
 
-            dgvTurnosDelDia.DataSource = turnosOrdenados;
+            dgvTurnosDelDia.DataSource = turnosParaGrid;
             dgvTurnosDelDia.DataBind();
         }
 

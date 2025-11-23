@@ -154,9 +154,15 @@ namespace negocio
                     }
 
                     aux.Cobertura = new CoberturaMedica();
-                    aux.Cobertura.IdCoberturaMedica = datos.Lector["idCobertura"] != DBNull.Value ? (int)datos.Lector["idCobertura"] : 0;
+                    if (datos.Lector["idCobertura"] != DBNull.Value)
+                        aux.Cobertura.IdCoberturaMedica = (int)datos.Lector["idCobertura"];
+                    else
+                        aux.Cobertura.IdCoberturaMedica = 0;
 
-                    aux.Cobertura.Nombre = datos.Lector["NombreCobertura"].ToString();
+                    if (datos.Lector["NombreCobertura"] != DBNull.Value)
+                        aux.Cobertura.Nombre = datos.Lector["NombreCobertura"].ToString();
+                    else
+                        aux.Cobertura.Nombre = "Particular";
 
                     return aux;
                 }

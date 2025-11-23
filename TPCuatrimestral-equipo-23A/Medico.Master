@@ -3,87 +3,128 @@
 <!DOCTYPE html>
 <html lang="es">
 <head runat="server">
- <meta charset="utf-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <title><%: Page.Title %> - UTN Salud</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - UTN Salud</title>
 
- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    
+    <link href="~/styles/styles.css" rel="stylesheet" type="text/css" />
+    <link href="~/styles/MasterLayout.css" rel="stylesheet" type="text/css" />
+    <link href="~/styles/SidebarStyles.css" rel="stylesheet" type="text/css" />
+    <link href="~/styles/FormStyles.css" rel="stylesheet" type="text/css" />
 
- 
+    <style>
+        .admin-layout .main-content {
+            margin-right: 430px !important;
+            width: auto !important;
+            transition: all 0.3s ease;
+        }
 
- <link href="~/styles/styles.css" rel="stylesheet" type="text/css" />
- <link href="~/styles/MasterLayout.css" rel="stylesheet" type="text/css" />
- <link href="~/styles/SidebarStyles.css" rel="stylesheet" type="text/css" />
- <link href="~/styles/FormStyles.css" rel="stylesheet" type="text/css" />
+        .quick-access-sidebar-fixed {
+            width: 420px !important;
+        }
 
- <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+        @media (max-width: 1400px) {
+            .quick-access-sidebar-fixed {
+                width: 350px !important;
+            }
+            .admin-layout .main-content {
+                margin-right: 360px !important;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .admin-layout .main-content {
+                margin-right: 0 !important;
+            }
+            .quick-access-sidebar-fixed {
+                position: relative !important;
+                width: 100% !important;
+                height: auto !important;
+            }
+        }
+    </style>
+
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
 </head>
 <body class="d-flex flex-column min-vh-100">
- <form id="form1" runat="server" class="d-flex admin-layout flex-grow-1">
- <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+    <form id="form1" runat="server" class="d-flex admin-layout flex-grow-1">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
 
- <aside class="sidebar d-flex flex-column flex-shrink-0">
- <h4 class="px-3 pt-3">
- <i class="bi bi-heart-pulse-fill"></i>
- Médico
- </h4>
- <nav class="flex-grow-1 px-3">
- <ul class="nav flex-column gap-1">
- <li class="nav-item">
- <asp:HyperLink ID="hlMedico" runat="server" CssClass="nav-link" NavigateUrl="~/Medico.aspx">
- <i class="bi bi-house-fill"></i>
- <span>Inicio</span>
- </asp:HyperLink>
- </li>
- <li class="nav-item">
- <asp:HyperLink ID="hlCalendario" runat="server" CssClass="nav-link" NavigateUrl="~/CalendarioMaster.aspx">
- <i class="bi bi-calendar3-fill"></i>
- <span>Mi Calendario</span>
- </asp:HyperLink>
- </li>
- <li class="nav-item">
- <asp:HyperLink ID="hlPacientes" runat="server" CssClass="nav-link" NavigateUrl="#">
- <i class="bi bi-people-fill"></i>
- <span>Mis Pacientes</span>
- </asp:HyperLink>
- </li>
- <li class="nav-item">
- <asp:HyperLink ID="hlPerfil" runat="server" CssClass="nav-link" NavigateUrl="~/PerfilMedico.aspx">
- <i class="bi bi-person-circle"></i>
- <span>Mi Perfil</span>
- </asp:HyperLink>
- </li>
- <li class="nav-item">
- <asp:HyperLink ID="hlConfiguracion" runat="server" CssClass="nav-link" NavigateUrl="#">
- <i class="bi bi-gear-fill"></i>
- <span>Configuración</span>
- </asp:HyperLink>
- </li>
- </ul>
- </nav>
- </aside>
+        <aside class="sidebar d-flex flex-column flex-shrink-0">
+            <h4 class="px-3 pt-3">
+                <i class="bi bi-heart-pulse-fill"></i>
+                Médico
+            </h4>
+            <nav class="flex-grow-1 px-3">
+                <ul class="nav flex-column gap-1">
+                    <li class="nav-item">
+                        <asp:HyperLink ID="hlMedico" runat="server" CssClass="nav-link" NavigateUrl="~/Medico.aspx">
+                            <i class="bi bi-house-fill"></i>
+                            <span>Inicio</span>
+                        </asp:HyperLink>
+                    </li>
+                    <li class="nav-item">
+                        <asp:HyperLink ID="hlCalendario" runat="server" CssClass="nav-link" NavigateUrl="~/CalendarioMaster.aspx">
+                            <i class="bi bi-calendar3-fill"></i>
+                            <span>Mi Calendario</span>
+                        </asp:HyperLink>
+                    </li>
+                    <li class="nav-item">
+                        <asp:HyperLink ID="hlPacientes" runat="server" CssClass="nav-link" NavigateUrl="#">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Mis Pacientes</span>
+                        </asp:HyperLink>
+                    </li>
+                    <li class="nav-item">
+                        <asp:HyperLink ID="hlHistorialClinico" runat="server" CssClass="nav-link" NavigateUrl="~/HistorialesClinico.aspx">
+                            <i class="bi bi-journal-medical"></i>
+                            <span>Historial Clínico</span>
+                        </asp:HyperLink>
+                    </li>
+                    <li class="nav-item">
+                        <asp:HyperLink ID="hlPerfil" runat="server" CssClass="nav-link" NavigateUrl="~/PerfilMedico.aspx">
+                            <i class="bi bi-person-circle"></i>
+                            <span>Mi Perfil</span>
+                        </asp:HyperLink>
+                    </li>
+                    <li class="nav-item">
+                        <asp:HyperLink ID="hlConfiguracion" runat="server" CssClass="nav-link" NavigateUrl="#">
+                            <i class="bi bi-gear-fill"></i>
+                            <span>Configuración</span>
+                        </asp:HyperLink>
+                    </li>
+                </ul>
+            </nav>
+            <div class="px-3 pb-3">
+                <asp:HyperLink ID="hlLogout" runat="server" CssClass="nav-link text-danger" NavigateUrl="~/Logout.aspx">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Cerrar Sesión</span>
+                </asp:HyperLink>
+            </div>
+        </aside>
 
- <div class="main-content d-flex flex-column w-100">
- 
- <main class="content-area">
- <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
-</main>
- </div>
- </form>
- 
- <footer class="text-center mt-auto py-3 border-top bg-white">
- <p class="mb-0 text-muted">
- <i class="bi bi-heart-fill text-danger"></i>
- Copyright 2025 - TPCuatrimestral equipo23A
- </p>
- </footer>
+        <div class="main-content d-flex flex-column w-100">
+            <main class="content-area">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+            </main>
+        </div>
+    </form>
+    
+    <footer class="text-center mt-auto py-3 border-top bg-white">
+        <p class="mb-0 text-muted">
+            <i class="bi bi-heart-fill text-danger"></i>
+            Copyright 2025 - TPCuatrimestral equipo23A
+        </p>
+    </footer>
 
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
- 
- <script src="scripts_js/especialidades.js" type="text/javascript" charset="utf-8"></script>
- <script src="scripts_js/consultorios.js" type="text/javascript" charset="utf-8"></script>
- 
- <asp:ContentPlaceHolder ID="ScriptsPlaceHolder" runat="server"></asp:ContentPlaceHolder>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <script src="scripts_js/especialidades.js" type="text/javascript" charset="utf-8"></script>
+    <script src="scripts_js/consultorios.js" type="text/javascript" charset="utf-8"></script>
+    
+    <asp:ContentPlaceHolder ID="ScriptsPlaceHolder" runat="server"></asp:ContentPlaceHolder>
 </body>
 </html>

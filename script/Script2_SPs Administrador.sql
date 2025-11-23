@@ -135,6 +135,8 @@ CREATE PROCEDURE dbo.sp_AgregarMedico
     @Nombre VARCHAR(100),
     @Apellido VARCHAR(100),
     @DNI VARCHAR(20),
+    @Sexo VARCHAR(20) = 'No especificado',
+    @FechaNacimiento DATE = NULL,
     @Matricula VARCHAR(50),
     @Mail VARCHAR(255) = NULL,
     @Telefono VARCHAR(50) = NULL
@@ -150,13 +152,66 @@ BEGIN
             RETURN;
         END
 
-        INSERT INTO dbo.Personas (Nombre, Apellido, Dni, Email, Telefono, Activo)
-        VALUES (@Nombre, @Apellido, @DNI, @Mail, @Telefono, 1);
+        INSERT INTO dbo.Personas (Nombre, Apellido, Dni, Sexo, FechaNacimiento, Email, Telefono, Activo)
+        VALUES (@Nombre, @Apellido, @DNI, @Sexo, @FechaNacimiento, @Mail, @Telefono, 1);
 
         DECLARE @NuevoIdPersona INT = SCOPE_IDENTITY();
 
         INSERT INTO dbo.Medicos (IdPersona, Matricula, IdUsuario)
         VALUES (@NuevoIdPersona, @Matricula, NULL);
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW; 
+    END CATCH
+END
+GO
+
+IF OBJECT_ID('dbo.sp_AgregarMedicoConUsuario', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_AgregarMedicoConUsuario;
+GO
+CREATE PROCEDURE dbo.sp_AgregarMedicoConUsuario
+    @Nombre VARCHAR(100),
+    @Apellido VARCHAR(100),
+    @DNI VARCHAR(20),
+    @Sexo VARCHAR(20) = 'No especificado',
+    @FechaNacimiento DATE = NULL,
+    @Matricula VARCHAR(50),
+    @Mail VARCHAR(255) = NULL,
+    @Telefono VARCHAR(50) = NULL,
+    @NombreUsuario VARCHAR(50),
+    @Clave VARCHAR(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRANSACTION;
+    BEGIN TRY
+        IF EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = @NombreUsuario)
+            THROW 50001, 'El nombre de usuario ya está en uso.', 1;
+
+        IF EXISTS (SELECT 1 FROM PERSONAS WHERE DNI = @DNI)
+            THROW 50003, 'El DNI ya existe.', 1;
+
+        DECLARE @IdRolMedico INT;
+        SELECT @IdRolMedico = IdRol FROM dbo.Roles WHERE Nombre = 'Medico';
+
+        IF @IdRolMedico IS NULL
+            THROW 50002, 'El rol "Medico" no existe en la base de datos.', 1;
+
+        INSERT INTO dbo.Personas (Nombre, Apellido, Dni, Sexo, FechaNacimiento, Email, Telefono, Activo)
+        VALUES (@Nombre, @Apellido, @DNI, @Sexo, @FechaNacimiento, @Mail, @Telefono, 1);
+
+        DECLARE @NuevoIdPersona INT = SCOPE_IDENTITY();
+
+        INSERT INTO dbo.Usuarios (NombreUsuario, Clave, IdRol, IdPersona, Activo)
+        VALUES (@NombreUsuario, @Clave, @IdRolMedico, @NuevoIdPersona, 1);
+
+        DECLARE @NuevoIdUsuario INT = SCOPE_IDENTITY();
+
+        INSERT INTO dbo.Medicos (IdPersona, Matricula, IdUsuario)
+        VALUES (@NuevoIdPersona, @Matricula, @NuevoIdUsuario);
 
         COMMIT TRANSACTION;
     END TRY
@@ -175,6 +230,8 @@ CREATE PROCEDURE dbo.sp_ModificarMedico
     @Nombre VARCHAR(100),
     @Apellido VARCHAR(100),
     @DNI VARCHAR(20),
+    @Sexo VARCHAR(20) = 'No especificado',
+    @FechaNacimiento DATE = NULL,
     @Matricula VARCHAR(50),
     @Mail VARCHAR(255) = NULL,
     @Telefono VARCHAR(50) = NULL,
@@ -189,6 +246,8 @@ BEGIN
             Nombre = @Nombre,
             Apellido = @Apellido,
             Dni = @DNI,
+            Sexo = @Sexo,
+            FechaNacimiento = @FechaNacimiento,
             Email = @Mail,
             Telefono = @Telefono,
             Activo = @Activo
@@ -251,6 +310,7 @@ GO
 
 CREATE PROCEDURE dbo.sp_AgregarRecepcionista
     @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20),
+    @Sexo VARCHAR(20) = 'No especificado', @FechaNacimiento DATE = NULL,
     @Mail VARCHAR(255), @Telefono VARCHAR(50),
     @NombreUsuario VARCHAR(50), @Clave VARCHAR(50)
 AS
@@ -264,8 +324,8 @@ BEGIN
         IF @IdRolRecep IS NULL
             THROW 50002, 'El rol "Recepcionista" no existe en la base de datos.', 1;
 
-        INSERT INTO Personas (Nombre, Apellido, Dni, Email, Telefono)
-        VALUES (@Nombre, @Apellido, @DNI, @Mail, @Telefono);
+        INSERT INTO dbo.Personas (Nombre, Apellido, Dni, Sexo, FechaNacimiento, Email, Telefono, Activo)
+        VALUES (@Nombre, @Apellido, @DNI, @Sexo, @FechaNacimiento, @Mail, @Telefono, 1);
         
         DECLARE @IdPersona INT = SCOPE_IDENTITY();
         
@@ -287,6 +347,7 @@ GO
 CREATE PROCEDURE dbo.sp_ModificarRecepcionista
     @IdUsuario INT,
     @Nombre VARCHAR(100), @Apellido VARCHAR(100), @DNI VARCHAR(20),
+    @Sexo VARCHAR(20) = 'No especificado', @FechaNacimiento DATE = NULL,
     @Mail VARCHAR(255) = NULL, @Telefono VARCHAR(50) = NULL,
     @NuevaClave VARCHAR(50) = NULL
 AS
@@ -294,10 +355,13 @@ BEGIN
     SET NOCOUNT ON;
     BEGIN TRANSACTION;
     BEGIN TRY
-        DECLARE @IdPersona INT = (SELECT IdPersona FROM Usuarios WHERE IdUsuario = @IdUsuario);
-        
-        UPDATE Personas
-        SET Nombre = @Nombre, Apellido = @Apellido, Dni = @DNI, Email = @Mail, Telefono = @Telefono
+        DECLARE @IdPersona INT;
+        SELECT @IdPersona = IdPersona FROM Usuarios WHERE IdUsuario = @IdUsuario;
+
+        UPDATE dbo.Personas
+        SET Nombre = @Nombre, Apellido = @Apellido, Dni = @DNI,
+            Sexo = @Sexo, FechaNacimiento = @FechaNacimiento,
+            Email = @Mail, Telefono = @Telefono
         WHERE IdPersona = @IdPersona;
         
         IF @NuevaClave IS NOT NULL AND LEN(@NuevaClave) > 0
@@ -354,6 +418,8 @@ CREATE PROCEDURE dbo.sp_AgregarAdministrador
     @Nombre VARCHAR(100),
     @Apellido VARCHAR(100),
     @DNI VARCHAR(20),
+    @Sexo VARCHAR(20) = 'No especificado',
+    @FechaNacimiento DATE = NULL,
     @Mail VARCHAR(255),
     @Telefono VARCHAR(50),
     @NombreUsuario VARCHAR(50),
@@ -372,8 +438,8 @@ BEGIN
         IF @IdRolAdmin IS NULL
             THROW 50002, 'El rol "Administrador" no existe en la base de datos.', 1;
 
-        INSERT INTO dbo.Personas (Nombre, Apellido, Dni, Email, Telefono)
-        VALUES (@Nombre, @Apellido, @DNI, @Mail, @Telefono);
+        INSERT INTO dbo.Personas (Nombre, Apellido, Dni, Sexo, FechaNacimiento, Email, Telefono, Activo)
+        VALUES (@Nombre, @Apellido, @DNI, @Sexo, @FechaNacimiento, @Mail, @Telefono, 1);
 
         DECLARE @NuevoIdPersona INT = SCOPE_IDENTITY();
 

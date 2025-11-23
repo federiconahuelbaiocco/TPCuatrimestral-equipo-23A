@@ -60,6 +60,12 @@ Recepcionista
  </li>
  </ul>
  </nav>
+ <div class="px-3 pb-3">
+ <asp:HyperLink ID="hlLogout" runat="server" CssClass="nav-link text-danger" NavigateUrl="~/Logout.aspx">
+ <i class="bi bi-box-arrow-right"></i>
+ <span>Cerrar Sesión</span>
+ </asp:HyperLink>
+ </div>
  </aside>
 
  <div class="main-content d-flex flex-column w-100">
