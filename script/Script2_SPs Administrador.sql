@@ -44,6 +44,34 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE dbo.sp_EliminarEspecialidadesDeMedico
+    @IdMedico INT
+AS
+BEGIN
+    DELETE FROM Medico_Especialidad WHERE IdMedico = @IdMedico;
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_AgregarEspecialidadAMedico
+    @IdMedico INT,
+    @IdEspecialidad INT
+AS
+BEGIN
+    INSERT INTO Medico_Especialidad (IdMedico, IdEspecialidad) VALUES (@IdMedico, @IdEspecialidad);
+END
+GO
+
+CREATE OR ALTER PROCEDURE sp_ListarEspecialidadesPorMedico
+    @IdMedico INT
+AS
+BEGIN
+    SELECT E.IdEspecialidad, E.Descripcion
+    FROM Medico_Especialidad ME
+    INNER JOIN Especialidades E ON ME.IdEspecialidad = E.IdEspecialidad
+    WHERE ME.IdMedico = @IdMedico
+END
+GO
+
 -- CONSULTORIOS
 CREATE OR ALTER PROCEDURE dbo.sp_ListarConsultorios
 AS
@@ -239,6 +267,36 @@ AS
 BEGIN
     SET NOCOUNT ON;
     UPDATE dbo.Personas SET Activo = 0 WHERE IdPersona = @IdPersona;
+END
+GO
+
+CREATE OR ALTER PROCEDURE sp_ModificarMatriculaMedico
+    @IdPersona INT,
+    @Matricula VARCHAR(50)
+AS
+BEGIN
+    UPDATE Medicos SET Matricula = @Matricula WHERE IdPersona = @IdPersona;
+END
+GO
+
+CREATE OR ALTER PROCEDURE sp_ObtenerMedicoPorId
+    @IdPersona INT
+AS
+BEGIN
+    SELECT 
+        P.IdPersona, 
+        P.Nombre, 
+        P.Apellido, 
+        P.Dni, 
+        P.Sexo, 
+        P.FechaNacimiento, 
+        P.Email, 
+        P.Telefono, 
+        P.Activo,
+        M.Matricula
+    FROM Personas P
+    INNER JOIN Medicos M ON P.IdPersona = M.IdPersona
+    WHERE P.IdPersona = @IdPersona
 END
 GO
 
