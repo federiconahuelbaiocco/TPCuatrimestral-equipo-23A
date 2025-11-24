@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -85,20 +82,63 @@ namespace TPCuatrimestral_equipo_23A
 
         private void CargarConfiguracionHorarios()
         {
-            var config = Application["HorarioConfig"] as HorarioConfig;
-            if (config != null)
+            TurnoTrabajoNegocio turnoNegocio = new TurnoTrabajoNegocio();
+            List<TurnoTrabajo> horariosDb = null;
+
+            try
             {
-                txtHoraApertura.Text = config.HoraApertura.ToString("hh\\:mm");
-                txtHoraCierre.Text = config.HoraCierre.ToString("hh\\:mm");
-                txtDuracionTurno.Text = config.DuracionTurno.ToString();
+                horariosDb = turnoNegocio.ListarHorariosPorMedico(0);
+            }
+            catch
+            {
+                horariosDb = new List<TurnoTrabajo>();
+            }
+
+            if (horariosDb != null && horariosDb.Count > 0)
+            {
+                TurnoTrabajo primerTurno = horariosDb[0];
+
+                txtHoraApertura.Text = primerTurno.HoraEntrada.ToString(@"hh\:mm");
+                txtHoraCierre.Text = primerTurno.HoraSalida.ToString(@"hh\:mm");
+
+                if (string.IsNullOrEmpty(txtDuracionTurno.Text))
+                    txtDuracionTurno.Text = "30";
 
                 foreach (ListItem item in cblDiasLaborables.Items)
                 {
-                    item.Selected = config.DiasLaborables.Contains((DayOfWeek)Enum.Parse(typeof(DayOfWeek), item.Value));
+                    item.Selected = false;
+                }
+
+                foreach (TurnoTrabajo turno in horariosDb)
+                {
+                    foreach (ListItem item in cblDiasLaborables.Items)
+                    {
+                        DayOfWeek diaItem = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), item.Value);
+
+                        if (diaItem == turno.DiaSemana)
+                        {
+                            item.Selected = true;
+                            break; 
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var config = Application["HorarioConfig"] as HorarioConfig;
+                if (config != null)
+                {
+                    txtHoraApertura.Text = config.HoraApertura.ToString(@"hh\:mm");
+                    txtHoraCierre.Text = config.HoraCierre.ToString(@"hh\:mm");
+                    txtDuracionTurno.Text = config.DuracionTurno.ToString();
+
+                    foreach (ListItem item in cblDiasLaborables.Items)
+                    {
+                        item.Selected = config.DiasLaborables.Contains((DayOfWeek)Enum.Parse(typeof(DayOfWeek), item.Value));
+                    }
                 }
             }
         }
-
         protected void btnGuardarHorarios_Click(object sender, EventArgs e)
         {
             Page.Validate("Horarios");
@@ -106,24 +146,58 @@ namespace TPCuatrimestral_equipo_23A
 
             try
             {
-                var config = new HorarioConfig
+                TimeSpan horaApertura = TimeSpan.Parse(txtHoraApertura.Text);
+                TimeSpan horaCierre = TimeSpan.Parse(txtHoraCierre.Text);
+                int duracion = int.Parse(txtDuracionTurno.Text);
+
+                List<DayOfWeek> diasSeleccionados = new List<DayOfWeek>();
+                foreach (ListItem item in cblDiasLaborables.Items)
                 {
-                    HoraApertura = TimeSpan.Parse(txtHoraApertura.Text),
-                    HoraCierre = TimeSpan.Parse(txtHoraCierre.Text),
-                    DuracionTurno = int.Parse(txtDuracionTurno.Text),
-                    DiasLaborables = cblDiasLaborables.Items.Cast<ListItem>()
-                                        .Where(li => li.Selected)
-                                        .Select(li => (DayOfWeek)Enum.Parse(typeof(DayOfWeek), li.Value))
-                                        .ToList()
-                };
+                    if (item.Selected)
+                    {
+                        DayOfWeek dia = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), item.Value);
+                        diasSeleccionados.Add(dia);
+                    }
+                }
+
+                HorarioConfig config = new HorarioConfig();
+                config.HoraApertura = horaApertura;
+                config.HoraCierre = horaCierre;
+                config.DuracionTurno = duracion;
+                config.DiasLaborables = diasSeleccionados;
 
                 Application["HorarioConfig"] = config;
 
-                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", "mostrarToastMensaje('Configuración de horarios guardada.','success');", true);
+                TurnoTrabajoNegocio turnoNegocio = new TurnoTrabajoNegocio();
+                int idClinicaGlobal = 0;
+
+                List<TurnoTrabajo> horariosExistentes = turnoNegocio.ListarHorariosPorMedico(idClinicaGlobal);
+
+                if (horariosExistentes != null)
+                {
+                    foreach (TurnoTrabajo turno in horariosExistentes)
+                    {
+                        turnoNegocio.Eliminar(turno.IdTurnoTrabajo);
+                    }
+                }
+
+                foreach (DayOfWeek dia in diasSeleccionados)
+                {
+                    TurnoTrabajo nuevoTurno = new TurnoTrabajo();
+                    nuevoTurno.DiaSemana = dia;
+                    nuevoTurno.HoraEntrada = horaApertura;
+                    nuevoTurno.HoraSalida = horaCierre;
+
+                    turnoNegocio.Agregar(idClinicaGlobal, nuevoTurno);
+                }
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", "mostrarToastMensaje('Configuración de horarios guardada y sincronizada.','success');", true);
+                CargarConfiguracionHorarios();
             }
             catch (Exception ex)
             {
-                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", $"mostrarToastMensaje('Error: {ex.Message.Replace("'", "\\'")}','danger');", true);
+                string mensajeError = ex.Message.Replace("'", "\\'");
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", $"mostrarToastMensaje('Error: {mensajeError}','danger');", true);
             }
         }
 

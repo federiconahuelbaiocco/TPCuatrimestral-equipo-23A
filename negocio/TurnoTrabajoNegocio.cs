@@ -22,9 +22,12 @@ namespace negocio
                 {
                     TurnoTrabajo aux = new TurnoTrabajo();
                     aux.IdTurnoTrabajo = (int)datos.Lector["IdTurnoTrabajo"];
-                    aux.DiaSemana = (DayOfWeek)Convert.ToInt32(datos.Lector["DiaSemana"]);
-                    aux.HoraEntrada = (TimeSpan)datos.Lector["HoraEntrada"];
-                    aux.HoraSalida = (TimeSpan)datos.Lector["HoraSalida"];
+
+                    int dbDia = Convert.ToInt32(datos.Lector["DiaSemana"]);
+                    aux.DiaSemana = (DayOfWeek)(((dbDia - 1) + 7) % 7);
+
+                    aux.HoraEntrada = TimeSpan.Parse((string)datos.Lector["HoraEntrada"]);
+                    aux.HoraSalida = TimeSpan.Parse((string)datos.Lector["HoraSalida"]);
 
                     lista.Add(aux);
                 }
@@ -47,7 +50,7 @@ namespace negocio
             {
                 datos.setearProcedimiento("sp_AgregarTurnoTrabajo");
                 datos.setearParametro("@IdMedico", idMedico);
-                datos.setearParametro("@DiaSemana", (int)turno.DiaSemana);
+                datos.setearParametro("@DiaSemana", ((int)turno.DiaSemana) + 1);
                 datos.setearParametro("@HoraEntrada", turno.HoraEntrada.ToString(@"hh\:mm"));
                 datos.setearParametro("@HoraSalida", turno.HoraSalida.ToString(@"hh\:mm"));
                 datos.ejecutarAccion();
@@ -80,13 +83,14 @@ namespace negocio
                 datos.cerrarConexion();
             }
         }
+
         public List<string> GenerarOpcionesHorario()
         {
             List<string> opciones = new List<string>();
             for (int hora = 6; hora <= 22; hora++)
             {
                 opciones.Add($"{hora:D2}:00");
-                opciones.Add($"{hora:D2}:30"); 
+                opciones.Add($"{hora:D2}:30");
             }
             return opciones;
         }
@@ -96,7 +100,7 @@ namespace negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearProcedimiento("sp_AltaTurnoTrabajo");
+                datos.setearProcedimiento("sp_AgregarTurnoTrabajo");
                 datos.setearParametro("@IdMedico", idMedico);
                 datos.setearParametro("@DiaSemana", diaSemana);
                 datos.setearParametro("@HoraEntrada", horaEntrada.ToString(@"hh\:mm"));
@@ -122,15 +126,16 @@ namespace negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearProcedimiento("sp_ListarHorariosPorMedico");
+                datos.setearProcedimiento("sp_ObtenerTurnosTrabajoPorMedico");
                 datos.setearParametro("@IdMedico", idMedico);
                 datos.ejecutarLectura();
                 while (datos.Lector.Read())
                 {
+                    int dbDia = Convert.ToInt32(datos.Lector["DiaSemana"]);
                     var turno = new TurnoTrabajo
                     {
                         IdTurnoTrabajo = (int)datos.Lector["IdTurnoTrabajo"],
-                        DiaSemana = (DayOfWeek)((int)datos.Lector["DiaSemana"] % 7),
+                        DiaSemana = (DayOfWeek)(((dbDia - 1) + 7) % 7),
                         HoraEntrada = TimeSpan.Parse((string)datos.Lector["HoraEntrada"]),
                         HoraSalida = TimeSpan.Parse((string)datos.Lector["HoraSalida"]),
                         NombreDia = datos.Lector["NombreDia"] as string
@@ -174,15 +179,16 @@ namespace negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearProcedimiento("sp_ListarHorariosPorMedico");
+                datos.setearProcedimiento("sp_ObtenerTurnosTrabajoPorMedico");
                 datos.setearParametro("@IdMedico", 0);
                 datos.ejecutarLectura();
                 while (datos.Lector.Read())
                 {
+                    int dbDia = Convert.ToInt32(datos.Lector["DiaSemana"]);
                     var turno = new TurnoTrabajo
                     {
                         IdTurnoTrabajo = (int)datos.Lector["IdTurnoTrabajo"],
-                        DiaSemana = (DayOfWeek)((int)datos.Lector["DiaSemana"] % 7),
+                        DiaSemana = (DayOfWeek)(((dbDia - 1) + 7) % 7),
                         HoraEntrada = TimeSpan.Parse((string)datos.Lector["HoraEntrada"]),
                         HoraSalida = TimeSpan.Parse((string)datos.Lector["HoraSalida"]),
                         NombreDia = datos.Lector["NombreDia"] as string

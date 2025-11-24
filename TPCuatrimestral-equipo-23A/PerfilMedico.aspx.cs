@@ -1,9 +1,10 @@
+using dominio;
+using negocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI;
 using System.Web.UI.WebControls;
-using dominio;
-using negocio;
 using MedicoModel = dominio.Medico;
 
 namespace TPCuatrimestral_equipo_23A
@@ -175,43 +176,48 @@ namespace TPCuatrimestral_equipo_23A
                 medico.Telefono = txtTelefono.Text.Trim();
                 medico.Email = txtEmail.Text.Trim();
 
-                // Sólo crear/actualizar domicilio si al menos un campo tiene valor
-                bool tieneDireccion = !string.IsNullOrWhiteSpace(txtCalle.Text)
-                    || !string.IsNullOrWhiteSpace(txtAltura.Text)
-                    || !string.IsNullOrWhiteSpace(txtPiso.Text)
-                    || !string.IsNullOrWhiteSpace(txtDepartamento.Text)
-                    || !string.IsNullOrWhiteSpace(txtLocalidad.Text)
-                    || !string.IsNullOrWhiteSpace(txtProvincia.Text)
-                    || !string.IsNullOrWhiteSpace(txtCodigoPostal.Text);
+                bool tieneDireccion = !string.IsNullOrWhiteSpace(txtCalle.Text) || !string.IsNullOrWhiteSpace(txtAltura.Text)
+                                      || !string.IsNullOrWhiteSpace(txtLocalidad.Text);
 
                 if (tieneDireccion)
                 {
-                    if (medico.Domicilio == null)
-                        medico.Domicilio = new Domicilio();
-
+                    if (medico.Domicilio == null) medico.Domicilio = new Domicilio();
                     medico.Domicilio.Calle = txtCalle.Text.Trim();
                     medico.Domicilio.Altura = txtAltura.Text.Trim();
-                    medico.Domicilio.Piso = string.IsNullOrWhiteSpace(txtPiso.Text) ? null : txtPiso.Text.Trim();
-                    medico.Domicilio.Departamento = string.IsNullOrWhiteSpace(txtDepartamento.Text) ? null : txtDepartamento.Text.Trim();
+                    medico.Domicilio.Piso = txtPiso.Text.Trim();
+                    medico.Domicilio.Departamento = txtDepartamento.Text.Trim();
                     medico.Domicilio.Localidad = txtLocalidad.Text.Trim();
-                    medico.Domicilio.Provincia = string.IsNullOrWhiteSpace(txtProvincia.Text) ? null : txtProvincia.Text.Trim();
-                    medico.Domicilio.CodigoPostal = string.IsNullOrWhiteSpace(txtCodigoPostal.Text) ? null : txtCodigoPostal.Text.Trim();
+                    medico.Domicilio.Provincia = txtProvincia.Text.Trim();
+                    medico.Domicilio.CodigoPostal = txtCodigoPostal.Text.Trim();
                 }
                 else
                 {
-                    // Si no hay dirección, asegurarse de no enviar un Domicilio vacío al negocio
                     medico.Domicilio = null;
                 }
 
-                medicoNegocio.ActualizarDatosPersonales(medico);
+                medicoNegocio.Modificar(medico);
+
+                var medicoActualizado = medicoNegocio.ObtenerPorId(medico.IdPersona);
+                if (medicoActualizado != null)
+                {
+                    MedicoActual = medicoActualizado;
+                    var usuario = Session["usuario"] as Usuario;
+                    if (usuario != null)
+                    {
+                        usuario.Persona = medicoActualizado;
+                        Session["usuario"] = usuario;
+                    }
+                }
 
                 HabilitarEdicionPersonal(false);
                 CargarDatosMedico();
-                MostrarMensaje("✓ Datos personales y dirección actualizados correctamente", true);
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", "mostrarToastMensaje('Datos personales actualizados correctamente.','success');", true);
             }
             catch (Exception ex)
             {
-                MostrarMensaje("Error al guardar: " + ex.Message, false);
+                string mensajeError = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", $"mostrarToastMensaje('Error: {mensajeError.Replace("'", "\\'")}','danger');", true);
             }
         }
 
@@ -238,7 +244,7 @@ namespace TPCuatrimestral_equipo_23A
                 int idEspecialidadPrincipal = int.Parse(ddlEspecialidad.SelectedValue);
                 if (idEspecialidadPrincipal == 0)
                 {
-                    MostrarMensaje("Debe seleccionar una especialidad principal", false);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", "mostrarToastMensaje('Debe seleccionar una especialidad principal.','danger');", true);
                     return;
                 }
                 var especialidadesSeleccionadas = new List<int> { idEspecialidadPrincipal };
@@ -257,11 +263,13 @@ namespace TPCuatrimestral_equipo_23A
 
                 HabilitarEdicionProfesional(false);
                 CargarDatosMedico();
-                MostrarMensaje("✓ Datos profesionales actualizados correctamente", true);
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", "mostrarToastMensaje('Datos profesionales actualizados correctamente.','success');", true);
             }
-             catch (Exception ex)
+            catch (Exception ex)
             {
-                throw new Exception("Error al actualizar datos profesionales: " + ex.Message, ex);
+                string mensajeError = ex.Message;
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", $"mostrarToastMensaje('Error: {mensajeError.Replace("'", "\\'")}','danger');", true);
             }
         }
 
@@ -368,7 +376,15 @@ namespace TPCuatrimestral_equipo_23A
                 }
 
                 var turnosMedico = ttn.ListarHorariosPorMedico(MedicoActual.IdPersona) ?? new List<TurnoTrabajo>();
-                bool solapaConMedico = turnosMedico.Any(t => (int)t.DiaSemana == dia && (entrada < t.HoraSalida && salida > t.HoraEntrada));
+                bool solapaConMedico = false;
+                foreach (var t in turnosMedico)
+                {
+                    if ((int)t.DiaSemana == dia && (entrada < t.HoraSalida && salida > t.HoraEntrada))
+                    {
+                        solapaConMedico = true;
+                        break;
+                    }
+                }
                 if (solapaConMedico)
                 {
                     MostrarMensaje("El médico ya posee un horario asignado que se superpone con este rango.", false);

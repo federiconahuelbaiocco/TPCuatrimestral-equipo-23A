@@ -76,6 +76,22 @@ namespace negocio
                         medico.FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"];
                     medico.Matricula = datos.Lector["Matricula"] as string;
                     medico.Activo = !datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Activo")) && (bool)datos.Lector["Activo"];
+
+                    medico.Domicilio = new Domicilio();
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Calle")))
+                        medico.Domicilio.Calle = datos.Lector["Calle"].ToString();
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Altura")))
+                        medico.Domicilio.Altura = datos.Lector["Altura"].ToString();
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Piso")))
+                        medico.Domicilio.Piso = datos.Lector["Piso"].ToString();
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Departamento")))
+                        medico.Domicilio.Departamento = datos.Lector["Departamento"].ToString();
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Localidad")))
+                        medico.Domicilio.Localidad = datos.Lector["Localidad"].ToString();
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Provincia")))
+                        medico.Domicilio.Provincia = datos.Lector["Provincia"].ToString();
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("CodigoPostal")))
+                        medico.Domicilio.CodigoPostal = datos.Lector["CodigoPostal"].ToString();
                 }
             }
             catch (Exception ex)
@@ -202,6 +218,15 @@ namespace negocio
                 datos.setearParametro("@Mail", (object)mod.Email ?? DBNull.Value);
                 datos.setearParametro("@Telefono", (object)mod.Telefono ?? DBNull.Value);
                 datos.setearParametro("@Activo", mod.Activo);
+
+                datos.setearParametro("@Calle", (object)(mod.Domicilio != null && !string.IsNullOrWhiteSpace(mod.Domicilio.Calle) ? mod.Domicilio.Calle : null) ?? DBNull.Value);
+                datos.setearParametro("@Altura", (object)(mod.Domicilio != null && !string.IsNullOrWhiteSpace(mod.Domicilio.Altura) ? mod.Domicilio.Altura : null) ?? DBNull.Value);
+                datos.setearParametro("@Piso", (object)(mod.Domicilio != null && !string.IsNullOrWhiteSpace(mod.Domicilio.Piso) ? mod.Domicilio.Piso : null) ?? DBNull.Value);
+                datos.setearParametro("@Departamento", (object)(mod.Domicilio != null && !string.IsNullOrWhiteSpace(mod.Domicilio.Departamento) ? mod.Domicilio.Departamento : null) ?? DBNull.Value);
+                datos.setearParametro("@Localidad", (object)(mod.Domicilio != null && !string.IsNullOrWhiteSpace(mod.Domicilio.Localidad) ? mod.Domicilio.Localidad : null) ?? DBNull.Value);
+                datos.setearParametro("@Provincia", (object)(mod.Domicilio != null && !string.IsNullOrWhiteSpace(mod.Domicilio.Provincia) ? mod.Domicilio.Provincia : null) ?? DBNull.Value);
+                datos.setearParametro("@CodigoPostal", (object)(mod.Domicilio != null && !string.IsNullOrWhiteSpace(mod.Domicilio.CodigoPostal) ? mod.Domicilio.CodigoPostal : null) ?? DBNull.Value);
+
                 datos.ejecutarAccion();
             }
             catch (Exception ex)

@@ -60,19 +60,67 @@ namespace TPCuatrimestral_equipo_23A
         {
             try
             {
-                var turnoNegocio = new TurnoTrabajoNegocio();
-                var horarios = turnoNegocio.ObtenerHorarioGeneralClinica();
-                var diaHoy = DateTime.Now.DayOfWeek;
-                var horarioHoy = horarios.FirstOrDefault(h => h.DiaSemana == diaHoy);
+                TurnoTrabajoNegocio turnoNegocio = new TurnoTrabajoNegocio();
+                List<TurnoTrabajo> horarios = turnoNegocio.ObtenerHorarioGeneralClinica();
+
+                DayOfWeek hoy = DateTime.Now.DayOfWeek;
+                TurnoTrabajo horarioHoy = null;
+
+                foreach (var h in horarios)
+                {
+                    if (h.DiaSemana == hoy)
+                    {
+                        horarioHoy = h;
+                        break;
+                    }
+                }
+
                 if (horarioHoy != null)
                 {
-                    string mensaje = $"Hoy ({horarioHoy.NombreDia ?? diaHoy.ToString()}) la clínica atiende de {horarioHoy.HoraEntrada:hh\\:mm} a {horarioHoy.HoraSalida:hh\\:mm}.";
+                    string nombreDia = horarioHoy.NombreDia ?? ObtenerNombreDia(hoy);
+                    string mensaje = $"Hoy {nombreDia}, la clínica atiende de {horarioHoy.HoraEntrada:hh\\:mm} a {horarioHoy.HoraSalida:hh\\:mm}.";
+
                     lblHorarioFijo.Text = mensaje;
+                    lblHorarioFijo.CssClass = "alert alert-info d-block";
                     panelHorarioFijo.Visible = true;
                 }
                 else
                 {
-                    lblHorarioFijo.Text = $"Hoy ({ObtenerNombreDia(diaHoy)}) la clínica permanece cerrada.";
+                    TurnoTrabajo proximoHorario = null;
+
+                    for (int i = 1; i <= 7; i++)
+                    {
+                        DayOfWeek diaFuturo = DateTime.Now.AddDays(i).DayOfWeek;
+
+                        foreach (var h in horarios)
+                        {
+                            if (h.DiaSemana == diaFuturo)
+                            {
+                                proximoHorario = h;
+                                break; 
+                            }
+                        }
+
+                        if (proximoHorario != null)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (proximoHorario != null)
+                    {
+                        string nombreDia = proximoHorario.NombreDia ?? ObtenerNombreDia(proximoHorario.DiaSemana);
+                        string horaAbre = proximoHorario.HoraEntrada.ToString(@"hh\:mm");
+                        string horaCierra = proximoHorario.HoraSalida.ToString(@"hh\:mm");
+
+                        lblHorarioFijo.Text = $"La clínica permanece cerrada por hoy. Reanudamos la atención el {nombreDia} de {horaAbre} a {horaCierra} hs.";
+                    }
+                    else
+                    {
+                        lblHorarioFijo.Text = "La clínica permanece cerrada temporalmente.";
+                    }
+
+                    lblHorarioFijo.CssClass = "alert alert-warning d-block";
                     panelHorarioFijo.Visible = true;
                 }
             }

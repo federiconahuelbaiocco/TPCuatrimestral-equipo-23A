@@ -106,6 +106,76 @@ BEGIN
 END
 GO
 
+IF OBJECT_ID('dbo.sp_ModificarMedico', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_ModificarMedico;
+GO
+CREATE PROCEDURE dbo.sp_ModificarMedico
+    @IdPersona INT,
+    @Nombre VARCHAR(100),
+    @Apellido VARCHAR(100),
+    @DNI VARCHAR(20),
+    @Sexo VARCHAR(20) = 'No especificado',
+    @FechaNacimiento DATE = NULL,
+    @Matricula VARCHAR(50),
+    @Mail VARCHAR(255) = NULL,
+    @Telefono VARCHAR(50) = NULL,
+    @Activo BIT,
+    @Calle VARCHAR(200) = NULL,
+    @Altura VARCHAR(20) = NULL,
+    @Piso VARCHAR(10) = NULL,
+    @Departamento VARCHAR(10) = NULL,
+    @Localidad VARCHAR(100) = NULL,
+    @Provincia VARCHAR(100) = NULL,
+    @CodigoPostal VARCHAR(20) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRANSACTION;
+    BEGIN TRY
+        DECLARE @IdDomicilio INT;
+        SELECT @IdDomicilio = IdDomicilio FROM Personas WHERE IdPersona = @IdPersona;
+
+        IF @IdDomicilio IS NOT NULL
+        BEGIN
+            UPDATE Domicilios
+            SET Calle = @Calle, Altura = @Altura, Piso = @Piso, 
+                Departamento = @Departamento, Localidad = @Localidad, 
+                Provincia = @Provincia, CodigoPostal = @CodigoPostal
+            WHERE IdDomicilio = @IdDomicilio;
+        END
+        ELSE IF @Calle IS NOT NULL OR @Altura IS NOT NULL
+        BEGIN
+            INSERT INTO Domicilios (Calle, Altura, Piso, Departamento, Localidad, Provincia, CodigoPostal)
+            VALUES (@Calle, @Altura, @Piso, @Departamento, @Localidad, @Provincia, @CodigoPostal);
+            SET @IdDomicilio = SCOPE_IDENTITY();
+        END
+
+        UPDATE dbo.Personas
+        SET 
+            Nombre = @Nombre,
+            Apellido = @Apellido,
+            Dni = @DNI,
+            Sexo = @Sexo,
+            FechaNacimiento = @FechaNacimiento,
+            Email = @Mail,
+            Telefono = @Telefono,
+            IdDomicilio = @IdDomicilio,
+            Activo = @Activo
+        WHERE 
+            IdPersona = @IdPersona;
+
+        UPDATE dbo.Medicos
+        SET Matricula = @Matricula
+        WHERE IdPersona = @IdPersona;
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END
+GO
+
 IF OBJECT_ID('dbo.sp_ModificarConsultorio', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_ModificarConsultorio;
 GO
 CREATE PROCEDURE dbo.sp_ModificarConsultorio
@@ -256,6 +326,8 @@ BEGIN
 
         INSERT INTO dbo.Medicos (IdPersona, Matricula, IdUsuario)
         VALUES (@NuevoIdPersona, @Matricula, @NuevoIdUsuario);
+
+        SELECT @NuevoIdPersona AS IdPersona;
 
         COMMIT TRANSACTION;
     END TRY
@@ -945,5 +1017,25 @@ AS
 BEGIN
     SET NOCOUNT ON;
     SELECT Clave FROM dbo.Usuarios WHERE IdUsuario = @IdUsuario;
+END
+GO
+
+USE ClinicaDB;
+GO
+
+SET IDENTITY_INSERT Personas ON;
+
+IF NOT EXISTS (SELECT 1 FROM Personas WHERE IdPersona = 0)
+BEGIN
+    INSERT INTO Personas (IdPersona, Nombre, Apellido, Dni, Email, Telefono, Activo)
+    VALUES (0, 'Horario', 'General', '00000000', 'sistema@clinica.com', '00000000', 1);
+END
+
+SET IDENTITY_INSERT Personas OFF;
+
+IF NOT EXISTS (SELECT 1 FROM Medicos WHERE IdPersona = 0)
+BEGIN
+    INSERT INTO Medicos (IdPersona, Matricula)
+    VALUES (0, 'CLINICA-GRAL');
 END
 GO

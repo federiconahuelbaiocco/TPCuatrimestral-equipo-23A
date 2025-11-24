@@ -18,5 +18,4 @@ window.mostrarToastMensaje = function(mensaje, tipo = "info") {
         "</div>";
 
     document.body.appendChild(toast);
-    // No auto-cerrar: el toast se cerrará solo cuando el usuario pulse el botón de cierre
 };

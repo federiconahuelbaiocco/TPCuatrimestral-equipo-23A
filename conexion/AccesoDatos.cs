@@ -27,12 +27,14 @@ namespace conexion
 
         public void setearConsulta(string consulta)
         {
+            comando.Parameters.Clear();
             comando.CommandType = System.Data.CommandType.Text;
             comando.CommandText = consulta;
         }
 
         public void setearProcedimiento(string nombreSP)
         {
+            comando.Parameters.Clear();
             comando.CommandType = System.Data.CommandType.StoredProcedure;
             comando.CommandText = nombreSP;
         }
