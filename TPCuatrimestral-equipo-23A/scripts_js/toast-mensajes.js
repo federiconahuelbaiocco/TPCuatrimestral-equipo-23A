@@ -1,11 +1,9 @@
 window.mostrarToastMensaje = function(mensaje, tipo = "info") {
-    // Sanitizar mensaje para evitar inyecciones accidentales de HTML
     var div = document.createElement('div');
     div.innerText = mensaje;
     var safeMensaje = div.innerHTML;
 
     var toast = document.createElement('div');
-    // Centrado absoluto en pantalla y estilo más grande
     toast.className = 'position-fixed top-50 start-50 translate-middle text-bg-' + tipo + ' border-0 shadow-lg rounded-3';
     toast.style.zIndex = 99999;
     toast.style.minWidth = '480px';

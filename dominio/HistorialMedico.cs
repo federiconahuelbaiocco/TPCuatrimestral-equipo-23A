@@ -11,6 +11,8 @@ namespace dominio
 		public int IdHistorialMedico { get; set; }
 		public int IdPaciente { get; set; }
 
+		public DateTime FechaCreacion { get; set; }
+
 		public List<EntradaHistorial> Entradas { get; set; } = new List<EntradaHistorial>();
 	}
 }

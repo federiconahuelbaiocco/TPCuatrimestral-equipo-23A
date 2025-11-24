@@ -48,8 +48,8 @@ namespace negocio
                 datos.setearProcedimiento("sp_AgregarTurnoTrabajo");
                 datos.setearParametro("@IdMedico", idMedico);
                 datos.setearParametro("@DiaSemana", (int)turno.DiaSemana);
-                datos.setearParametro("@HoraEntrada", turno.HoraEntrada);
-                datos.setearParametro("@HoraSalida", turno.HoraSalida);
+                datos.setearParametro("@HoraEntrada", turno.HoraEntrada.ToString(@"hh\:mm"));
+                datos.setearParametro("@HoraSalida", turno.HoraSalida.ToString(@"hh\:mm"));
                 datos.ejecutarAccion();
             }
             catch (Exception ex)
@@ -99,8 +99,8 @@ namespace negocio
                 datos.setearProcedimiento("sp_AltaTurnoTrabajo");
                 datos.setearParametro("@IdMedico", idMedico);
                 datos.setearParametro("@DiaSemana", diaSemana);
-                datos.setearParametro("@HoraEntrada", horaEntrada);
-                datos.setearParametro("@HoraSalida", horaSalida);
+                datos.setearParametro("@HoraEntrada", horaEntrada.ToString(@"hh\:mm"));
+                datos.setearParametro("@HoraSalida", horaSalida.ToString(@"hh\:mm"));
                 datos.ejecutarLectura();
                 if (datos.Lector.Read())
                     return Convert.ToInt32(datos.Lector["IdGenerado"]);

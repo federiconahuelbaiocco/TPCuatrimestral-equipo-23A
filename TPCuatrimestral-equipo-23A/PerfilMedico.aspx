@@ -38,20 +38,20 @@
             <div class="card mb-4 shadow-sm border-0 profile-header-card">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center flex-grow-1">
                             <div class="rounded-circle bg-gradient d-flex align-items-center justify-content-center me-4 shadow-sm" 
-                                 style="width: 90px; height: 90px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                 style="width: 90px; height: 90px; min-width:90px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                                 <i class="bi bi-person-circle text-white" style="font-size: 60px;"></i>
                             </div>
-                            <div>
-                                <h3 class="mb-1 fw-bold text-dark">
+                            <div class="flex-grow-1">
+                                <h3 class="mb-1 fw-bold text-dark text-truncate" style="max-width:100%;">
                                     <asp:Label ID="lblNombreCompleto" runat="server"></asp:Label>
                                 </h3>
-                                <p class="text-muted mb-1">
+                                <p class="text-muted mb-1 text-truncate" style="max-width:100%;">
                                     <i class="bi bi-star-fill me-1 text-warning"></i>
                                     <asp:Label ID="lblEspecialidades" runat="server"></asp:Label>
                                 </p>
-                                <p class="text-muted mb-0 small text-uppercase fw-bold">
+                                <p class="text-muted mb-0 small text-uppercase fw-bold text-truncate" style="max-width:100%;">
                                     <i class="bi bi-award me-1"></i>
                                     <asp:Label ID="lblMatricula" runat="server"></asp:Label>
                                 </p>
@@ -96,10 +96,19 @@
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-secondary">TELÉFONO *</label>
                             <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvTelefono" runat="server" ControlToValidate="txtTelefono"
+                                 ErrorMessage="Teléfono requerido." CssClass="text-danger small" Display="Dynamic" ValidationGroup="PersonalGroup" />
+                            <asp:RegularExpressionValidator ID="revTelefono" runat="server" ControlToValidate="txtTelefono"
+                                 ErrorMessage="Teléfono inválido." CssClass="text-danger small" Display="Dynamic" ValidationExpression="^[0-9+()\- ]{6,20}$" ValidationGroup="PersonalGroup" />
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-secondary">EMAIL *</label>
                             <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" Enabled="false"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail"
+                                 ErrorMessage="Email requerido." CssClass="text-danger small" Display="Dynamic" ValidationGroup="PersonalGroup" />
+                            <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail"
+                                 ErrorMessage="Email inválido." CssClass="text-danger small" Display="Dynamic"
+                                 ValidationExpression="^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,6}$" ValidationGroup="PersonalGroup" />
                         </div>
                         
                         <div class="col-12 mt-4">
@@ -110,10 +119,16 @@
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-secondary">CALLE *</label>
                             <asp:TextBox ID="txtCalle" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvCalle" runat="server" ControlToValidate="txtCalle"
+                                 ErrorMessage="Calle requerida." CssClass="text-danger small" Display="Dynamic" ValidationGroup="PersonalGroup" />
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-secondary">ALTURA *</label>
                             <asp:TextBox ID="txtAltura" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvAltura" runat="server" ControlToValidate="txtAltura"
+                                 ErrorMessage="Altura requerida." CssClass="text-danger small" Display="Dynamic" ValidationGroup="PersonalGroup" />
+                            <asp:RegularExpressionValidator ID="revAltura" runat="server" ControlToValidate="txtAltura"
+                                 ErrorMessage="Altura inválida (solo números)." CssClass="text-danger small" Display="Dynamic" ValidationExpression="^\d+$" ValidationGroup="PersonalGroup" />
                         </div>
                         <div class="col-md-3">
                             <label class="form-label fw-bold small text-secondary">PISO</label>
@@ -137,10 +152,11 @@
                         </div>
 
                         <asp:Panel ID="pnlBotonesPersonal" runat="server" CssClass="col-12 text-end mt-4" Visible="false">
+                            <asp:ValidationSummary ID="vsPersonal" runat="server" CssClass="text-danger mb-2" ValidationGroup="PersonalGroup" ShowMessageBox="false" ShowSummary="true" />
                             <asp:Button ID="btnCancelarPersonal" runat="server" Text="Cancelar" 
                                 CssClass="btn btn-light border me-2" OnClick="btnCancelarPersonal_Click" CausesValidation="false" />
                             <asp:Button ID="btnGuardarPersonal" runat="server" Text="Guardar Cambios" 
-                                CssClass="btn btn-primary px-4" OnClick="btnGuardarPersonal_Click" />
+                                CssClass="btn btn-primary px-4" OnClick="btnGuardarPersonal_Click" ValidationGroup="PersonalGroup" />
                         </asp:Panel>
                     </div>
                 </div>
@@ -158,18 +174,21 @@
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-secondary">MATRÍCULA *</label>
                             <asp:TextBox ID="txtMatriculaProfesional" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvMatricula" runat="server" ControlToValidate="txtMatriculaProfesional"
+                                ErrorMessage="Matrícula requerida." CssClass="text-danger small" Display="Dynamic" ValidationGroup="ProfesionalGroup" />
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-secondary">ESPECIALIDAD</label>
                             <asp:DropDownList ID="ddlEspecialidad" runat="server" CssClass="form-select" Enabled="false">
                             </asp:DropDownList>
                         </div>
-
+ 
                         <asp:Panel ID="pnlBotonesProfesional" runat="server" CssClass="col-12 text-end mt-4" Visible="false">
+                            <asp:ValidationSummary ID="vsProfesional" runat="server" CssClass="text-danger mb-2" ValidationGroup="ProfesionalGroup" ShowMessageBox="false" ShowSummary="true" />
                             <asp:Button ID="btnCancelarProfesional" runat="server" Text="Cancelar" 
                                 CssClass="btn btn-light border me-2" OnClick="btnCancelarProfesional_Click" CausesValidation="false" />
                             <asp:Button ID="btnGuardarProfesional" runat="server" Text="Guardar Cambios" 
-                                CssClass="btn btn-success px-4" OnClick="btnGuardarProfesional_Click" />
+                                CssClass="btn btn-success px-4" OnClick="btnGuardarProfesional_Click" ValidationGroup="ProfesionalGroup" />
                         </asp:Panel>
                     </div>
                 </div>
@@ -209,61 +228,60 @@
     <aside class="quick-access-sidebar-fixed">
         <div class="quick-access-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
             <h3>
-                <i class="bi bi-speedometer2"></i>
-                Panel Rápido
+                <i class="bi bi-clock-history"></i>
+                Turnos de Trabajo
             </h3>
         </div>
 
-        <div class="quick-access-body">
-            
-            <div class="card border-0 shadow-sm mb-4 bg-light">
-                <div class="card-body p-3">
-                    <h6 class="fw-bold text-primary mb-3 border-bottom pb-2">
-                        <i class="bi bi-graph-up me-2"></i>Mis Estadísticas
-                    </h6>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-secondary">Turnos Hoy</span>
-                        <span class="badge bg-primary fs-6 rounded-pill">
-                            <asp:Label ID="lblStatTurnosHoy" runat="server" Text="0"></asp:Label>
-                        </span>
+        <div class="quick-access-body p-0 overflow-auto" style="max-height: calc(100vh - 140px);">
+            <div class="p-3">
+                <div class="card border-0 shadow-sm mb-3 bg-white">
+                    <div class="card-body p-3">
+                        <h6 class="fw-bold text-primary mb-2">Agregar Turno de Trabajo</h6>
+                        <div class="mb-2">
+                            <label class="form-label small mb-1">Día de la semana</label>
+                            <asp:DropDownList ID="ddlDiaSemana" runat="server" CssClass="form-select form-select-sm"></asp:DropDownList>
+                        </div>
+                        <div class="mb-2 d-flex gap-2">
+                            <div class="flex-grow-1">
+                                <label class="form-label small mb-1">Hora entrada</label>
+                                <asp:DropDownList ID="ddlHoraEntrada" runat="server" CssClass="form-select form-select-sm"></asp:DropDownList>
+                            </div>
+                            <div class="flex-grow-1">
+                                <label class="form-label small mb-1">Hora salida</label>
+                                <asp:DropDownList ID="ddlHoraSalida" runat="server" CssClass="form-select form-select-sm"></asp:DropDownList>
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <asp:Button ID="btnAgregarTurno" runat="server" Text="Agregar Turno" CssClass="btn btn-sm btn-primary" OnClick="btnAgregarTurno_Click" />
+                        </div>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-secondary">Pendientes</span>
-                        <span class="badge bg-warning text-dark fs-6 rounded-pill">
-                            <asp:Label ID="lblStatPendientes" runat="server" Text="0"></asp:Label>
-                        </span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="text-secondary">Total Pacientes</span>
-                        <span class="badge bg-success fs-6 rounded-pill">
-                            <asp:Label ID="lblStatPacientes" runat="server" Text="0"></asp:Label>
-                        </span>
+                </div>
+
+                <div class="card border-0 shadow-sm bg-white">
+                    <div class="card-body p-3">
+                        <h6 class="fw-bold text-secondary mb-2">Turnos configurados</h6>
+                        <asp:Repeater ID="rptTurnosTrabajo" runat="server" OnItemCommand="rptTurnosTrabajo_ItemCommand">
+                            <ItemTemplate>
+                                <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-light border rounded">
+                                    <div>
+                                        <div class="fw-bold"><%# Eval("NombreDia") %></div>
+                                        <div class="small text-muted"><%# Eval("HoraEntrada") %> - <%# Eval("HoraSalida") %></div>
+                                    </div>
+                                    <div>
+                                        <asp:LinkButton ID="lnkEliminarTurno" runat="server" CssClass="btn btn-sm btn-outline-danger" CommandName="Eliminar" CommandArgument='<%# Eval("IdTurnoTrabajo") %>'>Eliminar</asp:LinkButton>
+                                    </div>
+                                </div>
+                            </ItemTemplate>
+                        </asp:Repeater>
                     </div>
                 </div>
             </div>
+         </div>
+     </aside>
 
-            <div class="d-grid gap-3">
-                <a href="Medico.aspx" class="text-decoration-none p-3 bg-white border rounded shadow-sm d-flex justify-content-between align-items-center hover-effect">
-                    <span class="fw-bold text-dark"><i class="bi bi-house-door-fill me-2 text-primary"></i>Ir al Inicio</span>
-                    <i class="bi bi-chevron-right text-muted"></i>
-                </a>
-
-                <a href="CalendarioMaster.aspx" class="text-decoration-none p-3 bg-white border rounded shadow-sm d-flex justify-content-between align-items-center hover-effect">
-                    <span class="fw-bold text-dark"><i class="bi bi-calendar3-fill me-2 text-info"></i>Mi Calendario</span>
-                    <i class="bi bi-chevron-right text-muted"></i>
-                </a>
-
-                <a href="HistorialesClinico.aspx" class="text-decoration-none p-3 bg-white border rounded shadow-sm d-flex justify-content-between align-items-center hover-effect">
-                    <span class="fw-bold text-dark"><i class="bi bi-file-medical-fill me-2 text-warning"></i>Historiales</span>
-                    <i class="bi bi-chevron-right text-muted"></i>
-                </a>
-            </div>
-
-        </div>
-    </aside>
-
-    <style>
-        .hover-effect { transition: transform 0.2s, box-shadow 0.2s; }
-        .hover-effect:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    </style>
-</asp:Content>
+     <style>
+         .hover-effect { transition: transform 0.2s, box-shadow 0.2s; }
+         .hover-effect:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+     </style>
+ </asp:Content>

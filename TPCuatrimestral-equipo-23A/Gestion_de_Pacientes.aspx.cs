@@ -16,6 +16,7 @@ namespace TPCuatrimestral_equipo_23A
             if (!IsPostBack)
             {
                 CargarPacientes();
+                MostrarToastDesdeQuery();
             }
         }
 
@@ -25,8 +26,6 @@ namespace TPCuatrimestral_equipo_23A
             try
             {
                 Session.Add("listaPacientes", negocio.Listar());
-                //Session["listaPacientes"] = listaPacientes;
-                //List<Paciente> listaPacientes = 
                 dgvPacientes.DataSource = Session["listaPacientes"];
                 dgvPacientes.DataBind();
             }
@@ -34,6 +33,34 @@ namespace TPCuatrimestral_equipo_23A
             {
                 Session["error"] = ex;
                 Response.Redirect("~/Error.aspx", false);
+            }
+        }
+
+        private void MostrarToastDesdeQuery()
+        {
+            var toast = Request.QueryString["toast"];
+            if (string.IsNullOrEmpty(toast))
+                return;
+
+            string script = null;
+            if (toast.Equals("creado", StringComparison.OrdinalIgnoreCase))
+            {
+                script = "mostrarToastMensaje('Paciente creado correctamente.', 'success');";
+            }
+            else if (toast.Equals("guardado", StringComparison.OrdinalIgnoreCase))
+            {
+                script = "mostrarToastMensaje('Cambios guardados correctamente.', 'success');";
+            }
+            else if (toast.Equals("error", StringComparison.OrdinalIgnoreCase))
+            {
+                var msg = HttpUtility.UrlDecode(Request.QueryString["msg"] ?? "Ocurrió un error.");
+                msg = msg.Replace("'", "\\'");
+                script = $"mostrarToastMensaje('{msg}', 'danger');";
+            }
+
+            if (!string.IsNullOrEmpty(script))
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "toastDesdeQuery", script, true);
             }
         }
 

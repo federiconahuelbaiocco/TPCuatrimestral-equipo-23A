@@ -1,10 +1,10 @@
-﻿using System;
+﻿using dominio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
-using dominio;
 
 namespace TPCuatrimestral_equipo_23A
 {
@@ -12,20 +12,23 @@ namespace TPCuatrimestral_equipo_23A
     {
         protected void Application_Start(object sender, EventArgs e)
         {
-            try
+            var config = new HorarioConfig
             {
-                var data = AppConfigStorage.Load();
-                if (data != null)
+                HoraApertura = TimeSpan.FromHours(9),
+                HoraCierre = TimeSpan.FromHours(18),
+                DuracionTurno = 30,
+                DiasLaborables = new List<DayOfWeek>
                 {
-                    if (data.Horario != null)
-                        Application["HorarioConfig"] = data.Horario;
-                    if (data.Mensaje != null)
-                        Application["MensajeInternoConfig"] = data.Mensaje;
+                    DayOfWeek.Monday,
+                    DayOfWeek.Tuesday,
+                    DayOfWeek.Wednesday,
+                    DayOfWeek.Thursday,
+                    DayOfWeek.Friday
                 }
-            }
-            catch
-            {
-            }
+            };
+            Application["HorarioConfig"] = config;
+
+            Application["MensajeInternoConfig"] = new MensajeInternoConfig();
         }
     }
 }

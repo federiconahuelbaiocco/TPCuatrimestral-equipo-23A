@@ -80,7 +80,7 @@ namespace TPCuatrimestral_equipo_23A
 				chkActivoEditar.Checked = false;
 
 				ScriptManager.RegisterStartupScript(this, GetType(), "limpiarFormulario",
-					 "limpiarFormulario(); alert('? Especialidad actualizada correctamente');", true);
+					 "limpiarFormulario(); mostrarToastMensaje('Especialidad actualizada correctamente','success');", true);
 			}
 			catch (Exception ex)
 			{

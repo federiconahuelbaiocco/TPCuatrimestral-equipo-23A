@@ -17,7 +17,6 @@ namespace TPCuatrimestral_equipo_23A
             {
                 CargarCoberturas();
 
-                // Configurar validador de fecha: Desde el año 1900 hasta HOY
                 rvFechaNac.MinimumValue = "1900-01-01";
                 rvFechaNac.MaximumValue = DateTime.Today.ToString("yyyy-MM-dd");
             }
@@ -77,12 +76,14 @@ namespace TPCuatrimestral_equipo_23A
                 nuevo.Domicilio.CodigoPostal = txtCP.Text;
 
                 negocio.AgregarPaciente(nuevo);
-                Response.Redirect("Gestion_de_Pacientes.aspx", false);
-            }
-            catch (Exception)
-            {
 
-                throw;
+                Response.Redirect("~/Gestion_de_Pacientes.aspx?toast=creado", false);
+            }
+            catch (Exception ex)
+            {
+                var safe = ex.Message.Replace("'", "\\'");
+                string script = $"mostrarToastMensaje('Error: {safe}', 'danger');";
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarErrorToast", script, true);
             }
         }
     }

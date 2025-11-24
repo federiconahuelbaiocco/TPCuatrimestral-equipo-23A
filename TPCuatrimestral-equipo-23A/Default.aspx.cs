@@ -7,8 +7,6 @@ using System.Web.UI.WebControls;
 using dominio;
 using negocio;
 using MedicoModel = dominio.Medico;
-using RecepcionistaModel = dominio.Recepcionista;
-using AdministradorModel = dominio.Administrador;
 
 namespace TPCuatrimestral_equipo_23A
 {
@@ -18,53 +16,48 @@ namespace TPCuatrimestral_equipo_23A
 		{
 		}
 
-		protected void btnLogin_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
-				Usuario usuario = usuarioNegocio.ValidarUsuario(txtUsuario.Text.Trim(), txtClave.Text);
+        protected void btnLogin_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+                Usuario usuario = usuarioNegocio.ValidarUsuario(txtUsuario.Text.Trim(), txtClave.Text);
 
-				if (usuario != null)
-				{
-					Session["usuario"] = usuario;
+                if (usuario != null)
+                {
+                    Session["usuario"] = usuario;
 
-					if (usuario.Rol.Nombre == "Medico" && usuario.Persona is MedicoModel)
-					{
-						var medico = (MedicoModel)usuario.Persona;
-						medico.Usuario = usuario;
-						Session["medicoActual"] = medico;
-					}
-					else if (usuario.Rol.Nombre == "Recepcionista" && usuario.Persona is RecepcionistaModel)
-					{
-						var recepcionista = (RecepcionistaModel)usuario.Persona;
-						recepcionista.Usuario = usuario;
-						Session["recepcionistaActual"] = recepcionista;
-					}
-					else if (usuario.Rol.Nombre == "Administrador" && usuario.Persona is AdministradorModel)
-					{
-						var admin = (AdministradorModel)usuario.Persona;
-						admin.Usuario = usuario;
-						Session["adminActual"] = admin;
-					}
+                   if (usuario.Rol.Nombre == "Medico" && usuario.Persona is MedicoModel)
+                    {
+                        var medico = (MedicoModel)usuario.Persona;
+                        medico.Usuario = usuario; 
+                        Session["medicoActual"] = medico;
+                    }
+                    else if (usuario.Rol.Nombre == "Recepcionista")
+                    {
+                        Session["recepcionistaActual"] = usuario.Persona;
+                    }
+                    else if (usuario.Rol.Nombre == "Administrador")
+                    {
+                        Session["adminActual"] = usuario.Persona;
+                    }
 
-					RedirigirSegunRol(usuario);
-				}
-				else
-				{
-					lblError.Text = "Usuario o contraseña incorrectos";
-					lblError.Visible = true;
-				}
-			}
-			catch (Exception ex)
-			{
-				lblError.Text = "Error al iniciar sesión. Intente nuevamente.";
-				lblError.Visible = true;
-				Session["error"] = ex;
-			}
-		}
+                    RedirigirSegunRol(usuario);
+                }
+                else
+                {
+                    lblError.Text = "Usuario o contraseña incorrectos";
+                    lblError.Visible = true;
+                }
+            }
+            catch (Exception)
+            {
+                lblError.Text = "Error al iniciar sesión. Verifique sus datos.";
+                lblError.Visible = true;
+            }
+        }
 
-		private void RedirigirSegunRol(Usuario usuario)
+        private void RedirigirSegunRol(Usuario usuario)
 		{
 			switch (usuario.Rol.Nombre)
 			{

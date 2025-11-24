@@ -15,7 +15,14 @@
     <link href="~/styles/SidebarStyles.css" rel="stylesheet" type="text/css" />
     <link href="~/styles/FormStyles.css" rel="stylesheet" type="text/css" />
 
+    <script src="scripts_js/toast-mensajes.js" type="text/javascript" charset="utf-8"></script>
+
     <style>
+        body {
+            background: linear-gradient(135deg, #d1d5db 0%, #b4b8f7 100%);
+            min-height: 100vh;
+        }
+
         .admin-layout .main-content {
             margin-right: 430px !important;
             width: auto !important;
@@ -90,12 +97,6 @@
                             <span>Mi Perfil</span>
                         </asp:HyperLink>
                     </li>
-                    <li class="nav-item">
-                        <asp:HyperLink ID="hlConfiguracion" runat="server" CssClass="nav-link" NavigateUrl="#">
-                            <i class="bi bi-gear-fill"></i>
-                            <span>Configuración</span>
-                        </asp:HyperLink>
-                    </li>
                 </ul>
             </nav>
             <div class="px-3 pb-3">
@@ -124,8 +125,7 @@
     
     <script src="scripts_js/especialidades.js" type="text/javascript" charset="utf-8"></script>
     <script src="scripts_js/consultorios.js" type="text/javascript" charset="utf-8"></script>
-    <script src="scripts_js/toast-mensajes.js" type="text/javascript" charset="utf-8"></script>
-    
-    <asp:ContentPlaceHolder ID="ScriptsPlaceHolder" runat="server"></asp:ContentPlaceHolder>
+ 
+     <asp:ContentPlaceHolder ID="ScriptsPlaceHolder" runat="server"></asp:ContentPlaceHolder>
 </body>
 </html>

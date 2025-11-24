@@ -78,15 +78,27 @@ namespace negocio
 			try
 			{
 				datos.setearProcedimiento("sp_ModificarRecepcionista");
+
 				datos.setearParametro("@IdUsuario", mod.Usuario.IdUsuario);
 				datos.setearParametro("@Nombre", mod.Nombre);
 				datos.setearParametro("@Apellido", mod.Apellido);
 				datos.setearParametro("@DNI", mod.Dni);
+
 				datos.setearParametro("@Sexo", (object)mod.Sexo ?? DBNull.Value);
 				datos.setearParametro("@FechaNacimiento", mod.FechaNacimiento.HasValue ? (object)mod.FechaNacimiento.Value : DBNull.Value);
 				datos.setearParametro("@Mail", (object)mod.Email ?? DBNull.Value);
 				datos.setearParametro("@Telefono", (object)mod.Telefono ?? DBNull.Value);
 				datos.setearParametro("@NuevaClave", (object)mod.Usuario.Clave ?? DBNull.Value);
+
+				var domicilio = mod.Domicilio;
+				datos.setearParametro("@Calle", (object)(domicilio != null && !string.IsNullOrWhiteSpace(domicilio.Calle) ? domicilio.Calle : null) ?? DBNull.Value);
+				datos.setearParametro("@Altura", (object)(domicilio != null && !string.IsNullOrWhiteSpace(domicilio.Altura) ? domicilio.Altura : null) ?? DBNull.Value);
+				datos.setearParametro("@Piso", (object)(domicilio != null && !string.IsNullOrWhiteSpace(domicilio.Piso) ? domicilio.Piso : null) ?? DBNull.Value);
+				datos.setearParametro("@Departamento", (object)(domicilio != null && !string.IsNullOrWhiteSpace(domicilio.Departamento) ? domicilio.Departamento : null) ?? DBNull.Value);
+				datos.setearParametro("@Localidad", (object)(domicilio != null && !string.IsNullOrWhiteSpace(domicilio.Localidad) ? domicilio.Localidad : null) ?? DBNull.Value);
+				datos.setearParametro("@Provincia", (object)(domicilio != null && !string.IsNullOrWhiteSpace(domicilio.Provincia) ? domicilio.Provincia : null) ?? DBNull.Value);
+				datos.setearParametro("@CodigoPostal", (object)(domicilio != null && !string.IsNullOrWhiteSpace(domicilio.CodigoPostal) ? domicilio.CodigoPostal : null) ?? DBNull.Value);
+
 				datos.ejecutarAccion();
 			}
 			catch (Exception ex)

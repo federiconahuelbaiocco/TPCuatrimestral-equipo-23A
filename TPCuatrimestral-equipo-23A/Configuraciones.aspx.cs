@@ -11,117 +11,235 @@ using negocio;
 
 namespace TPCuatrimestral_equipo_23A
 {
-	public partial class Configuraciones : System.Web.UI.Page
-	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
+    public partial class Configuraciones : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                CargarConfiguracionHorarios();
+                CargarUsuariosCredenciales();
+                CargarConfiguracionMensaje();
+                CargarUsuarios();
+            }
+        }
 
-		}
+        private void CargarUsuarios()
+        {
+            try
+            {
+                UsuarioNegocio negocio = new UsuarioNegocio();
+                List<Usuario> lista = negocio.ListarUsuariosCompletos();
+                gvUsuarios.DataSource = lista;
+                gvUsuarios.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Session["error"] = ex;
+                Response.Redirect("Error.aspx", false);
+            }
+        }
 
-		protected void btnGuardarHorarios_Click(object sender, EventArgs e)
-		{
-			var cph = (ContentPlaceHolder)Master.FindControl("ContentPlaceHolder1");
-			var cblDias = (CheckBoxList)cph.FindControl("cblDiasLaborables");
-			var txtApertura = (TextBox)cph.FindControl("txtHoraApertura");
-			var txtCierre = (TextBox)cph.FindControl("txtHoraCierre");
-			var txtDuracion = (TextBox)cph.FindControl("txtDuracionTurno");
+        protected void gvUsuarios_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                Usuario usuario = (Usuario)e.Row.DataItem;
+                CheckBox chkActivo = (CheckBox)e.Row.FindControl("chkActivo");
+                if (chkActivo != null)
+                {
+                    chkActivo.Checked = usuario.Activo;
+                }
+            }
+        }
 
-			var cfg = new HorarioConfig();
-			foreach (ListItem item in cblDias.Items)
-			{
-				if (item.Selected && Enum.TryParse(item.Value, out DayOfWeek d))
-					cfg.DiasLaborables.Add(d);
-			}
+        protected void btnGuardarEstadosUsuarios_Click(object sender, EventArgs e)
+        {
+            Page.Validate("Usuarios");
+            if (!Page.IsValid) return;
 
-			if (TimeSpan.TryParse(txtApertura.Text, CultureInfo.InvariantCulture, out var apertura))
-				cfg.HoraApertura = apertura;
-			if (TimeSpan.TryParse(txtCierre.Text, CultureInfo.InvariantCulture, out var cierre))
-				cfg.HoraCierre = cierre;
-			if (int.TryParse(txtDuracion.Text, out var min))
-				cfg.DuracionTurnoMin = min;
+            try
+            {
+                UsuarioNegocio negocio = new UsuarioNegocio();
+                foreach (GridViewRow row in gvUsuarios.Rows)
+                {
+                    int idUsuario = (int)gvUsuarios.DataKeys[row.RowIndex].Value;
+                    CheckBox chkActivo = (CheckBox)row.FindControl("chkActivo");
+                    if (chkActivo != null)
+                    {
+                        bool nuevoEstado = chkActivo.Checked;
+                        negocio.ActualizarEstadoUsuario(idUsuario, nuevoEstado);
+                    }
+                }
 
-			Application["HorarioConfig"] = cfg;
+                CargarUsuarios();
+                CargarUsuariosCredenciales();
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", "mostrarToastMensaje('Estados de usuario actualizados correctamente.','success');", true);
+            }
+            catch (Exception ex)
+            {
+                Session["error"] = ex;
+                Response.Redirect("Error.aspx", false);
+            }
+        }
 
-			var data = AppConfigStorage.Load() ?? new AppConfigData();
-			data.Horario = cfg;
-			AppConfigStorage.Save(data);
+        private void CargarConfiguracionHorarios()
+        {
+            var config = Application["HorarioConfig"] as HorarioConfig;
+            if (config != null)
+            {
+                txtHoraApertura.Text = config.HoraApertura.ToString("hh\\:mm");
+                txtHoraCierre.Text = config.HoraCierre.ToString("hh\\:mm");
+                txtDuracionTurno.Text = config.DuracionTurno.ToString();
 
-			var turnoNegocio = new TurnoTrabajoNegocio();
-			var horariosPrevios = turnoNegocio.ListarHorariosPorMedico(0);
-			foreach (var turno in horariosPrevios)
-			{
-				turnoNegocio.EliminarTurnoTrabajoAdmin(turno.IdTurnoTrabajo);
-			}
-			foreach (var dia in cfg.DiasLaborables)
-			{
-				try
-				{
-					turnoNegocio.AgregarTurnoTrabajoAdmin(
-						0, 
-						(int)dia,
-						cfg.HoraApertura,
-						cfg.HoraCierre
-					);
-				}
-				catch (Exception)
-				{
-				}
-			}
+                foreach (ListItem item in cblDiasLaborables.Items)
+                {
+                    item.Selected = config.DiasLaborables.Contains((DayOfWeek)Enum.Parse(typeof(DayOfWeek), item.Value));
+                }
+            }
+        }
 
-			ClientScript.RegisterStartupScript(GetType(), "ok1", "alert('Horarios guardados');", true);
-		}
+        protected void btnGuardarHorarios_Click(object sender, EventArgs e)
+        {
+            Page.Validate("Horarios");
+            if (!Page.IsValid) return;
 
-		protected void btnSubirLogo_Click(object sender, EventArgs e)
-		{
-			var cph = (ContentPlaceHolder)Master.FindControl("ContentPlaceHolder1");
-			var fu = (FileUpload)cph.FindControl("fuLogoClinica");
-			var img = (Image)cph.FindControl("imgLogoActual");
+            try
+            {
+                var config = new HorarioConfig
+                {
+                    HoraApertura = TimeSpan.Parse(txtHoraApertura.Text),
+                    HoraCierre = TimeSpan.Parse(txtHoraCierre.Text),
+                    DuracionTurno = int.Parse(txtDuracionTurno.Text),
+                    DiasLaborables = cblDiasLaborables.Items.Cast<ListItem>()
+                                        .Where(li => li.Selected)
+                                        .Select(li => (DayOfWeek)Enum.Parse(typeof(DayOfWeek), li.Value))
+                                        .ToList()
+                };
 
-			if (fu != null && fu.HasFile)
-			{
-				var folder = Server.MapPath("~/Content/Uploads");
-				Directory.CreateDirectory(folder);
-				var fileName = "logo_" + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(fu.FileName);
-				var path = Path.Combine(folder, fileName);
-				fu.SaveAs(path);
-				var url = "~/Content/Uploads/" + fileName;
-				img.ImageUrl = url;
-				ClientScript.RegisterStartupScript(GetType(), "ok4", "alert('Logo subido');", true);
-			}
-		}
+                Application["HorarioConfig"] = config;
 
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-			if (!IsPostBack)
-			{
-				CargarUsuariosMensajeInterno();
-			}
-		}
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", "mostrarToastMensaje('Configuración de horarios guardada.','success');", true);
+            }
+            catch (Exception ex)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", $"mostrarToastMensaje('Error: {ex.Message.Replace("'", "\\'")}','danger');", true);
+            }
+        }
 
-		private void CargarUsuariosMensajeInterno()
-		{
-		}
+        private void CargarUsuariosCredenciales()
+        {
+            UsuarioNegocio negocio = new UsuarioNegocio();
+            List<Usuario> usuarios = negocio.ListarUsuariosActivos();
 
-		protected void btnGuardarMensajeInterno_Click(object sender, EventArgs e)
-		{
-			var cph = (ContentPlaceHolder)Master.FindControl("ContentPlaceHolder1");
-			var txtMensaje = (TextBox)cph.FindControl("txtMensajeInterno");
-			var ddlRol = (DropDownList)cph.FindControl("ddlDestinatarioRol");
+            ddlUsuariosCred.Items.Clear();
+            ddlUsuariosCred.Items.Add(new ListItem("Seleccione un usuario", "0"));
 
-			var cfg = new MensajeInternoConfig
-			{
-				Mensaje = txtMensaje.Text,
-				DestinatarioRol = ddlRol.SelectedValue,
-				DestinatarioUsuarioId = null
-			};
-			Application["MensajeInternoConfig"] = cfg;
+            foreach (var usuario in usuarios)
+            {
+                string texto;
+                if (usuario.Persona != null && !string.IsNullOrEmpty(usuario.Persona.Nombre))
+                {
+                    texto = $"{usuario.Persona.Nombre} {usuario.Persona.Apellido} ({usuario.Rol.Nombre})";
+                }
+                else
+                {
+                    texto = $"{usuario.NombreUsuario} ({usuario.Rol.Nombre})";
+                }
+                ddlUsuariosCred.Items.Add(new ListItem(texto, usuario.IdUsuario.ToString()));
+            }
+        }
 
-			var data = AppConfigStorage.Load() ?? new AppConfigData();
-			data.Mensaje = cfg;
-			AppConfigStorage.Save(data);
+        protected void ddlUsuariosCred_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int idUsuario = int.Parse(ddlUsuariosCred.SelectedValue);
+            if (idUsuario > 0)
+            {
+                UsuarioNegocio negocio = new UsuarioNegocio();
+                Usuario usuario = negocio.ObtenerUsuarioPorId(idUsuario);
+                if (usuario != null)
+                {
+                    txtNombreUsuarioCred.Text = usuario.NombreUsuario;
+                }
+            }
+            else
+            {
+                txtNombreUsuarioCred.Text = string.Empty;
+            }
+            txtClaveCred.Text = string.Empty;
+        }
 
-			ClientScript.RegisterStartupScript(GetType(), "okMsg", "alert('Mensaje interno guardado');", true);
-		}
-	}
+        protected void btnGuardarCredenciales_Click(object sender, EventArgs e)
+        {
+            Page.Validate("Credenciales");
+            if (!Page.IsValid)
+            {
+                return;
+            }
+
+            try
+            {
+                int idUsuario = int.Parse(ddlUsuariosCred.SelectedValue);
+                if (idUsuario == 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", "mostrarToastMensaje('Por favor, seleccione un usuario.','warning');", true);
+                    return;
+                }
+
+                UsuarioNegocio negocio = new UsuarioNegocio();
+                string nuevoNombreUsuario = txtNombreUsuarioCred.Text.Trim();
+                string nuevaClave = txtClaveCred.Text;
+
+                negocio.CambiarNombreUsuario(idUsuario, nuevoNombreUsuario);
+
+                if (!string.IsNullOrWhiteSpace(nuevaClave))
+                {
+                    negocio.CambiarClaveUsuario(idUsuario, nuevaClave);
+                }
+
+                CargarUsuariosCredenciales();
+                txtNombreUsuarioCred.Text = string.Empty;
+                txtClaveCred.Text = string.Empty;
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", "mostrarToastMensaje('Credenciales actualizadas correctamente.','success');", true);
+            }
+            catch (Exception ex)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", $"mostrarToastMensaje('Error: {ex.Message.Replace("'", "\\'")}','danger');", true);
+            }
+        }
+
+        private void CargarConfiguracionMensaje()
+        {
+            var msgCfg = Application["MensajeInternoConfig"] as MensajeInternoConfig;
+            if (msgCfg != null)
+            {
+                txtMensajeInterno.Text = msgCfg.Mensaje;
+                ddlDestinatarioRol.SelectedValue = msgCfg.DestinatarioRol;
+            }
+        }
+
+        protected void btnGuardarMensajeInterno_Click(object sender, EventArgs e)
+        {
+            Page.Validate("Mensaje");
+            if (!Page.IsValid) return;
+
+            try
+            {
+                var msgConfig = new MensajeInternoConfig
+                {
+                    Mensaje = txtMensajeInterno.Text,
+                    DestinatarioRol = ddlDestinatarioRol.SelectedValue
+                };
+
+                Application["MensajeInternoConfig"] = msgConfig;
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", "mostrarToastMensaje('Mensaje interno guardado.','success');", true);
+            }
+            catch (Exception ex)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarToastMensaje", $"mostrarToastMensaje('Error: {ex.Message.Replace("'", "\\'")}','danger');", true);
+            }
+        }
+    }
 }

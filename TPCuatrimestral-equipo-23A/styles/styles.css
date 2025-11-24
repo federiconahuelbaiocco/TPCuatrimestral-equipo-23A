@@ -1,3 +1,61 @@
+
+body {
+    background: linear-gradient(135deg, #d1d5db 0%, #b4b8f7 100%);
+    min-height: 100vh;
+}
+.login-card {
+    border-radius: 18px;
+    overflow: hidden;
+    background: #ececf3;
+    box-shadow: 0 8px 32px rgba(60,60,90,0.13), 0 1.5px 6px rgba(60,60,90,0.10);
+}
+.login-header { background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); }
+.login-header h4 { letter-spacing: 1px; }
+.login-card .form-label { font-weight: 600; color: #4b5563; }
+.login-card .form-control {
+    border-radius: 8px;
+    background: #fff;
+    border: 1.5px solid #d1d5db;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    cursor: text;
+}
+.login-card .form-control:hover {
+    background: #f0f1f7;
+    border-color: #764ba2;
+    cursor: text;
+}
+.login-card .form-control:focus {
+    background: #f0f1f7;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px #b4b8f7;
+    cursor: text;
+}
+.login-card .btn-primary { border-radius: 8px; font-weight: 600; }
+.login-card .text-danger { font-size: 0.95em; }
+.login-card .card-body { padding: 2.5rem 2.5rem; position: relative; z-index: 1; }
+.login-card .card-header { padding: 1.5rem 2rem; }
+.login-card .bi-heart-pulse-fill { font-size: 2.2rem; vertical-align: middle; }
+.login-card .text-muted { font-size: 0.98em; }
+.login-motivational-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+.login-hero-icon {
+    font-size: 2.5rem;
+    color: #764ba2;
+    opacity: 0.85;
+}
+.login-motivational {
+    color: #667eea;
+    font-weight: 500;
+    font-size: 1.15rem;
+    margin-bottom: 0;
+    text-align: left;
+}
+
 .form-switch {
     position: relative;
     display: inline-block;
@@ -422,13 +480,11 @@ color: #1e293b;
     transform: translateY(-1px);
 }
 
-/* OVERRIDE BOOTSTRAP - ANCHO COMPLETO */
 .container-fluid {
     max-width: 100% !important;
     width: 100% !important;
 }
 
-/* OVERRIDE para páginas de médicos - Expandir columnas */
 .content-area .container-fluid > .row > .col-lg-4 {
     flex: 0 0 35% !important;
     max-width: 35% !important;
@@ -439,7 +495,6 @@ color: #1e293b;
     max-width: 65% !important;
 }
 
-/* Alternativa: Hacer que las columnas usen el 100% en lugar de dividirse */
 @media (min-width: 992px) {
     .content-area .row.full-width-override > [class*="col-"] {
         flex: 0 0 100% !important;

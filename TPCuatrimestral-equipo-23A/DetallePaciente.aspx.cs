@@ -133,12 +133,12 @@ namespace TPCuatrimestral_equipo_23A
 
                 negocio.ModificarPaciente(seleccionado);
 
-                Response.Redirect("~/Recepcionista.aspx", false);
+                Response.Redirect("~/Gestion_de_Pacientes.aspx?toast=guardado", false);
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                string script = $"mostrarToastMensaje('Error', 'No se pudieron guardar los cambios: {ex.Message.Replace("'", "\\'")}', 'error');";
+                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarErrorToast", script, true);
             }
             
         }

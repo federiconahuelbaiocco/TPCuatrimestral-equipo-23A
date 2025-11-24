@@ -55,8 +55,8 @@ namespace negocio
 
         public Medico ObtenerPorId(int idPersona)
         {
-            AccesoDatos datos = new AccesoDatos();
             Medico medico = null;
+            AccesoDatos datos = new AccesoDatos();
             try
             {
                 datos.setearProcedimiento("sp_ObtenerMedicoPorId");
@@ -75,25 +75,8 @@ namespace negocio
                     if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("FechaNacimiento")))
                         medico.FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"];
                     medico.Matricula = datos.Lector["Matricula"] as string;
-                    medico.Activo = (bool)datos.Lector["Activo"];
+                    medico.Activo = !datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Activo")) && (bool)datos.Lector["Activo"];
                 }
-                datos.cerrarConexion();
-                if (medico != null)
-                {
-                    medico.Especialidades = new List<Especialidad>();
-                    datos = new AccesoDatos();
-                    datos.setearProcedimiento("sp_ListarEspecialidadesPorMedico");
-                    datos.setearParametro("@IdMedico", idPersona);
-                    datos.ejecutarLectura();
-                    while (datos.Lector.Read())
-                    {
-                        Especialidad esp = new Especialidad();
-                        esp.IdEspecialidad = (int)datos.Lector["IdEspecialidad"];
-                        esp.Descripcion = (string)datos.Lector["Descripcion"];
-                        medico.Especialidades.Add(esp);
-                    }
-                }
-                return medico;
             }
             catch (Exception ex)
             {
@@ -103,6 +86,35 @@ namespace negocio
             {
                 datos.cerrarConexion();
             }
+
+            if (medico != null)
+            {
+                AccesoDatos datosEsp = new AccesoDatos();
+                try
+                {
+                    medico.Especialidades = new List<Especialidad>();
+                    datosEsp.setearProcedimiento("sp_ListarEspecialidadesPorMedico");
+                    datosEsp.setearParametro("@IdMedico", idPersona);
+                    datosEsp.ejecutarLectura();
+                    while (datosEsp.Lector.Read())
+                    {
+                        Especialidad esp = new Especialidad();
+                        esp.IdEspecialidad = (int)datosEsp.Lector["IdEspecialidad"];
+                        esp.Descripcion = (string)datosEsp.Lector["Descripcion"];
+                        medico.Especialidades.Add(esp);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error al obtener especialidades del médico.", ex);
+                }
+                finally
+                {
+                    datosEsp.cerrarConexion();
+                }
+            }
+
+            return medico;
         }
 
         public int Agregar(Medico nuevo)
@@ -125,6 +137,48 @@ namespace negocio
             catch (Exception ex)
             {
                 throw new Exception("Error al agregar médico.", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public int AgregarConUsuario(Medico nuevo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearProcedimiento("sp_AgregarMedicoConUsuario");
+
+                datos.setearParametro("@Nombre", nuevo.Nombre);
+                datos.setearParametro("@Apellido", nuevo.Apellido);
+                datos.setearParametro("@DNI", nuevo.Dni);
+                datos.setearParametro("@Sexo", (object)nuevo.Sexo ?? DBNull.Value);
+                datos.setearParametro("@FechaNacimiento", nuevo.FechaNacimiento.HasValue ? (object)nuevo.FechaNacimiento.Value : DBNull.Value);
+                datos.setearParametro("@Matricula", nuevo.Matricula);
+                datos.setearParametro("@Mail", (object)nuevo.Email ?? DBNull.Value);
+                datos.setearParametro("@Telefono", (object)nuevo.Telefono ?? DBNull.Value);
+
+                datos.setearParametro("@NombreUsuario", nuevo.Usuario != null && !string.IsNullOrWhiteSpace(nuevo.Usuario.NombreUsuario) ? nuevo.Usuario.NombreUsuario : (object)DBNull.Value);
+                datos.setearParametro("@Clave", nuevo.Usuario != null && !string.IsNullOrWhiteSpace(nuevo.Usuario.Clave) ? nuevo.Usuario.Clave : (object)DBNull.Value);
+
+                datos.setearParametro("@Calle", (object)(nuevo.Domicilio != null && !string.IsNullOrWhiteSpace(nuevo.Domicilio.Calle) ? nuevo.Domicilio.Calle : null) ?? DBNull.Value);
+                datos.setearParametro("@Altura", (object)(nuevo.Domicilio != null && !string.IsNullOrWhiteSpace(nuevo.Domicilio.Altura) ? nuevo.Domicilio.Altura : null) ?? DBNull.Value);
+                datos.setearParametro("@Piso", (object)(nuevo.Domicilio != null && !string.IsNullOrWhiteSpace(nuevo.Domicilio.Piso) ? nuevo.Domicilio.Piso : null) ?? DBNull.Value);
+                datos.setearParametro("@Departamento", (object)(nuevo.Domicilio != null && !string.IsNullOrWhiteSpace(nuevo.Domicilio.Departamento) ? nuevo.Domicilio.Departamento : null) ?? DBNull.Value);
+                datos.setearParametro("@Localidad", (object)(nuevo.Domicilio != null && !string.IsNullOrWhiteSpace(nuevo.Domicilio.Localidad) ? nuevo.Domicilio.Localidad : null) ?? DBNull.Value);
+                datos.setearParametro("@Provincia", (object)(nuevo.Domicilio != null && !string.IsNullOrWhiteSpace(nuevo.Domicilio.Provincia) ? nuevo.Domicilio.Provincia : null) ?? DBNull.Value);
+                datos.setearParametro("@CodigoPostal", (object)(nuevo.Domicilio != null && !string.IsNullOrWhiteSpace(nuevo.Domicilio.CodigoPostal) ? nuevo.Domicilio.CodigoPostal : null) ?? DBNull.Value);
+
+                var result = datos.ejecutarScalar();
+                if (result != null && result != DBNull.Value)
+                    return Convert.ToInt32(result);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al agregar médico con usuario.", ex);
             }
             finally
             {
@@ -189,21 +243,6 @@ namespace negocio
                 datos.setearParametro("@Telefono", (object)medico.Telefono ?? DBNull.Value);
                 datos.setearParametro("@Mail", (object)medico.Email ?? DBNull.Value);
                 datos.ejecutarAccion();
-                datos.cerrarConexion();
-                if (medico.Domicilio != null)
-                {
-                    datos = new AccesoDatos();
-                    datos.setearProcedimiento("sp_ActualizarOCrearDomicilioMedico");
-                    datos.setearParametro("@IdPersona", medico.IdPersona);
-                    datos.setearParametro("@Calle", (object)medico.Domicilio.Calle ?? DBNull.Value);
-                    datos.setearParametro("@Altura", (object)medico.Domicilio.Altura ?? DBNull.Value);
-                    datos.setearParametro("@Piso", (object)medico.Domicilio.Piso ?? DBNull.Value);
-                    datos.setearParametro("@Departamento", (object)medico.Domicilio.Departamento ?? DBNull.Value);
-                    datos.setearParametro("@Localidad", (object)medico.Domicilio.Localidad ?? DBNull.Value);
-                    datos.setearParametro("@Provincia", (object)medico.Domicilio.Provincia ?? DBNull.Value);
-                    datos.setearParametro("@CodigoPostal", (object)medico.Domicilio.CodigoPostal ?? DBNull.Value);
-                    datos.ejecutarAccion();
-                }
             }
             catch (Exception ex)
             {
@@ -213,38 +252,90 @@ namespace negocio
             {
                 datos.cerrarConexion();
             }
+
+            if (medico.Domicilio != null)
+            {
+                AccesoDatos datosDom = new AccesoDatos();
+                try
+                {
+                    datosDom.setearProcedimiento("sp_ActualizarOCrearDomicilioMedico");
+                    datosDom.setearParametro("@IdPersona", medico.IdPersona);
+                    datosDom.setearParametro("@Calle", (object)medico.Domicilio.Calle ?? DBNull.Value);
+                    datosDom.setearParametro("@Altura", (object)medico.Domicilio.Altura ?? DBNull.Value);
+                    datosDom.setearParametro("@Piso", (object)medico.Domicilio.Piso ?? DBNull.Value);
+                    datosDom.setearParametro("@Departamento", (object)medico.Domicilio.Departamento ?? DBNull.Value);
+                    datosDom.setearParametro("@Localidad", (object)medico.Domicilio.Localidad ?? DBNull.Value);
+                    datosDom.setearParametro("@Provincia", (object)medico.Domicilio.Provincia ?? DBNull.Value);
+                    datosDom.setearParametro("@CodigoPostal", (object)medico.Domicilio.CodigoPostal ?? DBNull.Value);
+                    datosDom.ejecutarAccion();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error al actualizar/crear domicilio del médico.", ex);
+                }
+                finally
+                {
+                    datosDom.cerrarConexion();
+                }
+            }
         }
 
         public void ActualizarDatosProfesionales(int idMedico, string matricula, List<int> especialidades)
         {
-            AccesoDatos datos = new AccesoDatos();
+            AccesoDatos datosMat = new AccesoDatos();
             try
             {
-                datos.setearProcedimiento("sp_ModificarMatriculaMedico");
-                datos.setearParametro("@IdPersona", idMedico);
-                datos.setearParametro("@Matricula", matricula);
-                datos.ejecutarAccion();
-                datos.cerrarConexion();
-
-                datos = new AccesoDatos();
-                datos.setearProcedimiento("sp_EliminarEspecialidadesDeMedico");
-                datos.setearParametro("@IdMedico", idMedico);
-                datos.ejecutarAccion();
-                datos.cerrarConexion();
-
-                foreach (int idEsp in especialidades)
-                {
-                    datos = new AccesoDatos();
-                    datos.setearProcedimiento("sp_AgregarEspecialidadAMedico");
-                    datos.setearParametro("@IdMedico", idMedico);
-                    datos.setearParametro("@IdEspecialidad", idEsp);
-                    datos.ejecutarAccion();
-                    datos.cerrarConexion();
-                }
+                datosMat.setearProcedimiento("sp_ModificarMatriculaMedico");
+                datosMat.setearParametro("@IdPersona", idMedico);
+                datosMat.setearParametro("@Matricula", matricula ?? (object)DBNull.Value);
+                datosMat.ejecutarAccion();
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al actualizar datos profesionales.", ex);
+                throw new Exception("Error al modificar matrícula del médico.", ex);
+            }
+            finally
+            {
+                datosMat.cerrarConexion();
+            }
+            
+            AccesoDatos datosDel = new AccesoDatos();
+            try
+            {
+                datosDel.setearProcedimiento("sp_EliminarEspecialidadesDeMedico");
+                datosDel.setearParametro("@IdMedico", idMedico);
+                datosDel.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar especialidades del médico.", ex);
+            }
+            finally
+            {
+                datosDel.cerrarConexion();
+            }
+
+            if (especialidades != null)
+            {
+                foreach (int idEsp in especialidades)
+                {
+                    AccesoDatos datosAdd = new AccesoDatos();
+                    try
+                    {
+                        datosAdd.setearProcedimiento("sp_AgregarEspecialidadAMedico");
+                        datosAdd.setearParametro("@IdMedico", idMedico);
+                        datosAdd.setearParametro("@IdEspecialidad", idEsp);
+                        datosAdd.ejecutarAccion();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception($"Error al agregar especialidad {idEsp} al médico.", ex);
+                    }
+                    finally
+                    {
+                        datosAdd.cerrarConexion();
+                    }
+                }
             }
         }
     }

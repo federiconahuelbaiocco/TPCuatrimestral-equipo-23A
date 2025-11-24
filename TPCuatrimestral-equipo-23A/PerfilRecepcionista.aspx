@@ -52,14 +52,40 @@
                      <label for="<%= txtTelefono.ClientID %>" class="form-label fw-medium">Teléfono</label>
                      <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control" placeholder="Ingrese su teléfono"></asp:TextBox>
                 </div>
-                 <div class="col-md-6">
-                    <label for="<%= txtDireccion.ClientID %>" class="form-label fw-medium">Dirección</label>
-                    <asp:TextBox ID="txtDireccion" runat="server" CssClass="form-control" placeholder="Ingrese su dirección"></asp:TextBox>
+
+                <!-- Domicilio: campos separados para mapear al SP -->
+                <div class="col-md-6">
+                    <label for="<%= txtCalle.ClientID %>" class="form-label fw-medium">Calle</label>
+                    <asp:TextBox ID="txtCalle" runat="server" CssClass="form-control" placeholder="Nombre de la calle"></asp:TextBox>
+                </div>
+                <div class="col-md-3">
+                    <label for="<%= txtAltura.ClientID %>" class="form-label fw-medium">Altura</label>
+                    <asp:TextBox ID="txtAltura" runat="server" CssClass="form-control" placeholder="1234"></asp:TextBox>
+                </div>
+                <div class="col-md-3">
+                    <label for="<%= txtPiso.ClientID %>" class="form-label fw-medium">Piso</label>
+                    <asp:TextBox ID="txtPiso" runat="server" CssClass="form-control" placeholder="P. / Nro"></asp:TextBox>
+                </div>
+                <div class="col-md-3">
+                    <label for="<%= txtDepartamento.ClientID %>" class="form-label fw-medium">Depto</label>
+                    <asp:TextBox ID="txtDepartamento" runat="server" CssClass="form-control" placeholder="A / B"></asp:TextBox>
+                </div>
+                <div class="col-md-3">
+                    <label for="<%= txtLocalidad.ClientID %>" class="form-label fw-medium">Localidad</label>
+                    <asp:TextBox ID="txtLocalidad" runat="server" CssClass="form-control" placeholder="Ciudad"></asp:TextBox>
+                </div>
+                <div class="col-md-6">
+                    <label for="<%= txtProvincia.ClientID %>" class="form-label fw-medium">Provincia</label>
+                    <asp:TextBox ID="txtProvincia" runat="server" CssClass="form-control" placeholder="Provincia"></asp:TextBox>
+                </div>
+                <div class="col-md-3">
+                    <label for="<%= txtCodigoPostal.ClientID %>" class="form-label fw-medium">Código Postal</label>
+                    <asp:TextBox ID="txtCodigoPostal" runat="server" CssClass="form-control" placeholder="CP"></asp:TextBox>
                 </div>
             </div>
         </div>
         <div class="card-footer text-end bg-light">
-            <asp:Button ID="btnGuardarInfoPersonal" runat="server" Text="Guardar Cambios" CssClass="btn btn-primary fw-bold" />
+            <asp:Button ID="btnGuardarInfoPersonal" runat="server" Text="Guardar Cambios" CssClass="btn btn-primary fw-bold" OnClick="btnGuardarInfoPersonal_Click" />
         </div>
     </div>
     <div class="card shadow-sm mb-4">

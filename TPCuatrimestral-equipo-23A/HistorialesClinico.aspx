@@ -2,7 +2,6 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
-        /* TUS ESTILOS ORIGINALES (Intactos) */
         .historial-entrada {
             border-left: 4px solid #667eea;
             padding: 1.5rem;

@@ -12,4 +12,9 @@
     <HoraCierre />
     <DuracionTurnoMin>30</DuracionTurnoMin>
   </Horario>
+  <Mensaje>
+    <Mensaje>putos</Mensaje>
+    <DestinatarioRol>Todos</DestinatarioRol>
+    <DestinatarioUsuarioId xsi:nil="true" />
+  </Mensaje>
 </AppConfigData>

@@ -96,7 +96,7 @@ namespace TPCuatrimestral_equipo_23A
                 txtNombreEditar.Text = "";
                 chkActivoEditar.Checked = false;
 
-                ScriptManager.RegisterStartupScript(this, GetType(), "limpiarFormulario", "limpiarFormulario(); alert('✅ Consultorio actualizado correctamente');", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "limpiarFormulario", "limpiarFormulario(); mostrarToastMensaje('✅ Consultorio actualizado correctamente','success');", true);
             }
             catch (Exception ex)
             {

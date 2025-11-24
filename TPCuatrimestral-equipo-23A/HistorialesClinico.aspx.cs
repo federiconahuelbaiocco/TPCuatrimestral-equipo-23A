@@ -43,11 +43,80 @@ namespace TPCuatrimestral_equipo_23A
         {
             try
             {
-                Usuario usuario = (Usuario)Session["usuario"];
+                var usuarioObj = Session["usuario"];
+                if (usuarioObj == null)
+                {
+                    rptPacientes.DataSource = null;
+                    rptPacientes.DataBind();
+                    pnlSinPacientes.Visible = true;
+                    return;
+                }
+
+                Usuario usuario = usuarioObj as Usuario;
+                if (usuario == null || usuario.Persona == null || !(usuario.Persona is MedicoModel))
+                {
+                    rptPacientes.DataSource = null;
+                    rptPacientes.DataBind();
+                    pnlSinPacientes.Visible = true;
+                    return;
+                }
+
                 MedicoModel medico = (MedicoModel)usuario.Persona;
 
                 TurnoNegocio turnoNegocio = new TurnoNegocio();
-                List<Paciente> pacientes = turnoNegocio.ListarPacientesPorMedico(medico.IdPersona);
+
+                List<Paciente> pacientes = new List<Paciente>();
+                try
+                {
+                    List<Turno> turnos = turnoNegocio.ListarTurnos(medico.IdPersona, null);
+                    var vistos = new System.Collections.Generic.HashSet<int>();
+                    PacienteNegocio pacienteNegocio = new PacienteNegocio();
+
+                    if (turnos != null)
+                    {
+                        foreach (var t in turnos)
+                        {
+                            if (t.Paciente == null) continue;
+
+                            int idPac = t.Paciente.IdPersona;
+                            if (idPac == 0 || vistos.Contains(idPac)) continue;
+
+                            vistos.Add(idPac);
+
+                            Paciente full = null;
+                            try
+                            {
+                                full = pacienteNegocio.BuscarPorId(idPac);
+                            }
+                            catch
+                            {
+                                full = null;
+                            }
+
+                            if (full != null)
+                                pacientes.Add(full);
+                            else
+                                pacientes.Add(t.Paciente);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Session["error"] = ex;
+                }
+
+                if (pacientes.Count == 0)
+                {
+                    try
+                    {
+                        pacientes = turnoNegocio.ListarPacientesPorMedico(medico.IdPersona) ?? new List<Paciente>();
+                    }
+                    catch (Exception ex)
+                    {
+                        Session["error"] = ex;
+                        pacientes = new List<Paciente>();
+                    }
+                }
 
                 if (pacientes != null && pacientes.Count > 0)
                 {
@@ -57,12 +126,16 @@ namespace TPCuatrimestral_equipo_23A
                 }
                 else
                 {
+                    rptPacientes.DataSource = null;
+                    rptPacientes.DataBind();
                     pnlSinPacientes.Visible = true;
                 }
             }
             catch (Exception ex)
             {
                 Session["error"] = ex;
+                rptPacientes.DataSource = null;
+                rptPacientes.DataBind();
                 pnlSinPacientes.Visible = true;
             }
         }

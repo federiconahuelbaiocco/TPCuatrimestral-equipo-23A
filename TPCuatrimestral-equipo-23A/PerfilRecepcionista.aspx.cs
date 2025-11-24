@@ -26,9 +26,78 @@ namespace TPCuatrimestral_equipo_23A
                 txtApellido.Text = recepActual.Apellido;
                 txtDni.Text = recepActual.Dni;
                 txtTelefono.Text = recepActual.Telefono;
-                txtDireccion.Text = recepActual.Domicilio != null ? recepActual.Domicilio.Calle + " " + recepActual.Domicilio.Altura : string.Empty;
+                if (recepActual.Domicilio != null)
+                {
+                    txtCalle.Text = recepActual.Domicilio.Calle;
+                    txtAltura.Text = recepActual.Domicilio.Altura;
+                    txtPiso.Text = recepActual.Domicilio.Piso;
+                    txtDepartamento.Text = recepActual.Domicilio.Departamento;
+                    txtLocalidad.Text = recepActual.Domicilio.Localidad;
+                    txtProvincia.Text = recepActual.Domicilio.Provincia;
+                    txtCodigoPostal.Text = recepActual.Domicilio.CodigoPostal;
+                }
+                else
+                {
+                    txtCalle.Text = string.Empty;
+                    txtAltura.Text = string.Empty;
+                    txtPiso.Text = string.Empty;
+                    txtDepartamento.Text = string.Empty;
+                    txtLocalidad.Text = string.Empty;
+                    txtProvincia.Text = string.Empty;
+                    txtCodigoPostal.Text = string.Empty;
+                }
+
                 if (recepActual.FechaNacimiento.HasValue)
                     txtFechaNac.Text = recepActual.FechaNacimiento.Value.ToString("yyyy-MM-dd");
+            }
+        }
+
+        protected void btnGuardarInfoPersonal_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var recepActual = Session["recepcionistaActual"] as RecepcionistaModel;
+                if (recepActual == null)
+                {
+                    Response.Redirect("Default.aspx", false);
+                    return;
+                }
+
+                recepActual.Nombre = txtNombre.Text.Trim();
+                recepActual.Apellido = txtApellido.Text.Trim();
+                recepActual.Dni = txtDni.Text.Trim();
+                recepActual.Telefono = txtTelefono.Text.Trim();
+
+                DateTime fecha;
+                if (DateTime.TryParse(txtFechaNac.Text, out fecha))
+                    recepActual.FechaNacimiento = fecha;
+                else
+                    recepActual.FechaNacimiento = null;
+
+                if (recepActual.Domicilio == null)
+                    recepActual.Domicilio = new Domicilio();
+
+                recepActual.Domicilio.Calle = txtCalle.Text.Trim();
+                recepActual.Domicilio.Altura = txtAltura.Text.Trim();
+                recepActual.Domicilio.Piso = txtPiso.Text.Trim();
+                recepActual.Domicilio.Departamento = txtDepartamento.Text.Trim();
+                recepActual.Domicilio.Localidad = txtLocalidad.Text.Trim();
+                recepActual.Domicilio.Provincia = txtProvincia.Text.Trim();
+                recepActual.Domicilio.CodigoPostal = txtCodigoPostal.Text.Trim();
+
+                RecepcionistaNegocio negocio = new RecepcionistaNegocio();
+                negocio.Modificar(recepActual);
+
+                Session["recepcionistaActual"] = recepActual;
+
+                string script = "mostrarToastMensaje('¡Guardado! Los datos se actualizaron correctamente.', 'success');";
+                ScriptManager.RegisterStartupScript(this, GetType(), "toastGuardarRecep", script, true);
+            }
+            catch (Exception ex)
+            {
+                var safe = ex.Message.Replace("'", "\\'");
+                string script = $"mostrarToastMensaje('Error: {safe}', 'danger');";
+                ScriptManager.RegisterStartupScript(this, GetType(), "toastErrorRecep", script, true);
             }
         }
     }

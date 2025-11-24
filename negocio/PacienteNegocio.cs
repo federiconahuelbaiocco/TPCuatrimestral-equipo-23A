@@ -82,18 +82,17 @@ namespace negocio
 
                 datos.setearParametro("@Mail", nuevo.Email ?? (object)DBNull.Value);
                 datos.setearParametro("@Telefono", nuevo.Telefono ?? (object)DBNull.Value);
-                datos.setearParametro("@Sexo", nuevo.Sexo);
+                datos.setearParametro("@Sexo", nuevo.Sexo ?? (object)DBNull.Value);
 
-                datos.setearParametro("@Calle", nuevo.Domicilio.Calle ?? (object)DBNull.Value);
-                datos.setearParametro("@Altura", nuevo.Domicilio.Altura ?? (object)DBNull.Value);
-                datos.setearParametro("@Piso", nuevo.Domicilio.Piso ?? (object)DBNull.Value);
-                datos.setearParametro("@Departamento", nuevo.Domicilio.Departamento ?? (object)DBNull.Value);
-                datos.setearParametro("@Localidad", nuevo.Domicilio.Localidad ?? (object)DBNull.Value);
-                datos.setearParametro("@Provincia", nuevo.Domicilio.Provincia ?? (object)DBNull.Value);
-                datos.setearParametro("@CodigoPostal", nuevo.Domicilio.CodigoPostal ?? (object)DBNull.Value);
-
-                datos.setearParametro("@FechaNacimiento", nuevo.FechaNacimiento);
-                datos.setearParametro("@idCobertura", nuevo.Cobertura.IdCoberturaMedica);
+                datos.setearParametro("@Calle", nuevo.Domicilio != null ? (object)nuevo.Domicilio.Calle ?? DBNull.Value : DBNull.Value);
+                datos.setearParametro("@Altura", nuevo.Domicilio != null ? (object)nuevo.Domicilio.Altura ?? DBNull.Value : DBNull.Value);
+                datos.setearParametro("@Piso", nuevo.Domicilio != null ? (object)nuevo.Domicilio.Piso ?? DBNull.Value : DBNull.Value);
+                datos.setearParametro("@Departamento", nuevo.Domicilio != null ? (object)nuevo.Domicilio.Departamento ?? DBNull.Value : DBNull.Value);
+                datos.setearParametro("@Localidad", nuevo.Domicilio != null ? (object)nuevo.Domicilio.Localidad ?? DBNull.Value : DBNull.Value);
+                datos.setearParametro("@Provincia", nuevo.Domicilio != null ? (object)nuevo.Domicilio.Provincia ?? DBNull.Value : DBNull.Value);
+                datos.setearParametro("@CodigoPostal", nuevo.Domicilio != null ? (object)nuevo.Domicilio.CodigoPostal ?? DBNull.Value : DBNull.Value);
+                datos.setearParametro("@FechaNacimiento", nuevo.FechaNacimiento.HasValue ? (object)nuevo.FechaNacimiento.Value : DBNull.Value);
+                datos.setearParametro("@idCobertura", (nuevo.Cobertura != null && nuevo.Cobertura.IdCoberturaMedica != 0) ? (object)nuevo.Cobertura.IdCoberturaMedica : DBNull.Value);
 
                 datos.ejecutarLectura();
 
@@ -192,18 +191,19 @@ namespace negocio
                 datos.setearParametro("@Nombre", paciente.Nombre);
                 datos.setearParametro("@Apellido", paciente.Apellido);
                 datos.setearParametro("@DNI", paciente.Dni);
-                datos.setearParametro("@Mail", paciente.Email);
-                datos.setearParametro("@Telefono", paciente.Telefono);
-                datos.setearParametro("@Sexo", paciente.Sexo);
-                datos.setearParametro("@Calle", paciente.Domicilio.Calle);
-                datos.setearParametro("@Altura", paciente.Domicilio.Altura);
-                datos.setearParametro("@Piso", paciente.Domicilio.Piso);
-                datos.setearParametro("@Apartamento", paciente.Domicilio.Departamento);
-                datos.setearParametro("@Localidad", paciente.Domicilio.Localidad);
-                datos.setearParametro("@Provincia", paciente.Domicilio.Provincia);
-                datos.setearParametro("@CodigoPostal", paciente.Domicilio.CodigoPostal);
-                datos.setearParametro("@FechaNacimiento", paciente.FechaNacimiento);
-                datos.setearParametro("@idCobertura", paciente.Cobertura.IdCoberturaMedica);
+                datos.setearParametro("@Mail", paciente.Email ?? (object)DBNull.Value);
+                datos.setearParametro("@Telefono", paciente.Telefono ?? (object)DBNull.Value);
+                datos.setearParametro("@Sexo", paciente.Sexo ?? (object)DBNull.Value);
+                datos.setearParametro("@Calle", paciente.Domicilio != null ? (object)paciente.Domicilio.Calle ?? DBNull.Value : DBNull.Value);
+                datos.setearParametro("@Altura", paciente.Domicilio != null ? (object)paciente.Domicilio.Altura ?? DBNull.Value : DBNull.Value);
+                datos.setearParametro("@Piso", paciente.Domicilio != null ? (object)paciente.Domicilio.Piso ?? DBNull.Value : DBNull.Value);
+                datos.setearParametro("@Departamento", paciente.Domicilio != null ? (object)paciente.Domicilio.Departamento ?? DBNull.Value : DBNull.Value);
+                datos.setearParametro("@Localidad", paciente.Domicilio != null ? (object)paciente.Domicilio.Localidad ?? DBNull.Value : DBNull.Value);
+                datos.setearParametro("@Provincia", paciente.Domicilio != null ? (object)paciente.Domicilio.Provincia ?? DBNull.Value : DBNull.Value);
+                datos.setearParametro("@CodigoPostal", paciente.Domicilio != null ? (object)paciente.Domicilio.CodigoPostal ?? DBNull.Value : DBNull.Value);
+
+                datos.setearParametro("@FechaNacimiento", paciente.FechaNacimiento.HasValue ? (object)paciente.FechaNacimiento.Value : DBNull.Value);
+                datos.setearParametro("@idCobertura", (paciente.Cobertura != null && paciente.Cobertura.IdCoberturaMedica != 0) ? (object)paciente.Cobertura.IdCoberturaMedica : DBNull.Value);
 
                 datos.ejecutarAccion();
             }

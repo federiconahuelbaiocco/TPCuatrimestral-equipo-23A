@@ -387,7 +387,7 @@ namespace TPCuatrimestral_equipo_23A
                     }
                     else
                     {
-                        int idNuevoMedico = negocio.Agregar(nuevo);
+                        int idNuevoMedico = negocio.AgregarConUsuario(nuevo);
 
                         if (idNuevoMedico > 0)
                         {
@@ -400,6 +400,10 @@ namespace TPCuatrimestral_equipo_23A
                                     turnoNegocio.Agregar(idNuevoMedico, turno);
                                 }
                             }
+                        }
+                        else
+                        {
+                            throw new Exception("No se pudo obtener el Id del médico insertado.");
                         }
                     }
                 }

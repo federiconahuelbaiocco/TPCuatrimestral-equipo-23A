@@ -11,10 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "conexion", "..\conexion\con
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts_BD", "scripts_BD", "{E9A21240-46F3-4BA8-9814-5F94197867D2}"
 	ProjectSection(SolutionItems) = preProject
-		..\script\01_CrearTablas.sql = ..\script\01_CrearTablas.sql
-		..\script\02_CrearSPs.sql = ..\script\02_CrearSPs.sql
-		..\script\ClinicaDB.txt = ..\script\ClinicaDB.txt
-		..\script\Procedures.txt = ..\script\Procedures.txt
+		..\script\Script1_DDL(Estructura de Base de Datos).sql = ..\script\Script1_DDL(Estructura de Base de Datos).sql
+		..\script\Script2_SPs Administrador.sql = ..\script\Script2_SPs Administrador.sql
+		..\script\Script3_SPs Recepcionista.sql = ..\script\Script3_SPs Recepcionista.sql
+		..\script\Script4_SPs Médico.sql = ..\script\Script4_SPs Médico.sql
+		..\script\script5_insertarPruebas.sql = ..\script\script5_insertarPruebas.sql
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "negocio", "..\negocio\negocio.csproj", "{B9131C81-4059-4254-9E2B-C0811505ED6C}"

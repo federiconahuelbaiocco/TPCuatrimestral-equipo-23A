@@ -84,10 +84,10 @@
     <Content Include="PerfilMedico.aspx" />
     <Content Include="Recepcionista.aspx" />
     <Content Include="scripts_js\toast-mensajes.js" />
+    <Content Include="styles\FormStyles.css" />
     <Content Include="styles\MasterLayout.css" />
     <Content Include="styles\SidebarStyles.css" />
     <Content Include="styles\styles.css" />
-    <Content Include="styles\FormStyles.css" />
     <Content Include="scripts_js\consultorios.js" />
     <Content Include="scripts_js\especialidades.js" />
     <Content Include="PerfilRecepcionista.aspx" />

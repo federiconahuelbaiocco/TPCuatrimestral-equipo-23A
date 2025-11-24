@@ -1,9 +1,9 @@
 ﻿//------------------------------------------------------------------------------
 // <generado automáticamente>
-// Este código fue generado por una herramienta.
+//     Este código fue generado por una herramienta.
 //
 //     Los cambios en este archivo podrían causar un comportamiento incorrecto y se perderán si
-//  se vuelve a generar el código. 
+//     se vuelve a generar el código. 
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
@@ -13,6 +13,24 @@ namespace TPCuatrimestral_equipo_23A
 
     public partial class Configuraciones
     {
+
+        /// <summary>
+        /// Control gvUsuarios.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvUsuarios;
+
+        /// <summary>
+        /// Control btnGuardarEstadosUsuarios.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGuardarEstadosUsuarios;
 
         /// <summary>
         /// Control cblDiasLaborables.
@@ -60,6 +78,51 @@ namespace TPCuatrimestral_equipo_23A
         protected global::System.Web.UI.WebControls.Button btnGuardarHorarios;
 
         /// <summary>
+        /// Control ddlUsuariosCred.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlUsuariosCred;
+
+        /// <summary>
+        /// Control txtNombreUsuarioCred.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNombreUsuarioCred;
+
+        /// <summary>
+        /// Control rfvNombreUsuarioCred.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNombreUsuarioCred;
+
+        /// <summary>
+        /// Control txtClaveCred.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtClaveCred;
+
+        /// <summary>
+        /// Control btnGuardarCredenciales.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGuardarCredenciales;
+
+        /// <summary>
         /// Control txtMensajeInterno.
         /// </summary>
         /// <remarks>
@@ -76,15 +139,6 @@ namespace TPCuatrimestral_equipo_23A
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlDestinatarioRol;
-
-        /// <summary>
-        /// Control ddlDestinatarioUsuario.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlDestinatarioUsuario;
 
         /// <summary>
         /// Control btnGuardarMensajeInterno.

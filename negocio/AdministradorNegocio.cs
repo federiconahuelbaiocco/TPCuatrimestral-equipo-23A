@@ -90,6 +90,28 @@ namespace negocio
 				datos.setearParametro("@Mail", (object)mod.Email ?? DBNull.Value);
 				datos.setearParametro("@Telefono", (object)mod.Telefono ?? DBNull.Value);
 				datos.setearParametro("@NuevaClave", (object)mod.Usuario.Clave ?? DBNull.Value);
+
+				if (mod.Domicilio != null)
+				{
+					datos.setearParametro("@Calle", (object)mod.Domicilio.Calle ?? DBNull.Value);
+					datos.setearParametro("@Altura", (object)mod.Domicilio.Altura ?? DBNull.Value);
+					datos.setearParametro("@Piso", (object)mod.Domicilio.Piso ?? DBNull.Value);
+					datos.setearParametro("@Departamento", (object)mod.Domicilio.Departamento ?? DBNull.Value);
+					datos.setearParametro("@Localidad", (object)mod.Domicilio.Localidad ?? DBNull.Value);
+					datos.setearParametro("@Provincia", (object)mod.Domicilio.Provincia ?? DBNull.Value);
+					datos.setearParametro("@CodigoPostal", (object)mod.Domicilio.CodigoPostal ?? DBNull.Value);
+				}
+				else
+				{
+					datos.setearParametro("@Calle", DBNull.Value);
+					datos.setearParametro("@Altura", DBNull.Value);
+					datos.setearParametro("@Piso", DBNull.Value);
+					datos.setearParametro("@Departamento", DBNull.Value);
+					datos.setearParametro("@Localidad", DBNull.Value);
+					datos.setearParametro("@Provincia", DBNull.Value);
+					datos.setearParametro("@CodigoPostal", DBNull.Value);
+				}
+
 				datos.ejecutarAccion();
 			}
 			catch (Exception ex)
