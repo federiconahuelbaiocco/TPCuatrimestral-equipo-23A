@@ -13,6 +13,6 @@ namespace dominio
 		public DayOfWeek DiaSemana { get; set; }
 		public TimeSpan HoraEntrada { get; set; }
 		public TimeSpan HoraSalida { get; set; }
-		public string NombreDia { get; set; } // Campo opcional para mostrar el nombre del día (usado en admin)
+		public string NombreDia { get; set; }
 	}
 }

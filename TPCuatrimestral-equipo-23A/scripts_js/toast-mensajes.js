@@ -18,4 +18,10 @@ window.mostrarToastMensaje = function(mensaje, tipo = "info") {
         "</div>";
 
     document.body.appendChild(toast);
+
+    setTimeout(function () {
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+        }
+    }, 3000);
 };

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
 namespace TPCuatrimestral_equipo_23A
 {
@@ -58,38 +59,40 @@ namespace TPCuatrimestral_equipo_23A
 			}
 		}
 
-		protected void btnGuardarEdicion_Click(object sender, EventArgs e)
-		{
-			EspecialidadNegocio negocio = new EspecialidadNegocio();
-			try
-			{
-				dominio.Especialidad especialidad = new dominio.Especialidad();
-				especialidad.IdEspecialidad = int.Parse(hfEspecialidadId.Value);
-				especialidad.Descripcion = txtNombreEditar.Text;
-				especialidad.Activo = chkActivoEditar.Checked;
+        protected void btnGuardarEdicion_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtNombreEditar.Text))
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alerta", "mostrarToastMensaje('El nombre de la especialidad no puede estar vacío.', 'warning');", true);
+                return;
+            }
 
-				if (string.IsNullOrEmpty(especialidad.Descripcion))
-				{
-					return;
-				}
+            EspecialidadNegocio negocio = new EspecialidadNegocio();
+            try
+            {
+                dominio.Especialidad especialidad = new dominio.Especialidad();
+                especialidad.IdEspecialidad = int.Parse(hfEspecialidadId.Value);
+                especialidad.Descripcion = txtNombreEditar.Text;
+                especialidad.Activo = chkActivoEditar.Checked;
 
-				negocio.Modificar(especialidad);
-				CargarEspecialidades();
-				hfEspecialidadId.Value = "";
-				txtNombreEditar.Text = "";
-				chkActivoEditar.Checked = false;
+                negocio.Modificar(especialidad);
 
-				ScriptManager.RegisterStartupScript(this, GetType(), "limpiarFormulario",
-					 "limpiarFormulario(); mostrarToastMensaje('Especialidad actualizada correctamente','success');", true);
-			}
-			catch (Exception ex)
-			{
-				Session["error"] = ex;
-				Response.Redirect("~/Error.aspx", false);
-			}
-		}
+                CargarEspecialidades();
 
-		protected void gvEspecialidades_RowCommand(object sender, GridViewCommandEventArgs e)
+                hfEspecialidadId.Value = "";
+                txtNombreEditar.Text = "";
+                chkActivoEditar.Checked = false;
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "limpiarFormulario","mostrarToastMensaje('Especialidad actualizada correctamente','success'); limpiarFormulario();", true);
+            }
+            catch (Exception ex)
+            {
+                Session["error"] = ex;
+                ScriptManager.RegisterStartupScript(this, GetType(), "error", $"mostrarToastMensaje('Error: {ex.Message.Replace("'", "\\'")}', 'danger');", true);
+            }
+        }
+
+        protected void gvEspecialidades_RowCommand(object sender, GridViewCommandEventArgs e)
 		{
 			if (e.CommandName == "EliminarEsp")
 			{
@@ -126,7 +129,7 @@ namespace TPCuatrimestral_equipo_23A
 						txtNombreEditar.Text = seleccionada.Descripcion;
 						chkActivoEditar.Checked = seleccionada.Activo;
 
-						ScriptManager.RegisterStartupScript(this, GetType(), "mostrarFormulario", "mostrarFormularioEdicion();", true);
+						ScriptManager.RegisterStartupScript(this, GetType(), "mostrarFormularioEdicion", "mostrarFormularioEdicion();", true);
 					}
 				}
 				catch (Exception ex)
@@ -137,7 +140,7 @@ namespace TPCuatrimestral_equipo_23A
 			}
 		}
 
-		protected void gvEspecialidades_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        protected void gvEspecialidades_RowDeleting(object sender, GridViewDeleteEventArgs e)
 		{
 		}
 	}

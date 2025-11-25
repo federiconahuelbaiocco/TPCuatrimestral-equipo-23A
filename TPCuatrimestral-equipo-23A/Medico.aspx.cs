@@ -30,7 +30,12 @@ namespace TPCuatrimestral_equipo_23A
                     CargarEstadisticas(medicoActual.IdPersona);
                     CargarTurnosDelDia(medicoActual.IdPersona);
                     MostrarHorarioTrabajo();
-                    MostrarMensajeInternoMedico();
+
+                    if (Session["MensajeInternoMedicoMostrado"] == null)
+                    {
+                        MostrarMensajeInternoMedico();
+                        Session["MensajeInternoMedicoMostrado"] = true;
+                    }
                 }
                 catch (Exception ex)
                 {

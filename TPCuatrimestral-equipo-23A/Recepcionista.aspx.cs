@@ -17,7 +17,11 @@ namespace TPCuatrimestral_equipo_23A
             {
                 CargarContadores();
                 CargarPacientes();
-                MostrarMensajeInternoRecepcionista();
+                if (Session["MensajeInternoRecepcionistaMostrado"] == null)
+                {
+                    MostrarMensajeInternoRecepcionista();
+                    Session["MensajeInternoRecepcionistaMostrado"] = true;
+                }
                 MostrarHorarioTrabajoFijo();
             }
         }

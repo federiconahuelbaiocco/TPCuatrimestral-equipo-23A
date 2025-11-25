@@ -69,7 +69,7 @@
                                             CommandArgument='<%# Eval("IdEspecialidad") %>'
                                             OnClientClick="return confirm('¿Estás seguro de que quieres eliminar esta especialidad?');"
                                             ToolTip="Eliminar">
-      <i class="bi bi-trash-fill"></i>
+                                            <i class="bi bi-trash-fill"></i>
                                         </asp:LinkButton>
                                     </div>
                                 </ItemTemplate>
@@ -109,13 +109,6 @@
                         CssClass="sidebar-input"
                         placeholder="Ej. Cardiología"
                         ValidationGroup="Editar"></asp:TextBox>
-
-                    <asp:RequiredFieldValidator ID="rfvNombreEditarEsp" runat="server"
-                        ControlToValidate="txtNombreEditar"
-                        ErrorMessage="El nombre es requerido."
-                        CssClass="text-danger small fw-bold mt-1 d-block"
-                        Display="Dynamic"
-                        ValidationGroup="Editar" />
                 </div>
 
                 <div class="sidebar-form-group">
@@ -150,5 +143,4 @@
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="ScriptsPlaceHolder" runat="server">
-    <script src="~/scripts_js/especialidades.js" rel="stylesheet" type="text/javascript"></script>
 </asp:Content>
