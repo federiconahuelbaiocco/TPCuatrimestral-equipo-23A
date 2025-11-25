@@ -68,7 +68,7 @@ namespace TPCuatrimestral_equipo_23A
                             txtApellido.Text = seleccionado.Apellido;
                             txtDni.Text = seleccionado.Dni;
                             ddlSexo.Text = seleccionado.Sexo;
-                            txtFechaNac.Text = seleccionado.FechaNacimiento.HasValue ? seleccionado.FechaNacimiento.Value.ToString("d") : "";
+                            txtFechaNac.Text = seleccionado.FechaNacimiento.HasValue ? seleccionado.FechaNacimiento.Value.ToString("yyyy-MM-dd") : "";
                             txtTelefono.Text = seleccionado.Telefono;
                             txtMail.Text = seleccionado.Email;
                             ddlCoberturas.SelectedValue = seleccionado.Cobertura.IdCoberturaMedica.ToString();
@@ -107,29 +107,32 @@ namespace TPCuatrimestral_equipo_23A
         {
             try
             {
+                Page.Validate("EdicionPaciente");
+                if (!Page.IsValid) return;
+
                 int id = int.Parse(Request.QueryString["id"]);
                 PacienteNegocio negocio = new PacienteNegocio();
+
                 Paciente seleccionado = negocio.BuscarPorId(id);
 
-                seleccionado.Nombre = txtNombre.Text;
-                seleccionado.Apellido = txtApellido.Text;
-                seleccionado.Dni = txtDni.Text;
-                seleccionado.Email = txtMail.Text;
-                seleccionado.Telefono = txtTelefono.Text;
+                seleccionado.Nombre = txtNombre.Text.Trim();
+                seleccionado.Apellido = txtApellido.Text.Trim();
+                seleccionado.Dni = txtDni.Text.Trim();
+                seleccionado.Email = txtMail.Text.Trim();
+                seleccionado.Telefono = txtTelefono.Text.Trim();
                 seleccionado.Sexo = ddlSexo.SelectedValue;
-
-                seleccionado.Domicilio.Calle = txtCalle.Text;
-                seleccionado.Domicilio.Altura = txtAltura.Text;
-                seleccionado.Domicilio.Piso = txtPiso.Text;
-                seleccionado.Domicilio.Departamento = txtDepartamento.Text;
-                seleccionado.Domicilio.Localidad = txtLocalidad.Text;
-                seleccionado.Domicilio.Provincia = txtProvincia.Text;
-                seleccionado.Domicilio.CodigoPostal = txtCodigoPostal.Text;
-
                 seleccionado.FechaNacimiento = DateTime.Parse(txtFechaNac.Text);
 
-                seleccionado.Cobertura.IdCoberturaMedica = int.Parse(ddlCoberturas.SelectedValue);
+                seleccionado.Domicilio.Calle = txtCalle.Text.Trim();
+                seleccionado.Domicilio.Altura = txtAltura.Text.Trim();
+                seleccionado.Domicilio.Piso = string.IsNullOrWhiteSpace(txtPiso.Text) ? null : txtPiso.Text.Trim();
+                seleccionado.Domicilio.Departamento = string.IsNullOrWhiteSpace(txtDepartamento.Text) ? null : txtDepartamento.Text.Trim();
+                seleccionado.Domicilio.Localidad = txtLocalidad.Text.Trim();
+                seleccionado.Domicilio.Provincia = txtProvincia.Text.Trim();
+                seleccionado.Domicilio.CodigoPostal = txtCodigoPostal.Text.Trim();
 
+                if (seleccionado.Cobertura == null) seleccionado.Cobertura = new CoberturaMedica();
+                seleccionado.Cobertura.IdCoberturaMedica = int.Parse(ddlCoberturas.SelectedValue);
 
                 negocio.ModificarPaciente(seleccionado);
 
@@ -137,10 +140,29 @@ namespace TPCuatrimestral_equipo_23A
             }
             catch (Exception ex)
             {
-                string script = $"mostrarToastMensaje('Error', 'No se pudieron guardar los cambios: {ex.Message.Replace("'", "\\'")}', 'error');";
-                ScriptManager.RegisterStartupScript(this, GetType(), "mostrarErrorToast", script, true);
+                string errorMsg = ex.Message;
+                if (ex.InnerException != null)
+                    errorMsg += " " + ex.InnerException.Message;
+
+                string mensajeToast = "No se pudieron guardar los cambios.";
+                string tipoToast = "danger";
+
+                if (errorMsg.Contains("UQ_Personas_Dni"))
+                {
+                    mensajeToast = "El DNI ingresado ya pertenece a otro paciente.";
+                    tipoToast = "warning";
+                }
+                else if (errorMsg.Contains("UNIQUE KEY") || errorMsg.Contains("duplicate") || errorMsg.Contains("clave duplicada"))
+                {
+                    mensajeToast = "Ya existe un paciente con ese DNI.";
+                    tipoToast = "warning";
+                }
+
+                string safeMsg = HttpUtility.JavaScriptStringEncode(mensajeToast);
+                string script = $"console.log('Error servidor: {safeMsg}'); if(typeof mostrarToastMensaje === 'function') {{ mostrarToastMensaje('{safeMsg}', '{tipoToast}'); }} else {{ alert('{safeMsg}'); }}";
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "toastErrorDb", script, true);
             }
-            
         }
 
         protected void btnCancelar_Click(object sender, EventArgs e)
