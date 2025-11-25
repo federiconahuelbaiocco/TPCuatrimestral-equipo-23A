@@ -17,7 +17,12 @@ var EspecialidadesModule = (function() {
 
    if (chkActivoEditar) {
    actualizarEstadoSidebar(chkActivoEditar);
-   }
+        }
+
+        var validador = document.querySelector('[id$="rfvNombreEditarEsp"]');
+        if (validador) {
+            validador.style.display = 'none';
+        }
 
         console.log('Especialidad cargada - ID:', id, 'Descripcion:', descripcion, 'Activo:', activo);
     }

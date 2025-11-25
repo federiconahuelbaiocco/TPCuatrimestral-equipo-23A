@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Inicio de Sesión" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="TPCuatrimestral_equipo_23A.Default" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -8,14 +9,15 @@
                 <div class="card login-card shadow-lg border-0">
                     <div class="card-header login-header text-center text-white">
                         <h4 class="mb-0">
-                            <i class="bi bi-heart-pulse-fill me-2"></i> UTN SALUD
+                            <i class="bi bi-heart-pulse-fill me-2"></i>UTN SALUD
                         </h4>
                     </div>
                     <div class="card-body">
                         <div class="login-motivational-row">
                             <i class="bi bi-person-circle login-hero-icon"></i>
                             <div class="login-motivational">
-                                Bienvenido al sistema de gestión médica.<br>Por favor, inicia sesión para continuar.
+                                Bienvenido al sistema de gestión médica.<br>
+                                Por favor, inicia sesión para continuar.
                             </div>
                         </div>
                         <asp:Panel runat="server" DefaultButton="btnLogin">
