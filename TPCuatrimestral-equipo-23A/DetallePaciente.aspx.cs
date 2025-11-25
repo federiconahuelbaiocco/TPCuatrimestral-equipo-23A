@@ -17,11 +17,11 @@ namespace TPCuatrimestral_equipo_23A
             {
                 CargarCoberturas();
 
+                rvFechaNac.MaximumValue = DateTime.Today.ToString("yyyy-MM-dd");
+
                 if (Request.QueryString["id"] != null)
                 {
                     CargarDatosParaEditar();
-
-
                 }
             }
         }
