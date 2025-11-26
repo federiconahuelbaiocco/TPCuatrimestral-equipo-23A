@@ -1,7 +1,6 @@
 ﻿USE ClinicaDB;
 GO
 
--- PACIENTES
 IF OBJECT_ID('dbo.sp_ListarPacientesActivos', 'P') IS NOT NULL
     DROP PROCEDURE dbo.sp_ListarPacientesActivos;
 GO
@@ -177,7 +176,6 @@ BEGIN
 END
 GO
 
--- LISTAR COBERTURAS ACTIVAS
 IF OBJECT_ID('dbo.sp_ListarCoberturasActivas', 'P') IS NOT NULL
     DROP PROCEDURE dbo.sp_ListarCoberturasActivas;
 GO
@@ -192,7 +190,8 @@ BEGIN
 END
 GO
 
--- ALTA DE TURNO (ASIGNACIÓN)
+IF OBJECT_ID('dbo.sp_AltaTurno', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_AltaTurno;
+GO
 CREATE OR ALTER PROCEDURE dbo.sp_AltaTurno
     @IdPaciente INT,
     @IdMedico INT,
@@ -233,8 +232,8 @@ BEGIN
 END
 GO
 
--- LISTAR TURNOS
-
+IF OBJECT_ID('dbo.sp_ListarTurnos', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_ListarTurnos;
+GO
 CREATE OR ALTER PROCEDURE dbo.sp_ListarTurnos
     @IdMedico INT = NULL,
     @Fecha DATE = NULL
@@ -248,12 +247,10 @@ BEGIN
         T.MotivoConsulta,
         T.Observaciones,
         E.Descripcion AS Estado,
-        -- Datos Paciente
         P.IdPersona AS IdPaciente,
         P.Nombre AS NombrePaciente,
         P.Apellido AS ApellidoPaciente,
         P.Dni AS DniPaciente,
-        -- Datos Medico
         PM.IdPersona AS IdMedico,
         PM.Apellido AS ApellidoMedico,
         PM.Nombre AS NombreMedico
@@ -268,7 +265,8 @@ BEGIN
 END
 GO
 
--- MODIFICAR ESTADO (Cancelar/Reprogramar)
+IF OBJECT_ID('dbo.sp_ModificarEstadoTurno', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_ModificarEstadoTurno;
+GO
 CREATE OR ALTER PROCEDURE dbo.sp_ModificarEstadoTurno
     @IdTurno INT,
     @IdNuevoEstado INT,
@@ -285,11 +283,75 @@ BEGIN
 END
 GO
 
--- LISTAR ESTADOS (Para cargar un DropDownList)
+IF OBJECT_ID('dbo.sp_ListarEstadosTurno', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_ListarEstadosTurno;
+GO
 CREATE OR ALTER PROCEDURE dbo.sp_ListarEstadosTurno
 AS
 BEGIN
     SET NOCOUNT ON;
     SELECT IdEstadoTurno, Descripcion FROM EstadosTurno;
 END
+GO
+
+IF OBJECT_ID('dbo.sp_InsertarPaciente', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_InsertarPaciente;
+GO
+
+CREATE PROCEDURE dbo.sp_InsertarPaciente
+    @Nombre VARCHAR(100), 
+    @Apellido VARCHAR(100), 
+    @DNI VARCHAR(20), 
+    @Sexo VARCHAR(20),
+    @Mail VARCHAR(255) = NULL, 
+    @Telefono VARCHAR(50)= NULL,
+    @Calle VARCHAR(200)= NULL, 
+    @Altura VARCHAR(20)= NULL, 
+    @Piso VARCHAR(10)= NULL,
+    @Departamento VARCHAR(10)= NULL, 
+    @Localidad VARCHAR(100)= NULL,
+    @Provincia VARCHAR(100)= NULL, 
+    @CodigoPostal VARCHAR(20)= NULL,
+    @FechaNacimiento DATE, 
+    @idCobertura INT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DECLARE @NuevoIdDomicilio INT = NULL;
+    DECLARE @NuevoIdPersona INT;
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+        
+        IF EXISTS (SELECT 1 FROM PERSONAS WHERE DNI = @DNI)
+        BEGIN
+            RAISERROR('El DNI ya existe.', 16, 1);
+            ROLLBACK TRANSACTION;
+            RETURN;
+        END
+
+        IF @Calle IS NOT NULL OR @Altura IS NOT NULL
+        BEGIN
+            INSERT INTO DOMICILIOS (Calle, Altura, Piso, Departamento, Localidad, Provincia, CodigoPostal)
+            VALUES (@Calle, @Altura, @Piso, @Departamento, @Localidad, @Provincia, @CodigoPostal);
+            SET @NuevoIdDomicilio = SCOPE_IDENTITY();
+        END
+
+        INSERT INTO Personas (Nombre, Apellido, Dni, Sexo, FechaNacimiento, Email, Telefono, Activo, IdDomicilio)
+        VALUES (@Nombre, @Apellido, @DNI, @Sexo, @FechaNacimiento, @Mail, @Telefono, 1, @NuevoIdDomicilio);
+
+        SET @NuevoIdPersona = SCOPE_IDENTITY();
+
+        INSERT INTO PACIENTES (idPersona, IdCoberturaMedica)
+        VALUES (@NuevoIdPersona, @idCobertura);
+
+        COMMIT TRANSACTION;
+        
+        SELECT @NuevoIdPersona AS IdPersona;
+        
+    END TRY
+    BEGIN CATCH
+        IF XACT_STATE() <> 0 ROLLBACK TRANSACTION;
+        DECLARE @Msg NVARCHAR(4000) = ERROR_MESSAGE();
+        RAISERROR(@Msg, 16, 1);
+    END CATCH
+END;
 GO

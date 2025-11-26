@@ -220,6 +220,39 @@ BEGIN
 END
 GO
 
+IF OBJECT_ID('dbo.sp_ListarTodosMedicos', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_ListarTodosMedicos;
+GO
+CREATE OR ALTER PROCEDURE dbo.sp_ListarTodosMedicos
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT 
+        P.IdPersona, 
+        P.Nombre, 
+        P.Apellido, 
+        P.Dni, 
+        P.Sexo,
+        P.FechaNacimiento,
+        P.Email, 
+        P.Telefono, 
+        P.Activo,
+        M.Matricula, 
+        M.IdUsuario,
+        P.IdDomicilio,
+        D.Calle,
+        D.Altura,
+        D.Piso,
+        D.Departamento,
+        D.Localidad,
+        D.Provincia,
+        D.CodigoPostal
+    FROM dbo.Personas P
+    INNER JOIN dbo.Medicos M ON P.IdPersona = M.IdPersona
+    LEFT JOIN dbo.Domicilios D ON P.IdDomicilio = D.IdDomicilio
+    ORDER BY P.Apellido ASC, P.Nombre ASC;
+END
+GO
+
 IF OBJECT_ID('dbo.sp_AgregarMedico', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_AgregarMedico;
 GO
 CREATE PROCEDURE dbo.sp_AgregarMedico
@@ -400,15 +433,31 @@ BEGIN
     SELECT 
         U.IdUsuario, 
         U.NombreUsuario, 
+        U.Clave,
+        U.Activo as UsuarioActivo,
         P.IdPersona, 
         P.Nombre, 
         P.Apellido, 
         P.Dni, 
-        U.Activo
+        P.Sexo,
+        P.FechaNacimiento,
+        P.Email,
+        P.Telefono,
+        P.Activo as PersonaActivo,
+        P.IdDomicilio,
+        D.Calle,
+        D.Altura,
+        D.Piso,
+        D.Departamento,
+        D.Localidad,
+        D.Provincia,
+        D.CodigoPostal
     FROM Usuarios U 
     INNER JOIN Personas P ON U.IdPersona = P.IdPersona
     INNER JOIN Roles R ON U.IdRol = R.IdRol
-    WHERE R.Nombre = 'Recepcionista' AND U.Activo = 1;
+    LEFT JOIN Domicilios D ON P.IdDomicilio = D.IdDomicilio
+    WHERE R.Nombre = 'Recepcionista'
+    ORDER BY P.Apellido ASC, P.Nombre ASC;
 END
 GO
 
@@ -523,6 +572,9 @@ BEGIN
 END
 GO
 
+USE ClinicaDB;
+GO
+
 IF OBJECT_ID('dbo.sp_ListarAdministradores', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_ListarAdministradores;
 GO
 CREATE PROCEDURE dbo.sp_ListarAdministradores
@@ -532,16 +584,31 @@ BEGIN
     SELECT
         U.IdUsuario,
         U.NombreUsuario,
+        U.Clave,
+        U.Activo as UsuarioActivo,
         P.IdPersona,
         P.Nombre,
         P.Apellido,
         P.Dni,
+        P.Sexo,
+        P.FechaNacimiento,
         P.Email,
-        U.Activo
+        P.Telefono,
+        P.Activo as PersonaActivo,
+        P.IdDomicilio,
+        D.Calle,
+        D.Altura,
+        D.Piso,
+        D.Departamento,
+        D.Localidad,
+        D.Provincia,
+        D.CodigoPostal
     FROM dbo.Usuarios U
     INNER JOIN dbo.Roles R ON U.IdRol = R.IdRol
     INNER JOIN dbo.Personas P ON U.IdPersona = P.IdPersona
-    WHERE R.Nombre = 'Administrador' AND U.Activo = 1;
+    LEFT JOIN dbo.Domicilios D ON P.IdDomicilio = D.IdDomicilio
+    WHERE R.Nombre = 'Administrador'
+    ORDER BY P.Apellido ASC, P.Nombre ASC;
 END
 GO
 
@@ -1017,6 +1084,30 @@ AS
 BEGIN
     SET NOCOUNT ON;
     SELECT Clave FROM dbo.Usuarios WHERE IdUsuario = @IdUsuario;
+END
+GO
+
+
+if OBJECT_ID('dbo.sp_RecuperarCredencialesPorMail','P') IS NOT NULL DROP PROCEDURE dbo.sp_RecuperarCredencialesPorMail;
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_RecuperarUsuarioPorEmail
+    @Email VARCHAR(255)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT 
+        U.IdUsuario,
+        U.NombreUsuario,
+        U.Clave,
+        U.IdRol,
+        P.IdPersona,
+        P.Nombre,
+        P.Apellido,
+        P.Email
+    FROM Personas P
+    INNER JOIN Usuarios U ON P.IdPersona = U.IdPersona
+    WHERE P.Email = @Email AND U.Activo = 1 AND P.Activo = 1;
 END
 GO
 

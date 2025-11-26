@@ -196,6 +196,9 @@ namespace TPCuatrimestral_equipo_23A
                 }
 
                 medicoNegocio.Modificar(medico);
+                emailServiceNegocio emailService = new emailServiceNegocio();
+                emailService.enviarCorreoModificacionEmpleado(medico.Email, medico.Nombre);
+                emailService.enviarCorreo();
 
                 var medicoActualizado = medicoNegocio.ObtenerPorId(medico.IdPersona);
                 if (medicoActualizado != null)

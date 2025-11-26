@@ -39,6 +39,7 @@ namespace negocio
             string cuerpo = "<h1>Modificación de datos en el sistema UTN Salud</h1>" +
                             "<br>" +
                             "<p>Hola " + nombre + ",</p>" +
+                            "sus datos han sido modificado correctamente"+
                             "<p>Atentamente,</p>" +
                             "<p>El equipo de UTN Salud</p>";
 

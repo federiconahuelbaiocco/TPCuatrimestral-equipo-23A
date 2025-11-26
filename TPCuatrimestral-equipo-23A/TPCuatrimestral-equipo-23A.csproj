@@ -257,7 +257,6 @@
     <Compile Include="PerfilRecepcionista.aspx.designer.cs">
       <DependentUpon>PerfilRecepcionista.aspx</DependentUpon>
     </Compile>
-    <Compile Include="TPCuatrimestral-equipo_23A\PerfilMedico.aspx.cs" />
     <Compile Include="Usuarios.aspx.cs">
       <DependentUpon>Usuarios.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

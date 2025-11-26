@@ -194,7 +194,12 @@ BEGIN
         CONSTRAINT PK_EstadosTurno PRIMARY KEY CLUSTERED (IdEstadoTurno ASC)
     );
     
-    INSERT INTO EstadosTurno (Descripcion) VALUES ('Programado'), ('Asistió'), ('No Asistió'), ('Cancelado');
+    INSERT INTO EstadosTurno (Descripcion) VALUES 
+        ('Programado'),
+        ('Asistió'), 
+        ('No Asistió'),
+        ('Cancelado'), 
+        ('Atendido');
 END
 GO
 

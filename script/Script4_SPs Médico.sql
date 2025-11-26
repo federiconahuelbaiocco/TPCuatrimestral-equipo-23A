@@ -95,6 +95,8 @@ BEGIN
 END
 GO
 
+IF OBJECT_ID('dbo.sp_ListarPacientesPorMedico', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_ListarPacientesPorMedico;
+GO
 CREATE OR ALTER PROCEDURE dbo.sp_ListarPacientesPorMedico
     @IdMedico INT
 AS
@@ -137,6 +139,8 @@ BEGIN
 END
 GO
 
+IF OBJECT_ID('dbo.sp_ListarTurnosDelDia', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_ListarTurnosDelDia;
+GO
 CREATE OR ALTER PROCEDURE dbo.sp_ListarTurnosDelDia
     @IdMedico INT
 AS
@@ -153,13 +157,11 @@ BEGIN
             T.MotivoConsulta AS TipoConsulta,
             T.Observaciones,
             E.Descripcion AS Estado,
-            -- Datos Paciente
             P.IdPersona AS IdPaciente,
             P.Nombre AS NombrePaciente,
             P.Apellido AS ApellidoPaciente,
             P.Dni AS DniPaciente,
             (P.Apellido + ', ' + P.Nombre) AS NombreCompletoPaciente,
-            -- Datos Médico
             PM.IdPersona AS IdMedico,
             PM.Apellido AS ApellidoMedico,
             PM.Nombre AS NombreMedico
@@ -178,6 +180,8 @@ BEGIN
 END
 GO
 
+IF OBJECT_ID('dbo.sp_ContarTurnosDelDia', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_ContarTurnosDelDia;
+GO
 CREATE OR ALTER PROCEDURE dbo.sp_ContarTurnosDelDia
     @IdMedico INT
 AS
@@ -199,6 +203,8 @@ BEGIN
 END
 GO
 
+IF OBJECT_ID('dbo.sp_ContarTurnosPendientes', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_ContarTurnosPendientes;
+GO
 CREATE OR ALTER PROCEDURE dbo.sp_ContarTurnosPendientes
     @IdMedico INT
 AS
@@ -220,6 +226,9 @@ BEGIN
 END
 GO
 
+
+IF OBJECT_ID('dbo.sp_ContarPacientesPorMedico', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_ContarPacientesPorMedico;
+GO
 CREATE OR ALTER PROCEDURE dbo.sp_ContarPacientesPorMedico
     @IdMedico INT
 AS

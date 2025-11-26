@@ -87,6 +87,9 @@ namespace TPCuatrimestral_equipo_23A
                 var adminNeg = new AdministradorNegocio();
                 adminNeg.Modificar(adminActual);
                 ScriptManager.RegisterStartupScript(this, GetType(), "ok", "mostrarToastMensaje('Datos personales actualizados','success');", true);
+                emailServiceNegocio emailService = new emailServiceNegocio();
+                emailService.enviarCorreoModificacionEmpleado(adminActual.Email, adminActual.Nombre);
+                emailService.enviarCorreo();
             }
             catch (Exception ex)
             {

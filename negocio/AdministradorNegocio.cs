@@ -10,45 +10,83 @@ namespace negocio
 {
 	public class AdministradorNegocio
 	{
-		public List<Administrador> Listar()
-		{
-			List<Administrador> lista = new List<Administrador>();
-			AccesoDatos datos = new AccesoDatos();
-			try
-			{
-				datos.setearProcedimiento("sp_ListarAdministradores");
-				datos.ejecutarLectura();
-				while (datos.Lector.Read())
-				{
-					Administrador aux = new Administrador();
-					aux.IdPersona = (int)datos.Lector["IdPersona"];
-					aux.Nombre = (string)datos.Lector["Nombre"];
-					aux.Apellido = (string)datos.Lector["Apellido"];
-					aux.Dni = (string)datos.Lector["Dni"];
+        public List<Administrador> Listar()
+        {
+            List<Administrador> lista = new List<Administrador>();
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearProcedimiento("sp_ListarAdministradores");
+                datos.ejecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    Administrador aux = new Administrador();
+                    aux.IdPersona = (int)datos.Lector["IdPersona"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Apellido = (string)datos.Lector["Apellido"];
+                    aux.Dni = (string)datos.Lector["Dni"];
+                    aux.Activo = (bool)datos.Lector["UsuarioActivo"];
 
-					if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Email")))
-						aux.Email = (string)datos.Lector["Email"];
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Sexo")))
+                        aux.Sexo = (string)datos.Lector["Sexo"];
 
-					aux.Usuario = new Usuario();
-					aux.Usuario.IdUsuario = (int)datos.Lector["IdUsuario"];
-					aux.Usuario.NombreUsuario = (string)datos.Lector["NombreUsuario"];
-					aux.Usuario.Activo = (bool)datos.Lector["Activo"];
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("FechaNacimiento")))
+                        aux.FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"];
 
-					lista.Add(aux);
-				}
-				return lista;
-			}
-			catch (Exception ex)
-			{
-				throw new Exception("Error al listar administradores.", ex);
-			}
-			finally
-			{
-				datos.cerrarConexion();
-			}
-		}
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Email")))
+                        aux.Email = (string)datos.Lector["Email"];
 
-		public void Agregar(Administrador nuevo)
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Telefono")))
+                        aux.Telefono = (string)datos.Lector["Telefono"];
+
+                    aux.Usuario = new Usuario();
+                    aux.Usuario.IdUsuario = (int)datos.Lector["IdUsuario"];
+                    aux.Usuario.NombreUsuario = (string)datos.Lector["NombreUsuario"];
+                    aux.Usuario.Clave = (string)datos.Lector["Clave"];
+                    aux.Usuario.Activo = (bool)datos.Lector["UsuarioActivo"];
+
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("IdDomicilio")))
+                    {
+                        aux.Domicilio = new Domicilio();
+                        aux.Domicilio.IdDomicilio = (int)datos.Lector["IdDomicilio"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Calle")))
+                            aux.Domicilio.Calle = (string)datos.Lector["Calle"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Altura")))
+                            aux.Domicilio.Altura = (string)datos.Lector["Altura"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Piso")))
+                            aux.Domicilio.Piso = (string)datos.Lector["Piso"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Departamento")))
+                            aux.Domicilio.Departamento = (string)datos.Lector["Departamento"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Localidad")))
+                            aux.Domicilio.Localidad = (string)datos.Lector["Localidad"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Provincia")))
+                            aux.Domicilio.Provincia = (string)datos.Lector["Provincia"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("CodigoPostal")))
+                            aux.Domicilio.CodigoPostal = (string)datos.Lector["CodigoPostal"];
+                    }
+
+                    lista.Add(aux);
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar administradores.", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void Agregar(Administrador nuevo)
 		{
 			AccesoDatos datos = new AccesoDatos();
 			try

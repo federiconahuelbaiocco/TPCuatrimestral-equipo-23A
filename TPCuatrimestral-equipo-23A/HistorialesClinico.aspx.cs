@@ -16,15 +16,15 @@ namespace TPCuatrimestral_equipo_23A
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            CargarPacientes();
+
             if (!IsPostBack)
             {
-                CargarPacientes();
-
                 string dniParametro = Request.QueryString["dni"];
                 if (!string.IsNullOrEmpty(dniParametro))
                 {
                     CargarPacientePorDni(dniParametro);
-                    
+
                     string nuevoParametro = Request.QueryString["nuevo"];
                     if (!string.IsNullOrEmpty(nuevoParametro) && nuevoParametro.ToLower() == "true")
                     {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using MedicoModel = dominio.Medico;
-using negocio;
 using dominio;
+using negocio;
+using MedicoModel = dominio.Medico;
 
 namespace TPCuatrimestral_equipo_23A
 {
@@ -45,20 +45,105 @@ namespace TPCuatrimestral_equipo_23A
             }
         }
 
-        private void MostrarToast(string mensaje, string tipo = "info")
+        private void CargarEstadisticas(int idMedico)
         {
-            string safeMensaje = HttpUtility.JavaScriptStringEncode(mensaje);
-            string toastScript = $@"
-            <script>
-                if (window.mostrarToastMensaje) {{
-                    window.mostrarToastMensaje('{safeMensaje}', '{tipo}');
-                }} else {{
-                    window.addEventListener('load', function() {{
-                        window.mostrarToastMensaje('{safeMensaje}', '{tipo}');
-                    }});
-                }}
-            </script>";
-            litToast.Text = toastScript;
+            TurnoNegocio turnoNegocio = new TurnoNegocio();
+
+            int turnosHoy = turnoNegocio.ContarTurnosDelDia(idMedico);
+            int turnosPendientes = turnoNegocio.ContarTurnosPendientes(idMedico);
+            int totalPacientes = turnoNegocio.ContarPacientesPorMedico(idMedico);
+
+            lblTurnosHoy.Text = turnosHoy.ToString();
+            lblTotalPacientes.Text = totalPacientes.ToString();
+            lblTurnosPendientes.Text = turnosPendientes.ToString();
+        }
+
+        private void CargarTurnosDelDia(int idMedico)
+        {
+            TurnoNegocio turnoNegocio = new TurnoNegocio();
+
+            List<Turno> turnosDelDia = turnoNegocio.ListarTurnosDelDia(idMedico);
+
+            var turnosParaGrid = new List<dynamic>();
+            foreach (var turno in turnosDelDia)
+            {
+                turnosParaGrid.Add(new
+                {
+                    IdTurno = turno.IdTurno,
+                    HoraFormateada = turno.FechaHora.ToString("HH:mm"),
+                    NombreCompletoPaciente = $"{turno.Paciente.Apellido}, {turno.Paciente.Nombre}",
+
+                    TipoConsulta = DeterminarTipoConsulta(turno),
+
+                    Estado = turno.Estado.Descripcion,
+                    IdPaciente = turno.Paciente.IdPersona,
+                    Dni = turno.Paciente.Dni
+                });
+            }
+
+            dgvTurnosDelDia.DataSource = turnosParaGrid;
+            dgvTurnosDelDia.DataBind();
+        }
+
+        private string DeterminarTipoConsulta(Turno turno)
+        {
+            if (!string.IsNullOrEmpty(turno.Observaciones))
+            {
+                string obs = turno.Observaciones.ToLower();
+                if (obs.Contains("primera")) return "Primera Consulta";
+                if (obs.Contains("control")) return "Control";
+                if (obs.Contains("seguimiento")) return "Seguimiento";
+            }
+
+            if (!string.IsNullOrEmpty(turno.MotivoConsulta))
+            {
+                return turno.MotivoConsulta;
+            }
+
+            return "Consulta General";
+        }
+
+        protected void dgvTurnosDelDia_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Atender")
+            {
+                try
+                {
+                    int idTurno = Convert.ToInt32(e.CommandArgument);
+                    TurnoNegocio turnoNegocio = new TurnoNegocio();
+
+                    turnoNegocio.ModificarEstadoTurno(idTurno, 5, "");
+                    Usuario usuario = (Usuario)Session["usuario"];
+                    MedicoModel medico = (MedicoModel)usuario.Persona;
+                    List<Turno> turnos = turnoNegocio.ListarTurnos(medico.IdPersona);
+                    Turno turnoSeleccionado = turnos.FirstOrDefault(t => t.IdTurno == idTurno);
+
+                    if (turnoSeleccionado != null)
+                    {
+                        Session["turnoSeleccionado"] = turnoSeleccionado;
+                        Response.Redirect($"HistorialesClinico.aspx?dni={turnoSeleccionado.Paciente.Dni}&nuevo=true", false);
+                        Context.ApplicationInstance.CompleteRequest();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Session["error"] = ex;
+                    MostrarToast("Error al atender turno: " + ex.Message, "danger");
+                }
+            }
+        }
+
+        protected string GetEstadoBadgeClass(string estado)
+        {
+            switch (estado)
+            {
+                case "Programado": return "badge rounded-pill text-bg-primary";
+                case "Asistió": return "badge rounded-pill text-bg-info text-white";
+                case "Atendido": return "badge rounded-pill text-bg-success";
+                case "No Asistió": return "badge rounded-pill text-bg-danger";
+                case "Cancelado": return "badge rounded-pill text-bg-warning";
+                default: return "badge rounded-pill text-bg-secondary";
+            }
         }
 
         private void MostrarHorarioTrabajo()
@@ -92,24 +177,14 @@ namespace TPCuatrimestral_equipo_23A
                 else
                 {
                     TurnoTrabajo proximoHorario = null;
-
                     for (int i = 1; i <= 7; i++)
                     {
                         DayOfWeek diaFuturo = DateTime.Now.AddDays(i).DayOfWeek;
-
                         foreach (var h in horarios)
                         {
-                            if (h.DiaSemana == diaFuturo)
-                            {
-                                proximoHorario = h;
-                                break; 
-                            }
+                            if (h.DiaSemana == diaFuturo) { proximoHorario = h; break; }
                         }
-
-                        if (proximoHorario != null)
-                        {
-                            break;
-                        }
+                        if (proximoHorario != null) break;
                     }
 
                     if (proximoHorario != null)
@@ -117,7 +192,6 @@ namespace TPCuatrimestral_equipo_23A
                         string nombreDia = proximoHorario.NombreDia ?? ObtenerNombreDia(proximoHorario.DiaSemana);
                         string horaAbre = proximoHorario.HoraEntrada.ToString(@"hh\:mm");
                         string horaCierra = proximoHorario.HoraSalida.ToString(@"hh\:mm");
-
                         lblHorarioFijo.Text = $"La clínica permanece cerrada por hoy. Reanudamos la atención el {nombreDia} de {horaAbre} a {horaCierra} hs.";
                     }
                     else
@@ -135,81 +209,6 @@ namespace TPCuatrimestral_equipo_23A
             }
         }
 
-        private void CargarEstadisticas(int idMedico)
-        {
-            TurnoNegocio turnoNegocio = new TurnoNegocio();
-            
-            int turnosHoy = turnoNegocio.ContarTurnosDelDia(idMedico);
-            int turnosPendientes = turnoNegocio.ContarTurnosPendientes(idMedico);
-            int totalPacientes = turnoNegocio.ContarPacientesPorMedico(idMedico);
-
-            lblTurnosHoy.Text = turnosHoy.ToString();
-            lblTotalPacientes.Text = totalPacientes.ToString();
-            lblTurnosPendientes.Text = turnosPendientes.ToString();
-        }
-
-        private void CargarTurnosDelDia(int idMedico)
-        {
-            TurnoNegocio turnoNegocio = new TurnoNegocio();
-            
-            List<Turno> turnosDelDia = turnoNegocio.ListarTurnosDelDia(idMedico);
-            
-            var turnosParaGrid = new List<dynamic>();
-            foreach (var turno in turnosDelDia)
-            {
-                turnosParaGrid.Add(new
-                {
-                    IdTurno = turno.IdTurno,
-                    HoraFormateada = turno.FechaHora.ToString("HH:mm"),
-                    NombreCompletoPaciente = $"{turno.Paciente.Apellido}, {turno.Paciente.Nombre}",
-                    TipoConsulta = turno.MotivoConsulta ?? "Consulta General",
-                    Estado = turno.Estado.Descripcion,
-                    IdPaciente = turno.Paciente.IdPersona,
-                    Dni = turno.Paciente.Dni
-                });
-            }
-
-            dgvTurnosDelDia.DataSource = turnosParaGrid;
-            dgvTurnosDelDia.DataBind();
-        }
-
-        private string DeterminarTipoConsulta(Turno turno)
-        {
-            if (!string.IsNullOrEmpty(turno.Observaciones))
-            {
-                if (turno.Observaciones.ToLower().Contains("primera"))
-                    return "Primera Consulta";
-                if (turno.Observaciones.ToLower().Contains("control"))
-                    return "Control";
-                if (turno.Observaciones.ToLower().Contains("seguimiento"))
-                    return "Seguimiento";
-            }
-            
-            return "Consulta General";
-        }
-
-        protected string GetEstadoBadgeClass(string estado)
-        {
-            switch (estado)
-            {
-                case "Programado":
-                    return "badge rounded-pill text-bg-primary";
-                case "Asistió":
-                    return "badge rounded-pill text-bg-success";
-                case "No Asistió":
-                    return "badge rounded-pill text-bg-danger";
-                case "Cancelado":
-                    return "badge rounded-pill text-bg-warning";
-                default:
-                    return "badge rounded-pill text-bg-secondary";
-            }
-        }
-        
-        protected void MostrarMensajeInterno(string mensaje)
-        {
-            MostrarToast(mensaje, "warning");
-        }
-
         private void MostrarMensajeInternoMedico()
         {
             var msgCfg = Application["MensajeInternoConfig"] as MensajeInternoConfig;
@@ -221,6 +220,13 @@ namespace TPCuatrimestral_equipo_23A
                         MostrarToast(msgCfg.Mensaje, "warning");
                 }
             }
+        }
+
+        private void MostrarToast(string mensaje, string tipo = "info")
+        {
+            string safeMensaje = HttpUtility.JavaScriptStringEncode(mensaje);
+            string toastScript = $@"<script>if(window.mostrarToastMensaje) window.mostrarToastMensaje('{safeMensaje}', '{tipo}');</script>";
+            litToast.Text = toastScript;
         }
 
         private string ObtenerNombreDia(DayOfWeek dia)

@@ -1,7 +1,8 @@
-using System;
 using dominio;
-using System.Web.UI;
 using negocio;
+using System;
+using System.Text.RegularExpressions;
+using System.Web.UI;
 using RecepcionistaModel = dominio.Recepcionista;
 
 namespace TPCuatrimestral_equipo_23A
@@ -92,6 +93,9 @@ namespace TPCuatrimestral_equipo_23A
 
                 string script = "mostrarToastMensaje('¡Guardado! Los datos se actualizaron correctamente.', 'success');";
                 ScriptManager.RegisterStartupScript(this, GetType(), "toastGuardarRecep", script, true);
+                emailServiceNegocio emailService = new emailServiceNegocio();
+                emailService.enviarCorreoModificacionEmpleado(recepActual.Email, recepActual.Nombre);
+                emailService.enviarCorreo();
             }
             catch (Exception ex)
             {

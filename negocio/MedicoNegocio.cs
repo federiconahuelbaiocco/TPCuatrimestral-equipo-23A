@@ -7,6 +7,80 @@ namespace negocio
 {
     public class MedicoNegocio
     {
+        public List<Medico> ListarTodos()
+        {
+            List<Medico> lista = new List<Medico>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearProcedimiento("sp_ListarTodosMedicos");
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Medico aux = new Medico();
+                    aux.IdPersona = (int)datos.Lector["IdPersona"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Apellido = (string)datos.Lector["Apellido"];
+                    aux.Dni = (string)datos.Lector["Dni"];
+                    aux.Matricula = (string)datos.Lector["Matricula"];
+                    aux.Activo = (bool)datos.Lector["Activo"];
+
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Email")))
+                        aux.Email = (string)datos.Lector["Email"];
+
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Telefono")))
+                        aux.Telefono = (string)datos.Lector["Telefono"];
+
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Sexo")))
+                        aux.Sexo = (string)datos.Lector["Sexo"];
+
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("FechaNacimiento")))
+                        aux.FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"];
+
+                    if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("IdDomicilio")))
+                    {
+                        aux.Domicilio = new Domicilio();
+                        aux.Domicilio.IdDomicilio = (int)datos.Lector["IdDomicilio"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Calle")))
+                            aux.Domicilio.Calle = (string)datos.Lector["Calle"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Altura")))
+                            aux.Domicilio.Altura = (string)datos.Lector["Altura"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Piso")))
+                            aux.Domicilio.Piso = (string)datos.Lector["Piso"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Departamento")))
+                            aux.Domicilio.Departamento = (string)datos.Lector["Departamento"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Localidad")))
+                            aux.Domicilio.Localidad = (string)datos.Lector["Localidad"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Provincia")))
+                            aux.Domicilio.Provincia = (string)datos.Lector["Provincia"];
+
+                        if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("CodigoPostal")))
+                            aux.Domicilio.CodigoPostal = (string)datos.Lector["CodigoPostal"];
+                    }
+
+                    lista.Add(aux);
+                }
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
         public List<Medico> ListarActivos()
         {
             List<Medico> lista = new List<Medico>();
@@ -69,6 +143,7 @@ namespace negocio
                     medico.Nombre = (string)datos.Lector["Nombre"];
                     medico.Apellido = (string)datos.Lector["Apellido"];
                     medico.Dni = (string)datos.Lector["Dni"];
+                    medico.Sexo = (string)datos.Lector["Sexo"];
                     medico.Email = datos.Lector["Email"] as string;
                     medico.Telefono = datos.Lector["Telefono"] as string;
                     medico.Sexo = datos.Lector["Sexo"] as string;

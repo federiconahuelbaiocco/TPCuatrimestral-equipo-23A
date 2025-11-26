@@ -60,7 +60,7 @@
                 <div class="activity-card">
                     <h2><i class="bi bi-calendar3"></i> Próximos Turnos del Día</h2>
                     <div class="card shadow-sm overflow-hidden mt-3">
-                        <asp:GridView ID="dgvTurnosDelDia" runat="server" CssClass="table table-hover mb-0" AutoGenerateColumns="False" GridLines="None" ShowHeader="True">
+                        <asp:GridView ID="dgvTurnosDelDia" runat="server" CssClass="table table-hover mb-0" AutoGenerateColumns="False" GridLines="None" ShowHeader="True" OnRowCommand="dgvTurnosDelDia_RowCommand">
                             <HeaderStyle CssClass="bg-light text-secondary text-uppercase small" />
                             <Columns>
                                 <asp:BoundField DataField="HoraFormateada" HeaderText="Hora" ItemStyle-CssClass="px-4 py-3 align-middle fw-bold text-primary" HeaderStyle-CssClass="px-4 py-3" />
@@ -78,7 +78,7 @@
                                 <asp:TemplateField HeaderText="Acciones" HeaderStyle-CssClass="px-4 py-3 text-end">
                                     <ItemTemplate>
                                         <div class="d-inline-flex gap-2">
-                                            <asp:HyperLink ID="hlVerHistorial" runat="server" CssClass="btn btn-sm btn-outline-primary" NavigateUrl='<%# Eval("Dni", "~/HistorialesClinico.aspx?dni={0}") %>'><i class="bi bi-file-medical"></i></asp:HyperLink>
+                                            <asp:HyperLink ID="hlVerHistorial" runat="server" CssClass="btn btn-sm btn-outline-primary" NavigateUrl='<%# Eval("Dni", "~/HistorialesClinico.aspx?dni={0}") %>' ToolTip="Ver Historial"><i class="bi bi-file-medical"></i></asp:HyperLink>
                                             <asp:LinkButton ID="btnAtender" runat="server" CssClass="btn btn-sm btn-success text-white" CommandName="Atender" CommandArgument='<%# Eval("IdTurno") %>'><i class="bi bi-check-lg"></i></asp:LinkButton>
                                         </div>
                                     </ItemTemplate>

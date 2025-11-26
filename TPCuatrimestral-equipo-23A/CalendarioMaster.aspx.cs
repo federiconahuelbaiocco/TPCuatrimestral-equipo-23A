@@ -10,10 +10,29 @@ namespace TPCuatrimestral_equipo_23A
 {
     public partial class CalendarioMaster : System.Web.UI.Page
     {
-        public class DiaCalendario
+        public class FilaHoraria
+        {
+            public TimeSpan Hora { get; set; }
+            public string HoraLegible { get { return Hora.ToString(@"hh\:mm"); } }
+            public List<DatosCelda> Celdas { get; set; } = new List<DatosCelda>();
+        }
+
+        public class DatosCelda
         {
             public DateTime Fecha { get; set; }
-            public List<Turno> Turnos { get; set; } = new List<Turno>();
+            public Turno TurnoAsignado { get; set; }
+            public bool EsHoy { get; set; }
+        }
+
+        private DateTime FechaReferencia
+        {
+            get
+            {
+                if (ViewState["FechaReferencia"] == null)
+                    ViewState["FechaReferencia"] = DateTime.Today;
+                return (DateTime)ViewState["FechaReferencia"];
+            }
+            set { ViewState["FechaReferencia"] = value; }
         }
 
         private Turno TurnoSeleccionado
@@ -26,8 +45,27 @@ namespace TPCuatrimestral_equipo_23A
         {
             if (!IsPostBack)
             {
+                FechaReferencia = DateTime.Today;
                 CargarCalendario();
             }
+        }
+
+        protected void btnAnterior_Click(object sender, EventArgs e)
+        {
+            FechaReferencia = FechaReferencia.AddDays(-7);
+            CargarCalendario();
+        }
+
+        protected void btnSiguiente_Click(object sender, EventArgs e)
+        {
+            FechaReferencia = FechaReferencia.AddDays(7);
+            CargarCalendario();
+        }
+
+        protected void btnHoy_Click(object sender, EventArgs e)
+        {
+            FechaReferencia = DateTime.Today;
+            CargarCalendario();
         }
 
         private void CargarCalendario()
@@ -35,46 +73,83 @@ namespace TPCuatrimestral_equipo_23A
             try
             {
                 Usuario usuario = (Usuario)Session["usuario"];
+                if (usuario == null || !(usuario.Persona is MedicoModel))
+                {
+                    Response.Redirect("Default.aspx");
+                    return;
+                }
                 MedicoModel medico = (MedicoModel)usuario.Persona;
 
-                DateTime fechaActual = DateTime.Now;
-                lblMesAnio.Text = fechaActual.ToString("MMMM yyyy");
+                HorarioConfig config = ObtenerConfiguracionGlobal();
 
-                DateTime primerDiaMes = new DateTime(fechaActual.Year, fechaActual.Month, 1);
-                DateTime ultimoDiaMes = primerDiaMes.AddMonths(1).AddDays(-1);
+                if (config.DuracionTurno <= 0) config.DuracionTurno = 30;
 
-                DateTime inicioCalendario = primerDiaMes.AddDays(-(int)primerDiaMes.DayOfWeek);
-                DateTime finCalendario = ultimoDiaMes.AddDays(6 - (int)ultimoDiaMes.DayOfWeek);
+                int delta = DayOfWeek.Monday - FechaReferencia.DayOfWeek;
+                if (delta > 0) delta -= 7;
+
+                DateTime lunesSemana = FechaReferencia.AddDays(delta);
+                DateTime domingoSemana = lunesSemana.AddDays(6);
+
+                lblRangoFechas.Text = $"{lunesSemana:dd MMM} - {domingoSemana:dd MMM yyyy}";
 
                 TurnoNegocio turnoNegocio = new TurnoNegocio();
-                List<Turno> turnosMes = turnoNegocio.ListarTurnos(medico.IdPersona);
+                List<Turno> turnosTodos = turnoNegocio.ListarTurnos(medico.IdPersona);
 
-                List<List<DiaCalendario>> semanas = new List<List<DiaCalendario>>();
-                DateTime fechaActualCalendario = inicioCalendario;
-
-                while (fechaActualCalendario <= finCalendario)
+                var turnosDicc = new Dictionary<string, Turno>();
+                foreach (var t in turnosTodos)
                 {
-                    List<DiaCalendario> semana = new List<DiaCalendario>();
-
-                    for (int i = 0; i < 7; i++)
+                    if (t.FechaHora.Date >= lunesSemana.Date && t.FechaHora.Date <= domingoSemana.Date)
                     {
-                        DiaCalendario dia = new DiaCalendario
-                        {
-                            Fecha = fechaActualCalendario,
-                            Turnos = turnosMes.Where(t => t.FechaHora.Date == fechaActualCalendario.Date)
-                                             .OrderBy(t => t.FechaHora)
-                                             .ToList()
-                        };
-
-                        semana.Add(dia);
-                        fechaActualCalendario = fechaActualCalendario.AddDays(1);
+                        string key = $"{t.FechaHora:yyyyMMdd}-{t.FechaHora:HHmm}";
+                        if (!turnosDicc.ContainsKey(key))
+                            turnosDicc.Add(key, t);
                     }
-
-                    semanas.Add(semana);
                 }
 
-                rptSemanas.DataSource = semanas;
-                rptSemanas.DataBind();
+                List<FilaHoraria> filasCalendario = new List<FilaHoraria>();
+
+                TimeSpan horaActual = config.HoraApertura;
+                TimeSpan horaFin = config.HoraCierre;
+                TimeSpan intervalo = TimeSpan.FromMinutes(config.DuracionTurno);
+
+                while (horaActual < horaFin)
+                {
+                    FilaHoraria fila = new FilaHoraria { Hora = horaActual };
+
+                    for (int d = 0; d < 7; d++)
+                    {
+                        DateTime fechaColumna = lunesSemana.AddDays(d);
+
+                        string keyBusqueda = $"{fechaColumna:yyyyMMdd}-{horaActual.Hours:D2}{horaActual.Minutes:D2}";
+
+                        DatosCelda celda = new DatosCelda
+                        {
+                            Fecha = fechaColumna,
+                            EsHoy = (fechaColumna.Date == DateTime.Today),
+                            TurnoAsignado = turnosDicc.ContainsKey(keyBusqueda) ? turnosDicc[keyBusqueda] : null
+                        };
+
+                        fila.Celdas.Add(celda);
+                    }
+                    filasCalendario.Add(fila);
+
+                    horaActual = horaActual.Add(intervalo);
+                }
+
+                List<string> cabecerasDias = new List<string>();
+                string[] nombresDias = { "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom" };
+                for (int i = 0; i < 7; i++)
+                {
+                    DateTime f = lunesSemana.AddDays(i);
+                    string claseHoy = (f.Date == DateTime.Today) ? "text-primary fw-bold" : "";
+                    cabecerasDias.Add($"<div class='text-uppercase small {claseHoy}'>{nombresDias[i]}</div><div class='fs-5 {claseHoy}'>{f.Day}</div>");
+                }
+
+                rptCabeceraDias.DataSource = cabecerasDias;
+                rptCabeceraDias.DataBind();
+
+                rptCuerpoCalendario.DataSource = filasCalendario;
+                rptCuerpoCalendario.DataBind();
             }
             catch (Exception ex)
             {
@@ -85,10 +160,25 @@ namespace TPCuatrimestral_equipo_23A
 
         protected void lnkTurno_Command(object sender, CommandEventArgs e)
         {
-            if (e.CommandName == "SeleccionarTurno")
+            if (e.CommandName == "VerTurno")
             {
                 int idTurno = Convert.ToInt32(e.CommandArgument);
                 CargarDetallesTurno(idTurno);
+            }
+        }
+
+        protected string ObtenerClaseCssTurno(Turno t)
+        {
+            if (t == null) return "";
+            switch (t.Estado.Descripcion.ToLower())
+            {
+                case "programado": return "bg-primary text-white";
+                case "confirmado": return "bg-success text-white";
+                case "cancelado": return "bg-danger text-white";
+                case "pendiente": return "bg-warning text-dark";
+                case "atendido": return "bg-success text-white border border-dark";
+                case "asistió": return "bg-info text-white";
+                default: return "bg-secondary text-white";
             }
         }
 
@@ -168,7 +258,18 @@ namespace TPCuatrimestral_equipo_23A
         {
             if (TurnoSeleccionado != null)
             {
-                Response.Redirect($"HistorialesClinico.aspx?dni={TurnoSeleccionado.Paciente.Dni}&nuevo=true");
+                try
+                {
+                    TurnoNegocio turnoNegocio = new TurnoNegocio();
+
+                    turnoNegocio.ModificarEstadoTurno(TurnoSeleccionado.IdTurno, 5, "");
+
+                    Response.Redirect($"HistorialesClinico.aspx?dni={TurnoSeleccionado.Paciente.Dni}&nuevo=true", false);
+                }
+                catch (Exception ex)
+                {
+                    Session["error"] = ex;
+                }
             }
         }
 
@@ -180,11 +281,11 @@ namespace TPCuatrimestral_equipo_23A
                 {
                     TurnoNegocio turnoNegocio = new TurnoNegocio();
                     turnoNegocio.ModificarEstadoTurno(TurnoSeleccionado.IdTurno, 3, "Cancelado por el médico");
-                    
+
                     TurnoSeleccionado = null;
                     pnlDetallesTurno.Visible = false;
                     pnlSinSeleccion.Visible = true;
-                    
+
                     CargarCalendario();
                 }
                 catch (Exception ex)
@@ -194,26 +295,39 @@ namespace TPCuatrimestral_equipo_23A
             }
         }
 
-        protected bool EsHoy(DateTime fecha)
+        private HorarioConfig ObtenerConfiguracionGlobal()
         {
-            return fecha.Date == DateTime.Now.Date;
-        }
-
-        protected string ObtenerClaseTurno(string estado)
-        {
-            switch (estado?.ToLower())
+            if (Application["HorarioConfig"] is HorarioConfig configMemoria)
             {
-                case "cancelado":
-                    return "turno-cancelado";
-                case "pendiente":
-                    return "turno-pendiente";
-                case "confirmado":
-                    return "turno-confirmado";
-                case "primera consulta":
-                    return "turno-consulta";
-                default:
-                    return "turno-confirmado";
+                return configMemoria;
             }
+
+            TurnoTrabajoNegocio negocio = new TurnoTrabajoNegocio();
+            List<TurnoTrabajo> horariosDb = null;
+            try
+            {
+                horariosDb = negocio.ListarHorariosPorMedico(0);
+            }
+            catch { }
+
+            if (horariosDb != null && horariosDb.Count > 0)
+            {
+                HorarioConfig configDb = new HorarioConfig();
+                configDb.HoraApertura = horariosDb[0].HoraEntrada;
+                configDb.HoraCierre = horariosDb[0].HoraSalida;
+
+                configDb.DuracionTurno = 30;
+
+                Application["HorarioConfig"] = configDb;
+                return configDb;
+            }
+
+            return new HorarioConfig
+            {
+                HoraApertura = new TimeSpan(8, 0, 0),
+                HoraCierre = new TimeSpan(20, 0, 0),
+                DuracionTurno = 30
+            };
         }
     }
 }
