@@ -13,10 +13,10 @@
             border: 1px solid #f3f4f6;
         }
 
-        .historial-entrada:hover {
-            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
-            transform: translateY(-2px);
-        }
+            .historial-entrada:hover {
+                box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+                transform: translateY(-2px);
+            }
 
         .historial-fecha {
             color: #667eea;
@@ -83,21 +83,21 @@
             margin-bottom: 0.75rem;
         }
 
-        .paciente-link:hover {
-            background: #f0f9ff;
-            border-color: #667eea;
-            transform: translateX(5px);
-            color: #667eea;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
+            .paciente-link:hover {
+                background: #f0f9ff;
+                border-color: #667eea;
+                transform: translateX(5px);
+                color: #667eea;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            }
     </style>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    
+
     <div class="admin-dashboard-layout">
-        <div class="dashboard-main-content w-100" style="max-width: none;">
-            
+        <div class="dashboard-main-content">
+
             <div class="mb-4 d-flex flex-wrap align-items-center justify-content-between gap-2">
                 <div>
                     <h1 class="display-5 fw-bolder mb-0">
@@ -106,10 +106,21 @@
                     <span class="text-secondary fs-5">Gestiona la historia clínica de tus pacientes</span>
                 </div>
                 <div>
-                    <div class="input-group shadow-sm">
-                        <asp:TextBox ID="txtBuscarDni" runat="server" CssClass="form-control" placeholder="Buscar por DNI" Style="width: 200px;" />
-                        <asp:Button ID="btnBuscarDni" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnBuscarDni_Click" />
-                    </div>
+                    <asp:Panel runat="server" DefaultButton="btnBuscarDni" CssClass="input-group shadow-sm">
+                        <asp:TextBox ID="txtBuscarDni" runat="server" CssClass="form-control" placeholder="Buscar por DNI" Style="width: 200px;" ValidationGroup="BuscarDni" />
+                        <asp:Button ID="btnBuscarDni" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnBuscarDni_Click" ValidationGroup="BuscarDni" />
+                    </asp:Panel>
+
+                    <asp:RequiredFieldValidator ID="rfvBuscarDni" runat="server"
+                        ControlToValidate="txtBuscarDni"
+                        ErrorMessage="Ingrese un DNI"
+                        CssClass="text-danger small position-absolute mt-1"
+                        Display="Dynamic"
+                        ValidationGroup="BuscarDni" />
+
+                    <asp:Label ID="lblErrorBusqueda" runat="server"
+                        CssClass="text-danger small fw-bold mt-3 d-block"
+                        Visible="false"></asp:Label>
                 </div>
             </div>
 
@@ -145,11 +156,11 @@
                 </div>
             </asp:Panel>
 
-            <asp:Panel ID="pnlFormulario" runat="server" Visible="false">
+            <asp:Panel ID="pnlFormulario" runat="server" Visible="false" DefaultButton="btnGuardar">
                 <div class="card shadow mb-4 border-0">
                     <div class="card-header text-white py-3" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
                         <h5 class="mb-0 fw-bold">
-                            <i class="bi bi-plus-circle-fill me-2"></i>Nueva Consulta
+                            <i class="bi bi-plus-circle-fill me-2"></i>Gestión de Consulta
                         </h5>
                     </div>
                     <div class="card-body p-4">
@@ -157,22 +168,37 @@
                             <div class="col-12">
                                 <label class="form-label fw-bold small text-secondary">DIAGNÓSTICO *</label>
                                 <asp:TextBox ID="txtDiagnostico" runat="server" CssClass="form-control"
-                                    TextMode="MultiLine" Rows="3" placeholder="Escriba el diagnóstico del paciente..." />
+                                    TextMode="MultiLine" Rows="3" placeholder="Escriba el diagnóstico del paciente..." ValidationGroup="NuevoHistorial" />
+
                                 <asp:RequiredFieldValidator ID="rfvDiagnostico" runat="server"
                                     ControlToValidate="txtDiagnostico"
                                     ErrorMessage="El diagnóstico es requerido"
-                                    CssClass="text-danger small fw-bold mt-1 d-block" Display="Dynamic" />
+                                    CssClass="text-danger small fw-bold mt-1"
+                                    Display="Dynamic"
+                                    ValidationGroup="NuevoHistorial" />
                             </div>
+
                             <div class="col-12">
                                 <label class="form-label fw-bold small text-secondary">OBSERVACIONES</label>
                                 <asp:TextBox ID="txtObservaciones" runat="server" CssClass="form-control"
-                                    TextMode="MultiLine" Rows="4" placeholder="Notas adicionales (opcional)..." />
+                                    TextMode="MultiLine" Rows="4" placeholder="Notas adicionales (opcional)..." ValidationGroup="NuevoHistorial" />
+
+                                <asp:RegularExpressionValidator ID="revObservaciones" runat="server"
+                                    ControlToValidate="txtObservaciones"
+                                    ErrorMessage="El texto es demasiado largo (máx 1000 caracteres)."
+                                    ValidationExpression="^[\s\S]{0,1000}$"
+                                    CssClass="text-danger small fw-bold mt-1"
+                                    Display="Dynamic"
+                                    ValidationGroup="NuevoHistorial" />
                             </div>
+
                             <div class="col-12 text-end pt-2">
                                 <asp:Button ID="btnCancelar" runat="server" Text="Cancelar"
                                     CssClass="btn btn-light border me-2" OnClick="btnCancelar_Click" CausesValidation="false" />
+
                                 <asp:Button ID="btnGuardar" runat="server" Text="Guardar Entrada"
-                                    CssClass="btn btn-success px-4" OnClick="btnGuardar_Click" />
+                                    CssClass="btn btn-success px-4" OnClick="btnGuardar_Click"
+                                    ValidationGroup="NuevoHistorial" />
                             </div>
                         </div>
                     </div>
@@ -187,7 +213,7 @@
                         </h4>
                     </div>
 
-                    <asp:Repeater ID="rptHistorial" runat="server">
+                    <asp:Repeater ID="rptHistorial" runat="server" OnItemCommand="rptHistorial_ItemCommand">
                         <ItemTemplate>
                             <div class="historial-entrada">
                                 <div class="d-flex justify-content-between align-items-start mb-3">
@@ -209,17 +235,23 @@
                                             </div>
                                             <div>
                                                 <div class="historial-medico">
-                                                    Dr/a. <%# Eval("MedicoTratante.Apellido") %>, <%# Eval("MedicoTratante.Nombre") %>
+                                                    Dr/a. <%# Eval("MedicoTratante") != null ? Eval("MedicoTratante.Apellido") + ", " + Eval("MedicoTratante.Nombre") : "Desconocido" %>
                                                 </div>
                                                 <div class="historial-especialidad small">
-                                                    Mat: <%# Eval("MedicoTratante.Matricula") %>
-                                                    <%# Eval("MedicoTratante.Especialidades") != null && 
-                                                        ((System.Collections.Generic.List<dominio.Especialidad>)Eval("MedicoTratante.Especialidades")).Count > 0 
-                                                        ? " • " + ((System.Collections.Generic.List<dominio.Especialidad>)Eval("MedicoTratante.Especialidades"))[0].Descripcion 
-                                                        : "" %>
+                                                    Mat: <%# Eval("MedicoTratante") != null ? Eval("MedicoTratante.Matricula") : "-" %>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="ms-3">
+                                        <asp:LinkButton ID="btnEditarEntrada" runat="server"
+                                            CssClass="btn btn-sm btn-outline-primary"
+                                            CommandName="EditarEntrada"
+                                            CommandArgument='<%# Eval("IdEntradaHistorial") %>'
+                                            ToolTip="Editar Diagnóstico"
+                                            CausesValidation="false"> <i class="bi bi-pencil-fill"></i>
+                                        </asp:LinkButton>
                                     </div>
                                 </div>
 
@@ -231,8 +263,8 @@
                                 </div>
 
                                 <%# !string.IsNullOrWhiteSpace(Eval("Observaciones")?.ToString()) 
-                                    ? "<div class='historial-observaciones'><div class='historial-observaciones-label'><i class='bi bi-journal-text me-1'></i>Observaciones</div><div class='text-dark'>" + Eval("Observaciones") + "</div></div>" 
-                                    : "" %>
+                ? "<div class='historial-observaciones'><div class='historial-observaciones-label'><i class='bi bi-journal-text me-1'></i>Observaciones</div><div class='text-dark'>" + Eval("Observaciones") + "</div></div>" 
+                : "" %>
                             </div>
                         </ItemTemplate>
                     </asp:Repeater>
@@ -254,8 +286,6 @@
                         <p class="text-muted mx-auto" style="max-width: 400px;">
                             Utiliza el panel derecho "Mis Pacientes" para seleccionar a quien deseas consultar o cargar una nueva historia clínica.
                         </p>
-                        <i class="bi bi-arrow-right-circle text-primary fs-2 d-lg-none"></i>
-                        <i class="bi bi-arrow-right-circle text-primary fs-2 d-none d-lg-inline-block animation-pulse"></i>
                     </div>
                 </div>
             </asp:Panel>
@@ -264,10 +294,7 @@
 
     <aside class="quick-access-sidebar-fixed">
         <div class="quick-access-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-            <h3>
-                <i class="bi bi-people-fill"></i>
-                Mis Pacientes
-            </h3>
+            <h3><i class="bi bi-people-fill"></i>Mis Pacientes</h3>
         </div>
 
         <div class="quick-access-body p-0 overflow-auto" style="max-height: calc(100vh - 140px);">
@@ -277,7 +304,8 @@
                         <asp:LinkButton ID="lnkPaciente" runat="server"
                             CommandName="SeleccionarPaciente"
                             CommandArgument='<%# Eval("Dni") %>'
-                            CssClass="paciente-link shadow-sm w-100 text-start border-0">
+                            CssClass="paciente-link shadow-sm w-100 text-start border-0"
+                            CausesValidation="false">
                             <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3 text-primary">
                                 <i class="bi bi-person-circle fs-4"></i>
                             </div>

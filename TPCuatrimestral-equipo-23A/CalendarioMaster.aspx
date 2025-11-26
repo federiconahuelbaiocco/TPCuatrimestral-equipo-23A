@@ -27,6 +27,7 @@
 
         .columna-hoy { background-color: #eff6ff !important; }
 
+        /* Estilos de tarjetas de turno */
         .turno-card {
             display: block; width: 100%; height: 100%;
             padding: 4px; border-radius: 4px;
@@ -34,6 +35,12 @@
             transition: transform 0.1s; border: 0; text-align: left;
         }
         .turno-card:hover { transform: scale(1.02); opacity: 0.9; cursor: pointer; }
+        
+        /* Colores de estado (Coinciden con el estándar) */
+        .turno-cancelado { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
+        .turno-pendiente { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; }
+        .turno-confirmado { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
+        .turno-consulta { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; }
         
         .quick-access-sidebar-fixed { z-index: 100; }
     </style>
@@ -107,7 +114,7 @@
                                                         </asp:Panel>
                                                         
                                                         <asp:Panel ID="pnlVacio" runat="server" Visible='<%# Eval("TurnoAsignado") == null %>'>
-                                                        </asp:Panel>
+                                                            </asp:Panel>
                                                     </td>
                                                 </ItemTemplate>
                                             </asp:Repeater>
@@ -118,9 +125,7 @@
                         </table>
                     </div>
                 </div>
-            </div>
-
-            <aside class="quick-access-sidebar-fixed">
+            </div> <aside class="quick-access-sidebar-fixed">
                 <div class="quick-access-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
                     <h3><i class="bi bi-info-circle-fill"></i> Gestión</h3>
                 </div>
@@ -196,24 +201,12 @@
                         </div>
 
                         <div class="card border-0 shadow-sm mx-2">
-                            <div class="card-body p-3">
+                             <div class="card-body p-3">
                                 <h6 class="fw-bold mb-3 text-secondary border-bottom pb-2">Referencias</h6>
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="turno-confirmado rounded shadow-sm" style="width: 16px; height: 16px;"></div>
-                                    <span class="ms-2 small">Confirmado</span>
-                                </div>
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="turno-pendiente rounded shadow-sm" style="width: 16px; height: 16px;"></div>
-                                    <span class="ms-2 small">Pendiente</span>
-                                </div>
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="turno-cancelado rounded shadow-sm" style="width: 16px; height: 16px;"></div>
-                                    <span class="ms-2 small">Cancelado</span>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <div class="turno-consulta rounded shadow-sm" style="width: 16px; height: 16px;"></div>
-                                    <span class="ms-2 small">Primera Consulta</span>
-                                </div>
+                                <div class="d-flex align-items-center mb-2"><div class="turno-confirmado rounded shadow-sm" style="width: 16px; height: 16px;"></div><span class="ms-2 small">Confirmado</span></div>
+                                <div class="d-flex align-items-center mb-2"><div class="turno-pendiente rounded shadow-sm" style="width: 16px; height: 16px;"></div><span class="ms-2 small">Pendiente</span></div>
+                                <div class="d-flex align-items-center mb-2"><div class="turno-cancelado rounded shadow-sm" style="width: 16px; height: 16px;"></div><span class="ms-2 small">Cancelado</span></div>
+                                <div class="d-flex align-items-center"><div class="turno-consulta rounded shadow-sm" style="width: 16px; height: 16px;"></div><span class="ms-2 small">Primera Consulta</span></div>
                             </div>
                         </div>
                     </asp:Panel>

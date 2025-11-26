@@ -73,7 +73,68 @@ namespace negocio
 			}
 		}
 
-		public List<EntradaHistorial> ListarEntradasPorPaciente(int idPaciente)
+        public void ModificarEntrada(EntradaHistorial entrada)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearProcedimiento("sp_ModificarEntradaHistorial");
+                datos.setearParametro("@IdEntradaHistorial", entrada.IdEntradaHistorial);
+                datos.setearParametro("@Diagnostico", entrada.Diagnostico);
+
+                if (string.IsNullOrEmpty(entrada.Observaciones))
+                    datos.setearParametro("@Observaciones", DBNull.Value);
+                else
+                    datos.setearParametro("@Observaciones", entrada.Observaciones);
+
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al modificar la entrada del historial.", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public EntradaHistorial BuscarEntrada(int idEntrada)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearProcedimiento("sp_ObtenerEntradaHistorialPorId");
+                datos.setearParametro("@Id", idEntrada);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    EntradaHistorial entrada = new EntradaHistorial();
+
+                    entrada.IdEntradaHistorial = (int)datos.Lector["Id"];
+
+                    if (!(datos.Lector["Diagnostico"] is DBNull))
+                        entrada.Diagnostico = (string)datos.Lector["Diagnostico"];
+
+                    if (!(datos.Lector["Observaciones"] is DBNull))
+                        entrada.Observaciones = (string)datos.Lector["Observaciones"];
+
+                    return entrada;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+        public List<EntradaHistorial> ListarEntradasPorPaciente(int idPaciente)
 		{
 			List<EntradaHistorial> lista = new List<EntradaHistorial>();
 			AccesoDatos datos = new AccesoDatos();

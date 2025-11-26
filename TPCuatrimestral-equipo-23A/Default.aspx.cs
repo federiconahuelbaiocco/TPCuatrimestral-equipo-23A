@@ -14,7 +14,8 @@ namespace TPCuatrimestral_equipo_23A
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-		}
+            ValidationSettings.UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
+        }
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {

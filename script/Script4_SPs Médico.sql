@@ -68,6 +68,39 @@ BEGIN
 END
 GO
 
+
+IF OBJECT_ID('dbo.sp_ModificarEntradaHistorial', 'P') IS NOT NULL 
+    DROP PROCEDURE dbo.sp_ModificarEntradaHistorial;
+GO
+
+CREATE PROCEDURE dbo.sp_ModificarEntradaHistorial
+    @IdEntradaHistorial INT,
+    @Diagnostico VARCHAR(MAX),
+    @Observaciones VARCHAR(MAX) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRY
+        IF NOT EXISTS (SELECT 1 FROM EntradaHistorial WHERE IdEntradaHistorial = @IdEntradaHistorial AND Activo = 1)
+        BEGIN
+            RAISERROR('La entrada de historial no existe o ha sido eliminada.', 16, 1);
+            RETURN;
+        END
+
+        UPDATE EntradaHistorial
+        SET 
+            Diagnostico = @Diagnostico,
+            Observaciones = @Observaciones
+        WHERE IdEntradaHistorial = @IdEntradaHistorial;
+
+    END TRY
+    BEGIN CATCH
+        DECLARE @Msg NVARCHAR(4000) = ERROR_MESSAGE();
+        RAISERROR(@Msg, 16, 1);
+    END CATCH
+END
+GO
+
 IF OBJECT_ID('dbo.sp_ListarEntradasPorPaciente', 'P') IS NOT NULL
     DROP PROCEDURE dbo.sp_ListarEntradasPorPaciente;
 GO

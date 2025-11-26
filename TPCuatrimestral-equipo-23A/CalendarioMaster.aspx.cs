@@ -43,6 +43,12 @@ namespace TPCuatrimestral_equipo_23A
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["usuario"] == null || !(Session["usuario"] is Usuario))
+            {
+                Response.Redirect("Default.aspx", false);
+                return;
+            }
+
             if (!IsPostBack)
             {
                 FechaReferencia = DateTime.Today;
@@ -187,6 +193,8 @@ namespace TPCuatrimestral_equipo_23A
             try
             {
                 Usuario usuario = (Usuario)Session["usuario"];
+                if (usuario?.Persona == null) return;
+
                 MedicoModel medico = (MedicoModel)usuario.Persona;
 
                 TurnoNegocio turnoNegocio = new TurnoNegocio();
@@ -200,28 +208,34 @@ namespace TPCuatrimestral_equipo_23A
                     if (turno.Paciente != null)
                     {
                         PacienteNegocio pacienteNegocio = new PacienteNegocio();
-                        Paciente paciente = pacienteNegocio.BuscarPorId(turno.Paciente.IdPersona);
-
-                        if (paciente != null)
+                        try
                         {
-                            lblPacienteNombre.Text = $"{paciente.Apellido}, {paciente.Nombre}";
-                            lblPacienteDni.Text = paciente.Dni;
-                            lblTurnoObraSocial.Text = paciente.Cobertura != null ? paciente.Cobertura.Nombre : "Particular";
+                            Paciente paciente = pacienteNegocio.BuscarPorId(turno.Paciente.IdPersona);
+                            if (paciente != null)
+                            {
+                                lblPacienteNombre.Text = $"{paciente.Apellido}, {paciente.Nombre}";
+                                lblPacienteDni.Text = paciente.Dni;
+                                lblTurnoObraSocial.Text = paciente.Cobertura != null ? paciente.Cobertura.Nombre : "Particular";
+                            }
+                            else
+                            {
+                                lblPacienteNombre.Text = "Paciente no encontrado (ID inválido)";
+                                lblPacienteDni.Text = "-";
+                                lblTurnoObraSocial.Text = "-";
+                            }
                         }
-                        else
+                        catch
                         {
-                            lblPacienteNombre.Text = "Paciente no encontrado";
-                            lblPacienteDni.Text = "-";
-                            lblTurnoObraSocial.Text = "-";
+                            lblPacienteNombre.Text = "Error al recuperar datos del paciente";
                         }
                     }
                     else
                     {
-                        lblPacienteNombre.Text = "Datos de paciente no disponibles";
+                        lblPacienteNombre.Text = "Turno sin paciente asignado";
                     }
 
                     lblTurnoFecha.Text = turno.FechaHora.ToString("dddd, dd 'de' MMMM 'de' yyyy");
-                    lblTurnoHora.Text = turno.FechaHora.ToString("HH:mm");
+                    lblTurnoHora.Text = turno.FechaHora.ToString(@"hh\:mm");
                     lblTurnoTipo.Text = !string.IsNullOrEmpty(turno.MotivoConsulta) ? turno.MotivoConsulta : "Consulta General";
 
                     if (!string.IsNullOrWhiteSpace(turno.Observaciones))
@@ -240,9 +254,9 @@ namespace TPCuatrimestral_equipo_23A
             }
             catch (Exception ex)
             {
-                pnlDetallesTurno.Visible = true;
-                pnlSinSeleccion.Visible = false;
-                lblPacienteNombre.Text = "Error al cargar: " + ex.Message;
+                pnlDetallesTurno.Visible = false;
+                pnlSinSeleccion.Visible = true;
+                System.Diagnostics.Debug.WriteLine("Error en CargarDetallesTurno: " + ex.Message);
             }
         }
 

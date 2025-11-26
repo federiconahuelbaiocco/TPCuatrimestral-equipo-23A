@@ -268,9 +268,9 @@
   <ItemGroup>
     <Content Include="Site.Master" />
     <Content Include="Medico.Master" />
-    <None Include="packages.config" />
     <Content Include="Recepcionista.Master" />
     <Content Include="Admin.Master" />
+    <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

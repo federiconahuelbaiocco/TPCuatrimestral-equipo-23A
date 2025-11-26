@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row justify-content-center align-items-center" style="min-height: 90vh;">
             <div class="col-md-7 col-lg-6">
-                
+
                 <div class="card login-card shadow-lg border-0 mb-4">
                     <div class="card-header login-header text-center text-white bg-primary">
                         <h4 class="mb-0">
@@ -26,22 +26,22 @@
                             <div class="mb-3">
                                 <label for="txtUsuario" class="form-label">Usuario</label>
                                 <asp:TextBox ID="txtUsuario" runat="server" CssClass="form-control" placeholder="Ingrese su usuario" />
-                                <asp:RequiredFieldValidator ID="rfvUsuario" runat="server" 
-                                    ControlToValidate="txtUsuario" 
-                                    ErrorMessage="El usuario es requerido" 
-                                    CssClass="text-danger small" 
-                                    Display="Dynamic" 
+                                <asp:RequiredFieldValidator ID="rfvUsuario" runat="server"
+                                    ControlToValidate="txtUsuario"
+                                    ErrorMessage="El usuario es requerido"
+                                    CssClass="text-danger small"
+                                    Display="Dynamic"
                                     ValidationGroup="Login" />
                             </div>
 
                             <div class="mb-3">
                                 <label for="txtClave" class="form-label">Contraseña</label>
                                 <asp:TextBox ID="txtClave" runat="server" TextMode="Password" CssClass="form-control" placeholder="Ingrese su contraseña" />
-                                <asp:RequiredFieldValidator ID="rfvClave" runat="server" 
-                                    ControlToValidate="txtClave" 
-                                    ErrorMessage="La contraseña es requerida" 
-                                    CssClass="text-danger small" 
-                                    Display="Dynamic" 
+                                <asp:RequiredFieldValidator ID="rfvClave" runat="server"
+                                    ControlToValidate="txtClave"
+                                    ErrorMessage="La contraseña es requerida"
+                                    CssClass="text-danger small"
+                                    Display="Dynamic"
                                     ValidationGroup="Login" />
                             </div>
 
@@ -60,25 +60,25 @@
                     </div>
                     <div class="card-body">
                         <p class="small text-muted">Ingresa tu correo electrónico registrado y te enviaremos tus credenciales.</p>
-                        
+
                         <asp:Panel runat="server" DefaultButton="btnRecuperar">
                             <div class="mb-3">
                                 <label for="txtEmail" class="form-label">Correo Electrónico</label>
                                 <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" placeholder="ejemplo@correo.com" TextMode="Email" />
-                                
-                                <asp:RequiredFieldValidator ID="rfvEmail" runat="server" 
-                                    ControlToValidate="txtEmail" 
-                                    ErrorMessage="El email es requerido." 
-                                    CssClass="text-danger small d-block" 
-                                    Display="Dynamic" 
+
+                                <asp:RequiredFieldValidator ID="rfvEmail" runat="server"
+                                    ControlToValidate="txtEmail"
+                                    ErrorMessage="El email es requerido."
+                                    CssClass="text-danger small"
+                                    Display="Dynamic"
                                     ValidationGroup="Recuperar" />
-                                
-                                <asp:RegularExpressionValidator ID="revEmail" runat="server" 
-                                    ControlToValidate="txtEmail" 
-                                    ErrorMessage="Ingrese un formato de email válido." 
-                                    ValidationExpression="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" 
-                                    CssClass="text-danger small d-block" 
-                                    Display="Dynamic" 
+
+                                <asp:RegularExpressionValidator ID="revEmail" runat="server"
+                                    ControlToValidate="txtEmail"
+                                    ErrorMessage="Ingrese un formato de email válido."
+                                    ValidationExpression="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
+                                    CssClass="text-danger small"
+                                    Display="Dynamic"
                                     ValidationGroup="Recuperar" />
                             </div>
 
