@@ -217,7 +217,6 @@
     <Compile Include="Medico.Master.designer.cs">
       <DependentUpon>Medico.Master</DependentUpon>
     </Compile>
-    <Compile Include="negocio\TurnoTrabajoNegocio.cs" />
     <Compile Include="PerfilMedico.aspx.cs">
       <DependentUpon>PerfilMedico.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

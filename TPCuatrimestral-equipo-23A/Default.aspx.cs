@@ -76,5 +76,35 @@ namespace TPCuatrimestral_equipo_23A
 					break;
 			}
 		}
-	}
+        protected void btnRecuperar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                UsuarioNegocio negocio = new UsuarioNegocio();
+                emailServiceNegocio emailService = new emailServiceNegocio();
+                Usuario usuario = negocio.RecuperarUsuarioPorEmail(txtEmail.Text);
+
+                if (usuario != null)
+                {
+                    emailService.enviarCorreoRecuperacionContrasena(txtEmail.Text,usuario.Persona.Nombre,usuario.NombreUsuario,usuario.Clave);
+                    emailService.enviarCorreo();
+
+                    lblRecuperarMensaje.Text = "Se ha enviado un correo con tus datos.";
+                    lblRecuperarMensaje.ForeColor = System.Drawing.Color.Green;
+                    lblRecuperarMensaje.Visible = true;
+                }
+                else
+                {
+                    lblRecuperarMensaje.Text = "El correo ingresado no existe en el sistema.";
+                    lblRecuperarMensaje.ForeColor = System.Drawing.Color.Red;
+                    lblRecuperarMensaje.Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Session["error"] = ex;
+                Response.Redirect("~/Error.aspx", false);
+            }
+        }
+    }
 }

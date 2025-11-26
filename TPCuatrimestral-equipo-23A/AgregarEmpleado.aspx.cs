@@ -284,7 +284,8 @@ namespace TPCuatrimestral_equipo_23A
                 if (idRol == 1)
                 {
                     AdministradorNegocio negocio = new AdministradorNegocio();
-                    dominio.Administrador admin = new dominio.Administrador();
+					dominio.Administrador admin = new dominio.Administrador();
+					emailServiceNegocio emailService = new emailServiceNegocio();
 
                     admin.Nombre = txtNombre.Text;
                     admin.Apellido = txtApellido.Text;
@@ -311,16 +312,22 @@ namespace TPCuatrimestral_equipo_23A
                     {
                         admin.Usuario.IdUsuario = idUsuario;
                         negocio.Modificar(admin);
-                    }
-                    else
+						emailService.enviarCorreoModificacionEmpleado(admin.Email, admin.Nombre);
+						emailService.enviarCorreo();
+
+					}
+					else
                     {
-                        negocio.Agregar(admin);
+						negocio.Agregar(admin);
+						emailService.enviarCorreoAltaEmpleado(admin.Email, admin.Apellido, admin.Nombre, admin.Usuario.NombreUsuario, admin.Usuario.Clave);
+                        emailService.enviarCorreo();
                     }
-                }
+				}
                 else if (idRol == 2)
                 {
                     RecepcionistaNegocio negocio = new RecepcionistaNegocio();
-                    dominio.Recepcionista recep = new dominio.Recepcionista();
+					dominio.Recepcionista recep = new dominio.Recepcionista();
+                    emailServiceNegocio emailService = new emailServiceNegocio();
 
                     recep.Nombre = txtNombre.Text;
                     recep.Apellido = txtApellido.Text;
@@ -344,19 +351,24 @@ namespace TPCuatrimestral_equipo_23A
                     recep.Usuario.Clave = string.IsNullOrEmpty(txtContrasena.Text) ? null : txtContrasena.Text;
 
                     if (esModificacion)
-                    {
-                        recep.Usuario.IdUsuario = idUsuario;
-                        negocio.Modificar(recep);
+					{
+						recep.Usuario.IdUsuario = idUsuario;
+						negocio.Modificar(recep);
+						emailService.enviarCorreoModificacionEmpleado(recep.Email, recep.Nombre);
+                        emailService.enviarCorreo();
                     }
-                    else
+					else
                     {
                         negocio.Agregar(recep);
+						emailService.enviarCorreoAltaEmpleado(recep.Email, recep.Apellido, recep.Nombre, recep.Usuario.NombreUsuario, recep.Usuario.Clave);
+                        emailService.enviarCorreo();
                     }
-                }
+				}
                 else if (idRol == 3)
                 {
                     MedicoNegocio negocio = new MedicoNegocio();
                     dominio.Medico nuevo = new dominio.Medico();
+					emailServiceNegocio emailService = new emailServiceNegocio();
 
                     nuevo.Nombre = txtNombre.Text;
                     nuevo.Apellido = txtApellido.Text;
@@ -384,29 +396,48 @@ namespace TPCuatrimestral_equipo_23A
                     {
                         nuevo.Usuario.IdUsuario = idUsuario;
                         negocio.Modificar(nuevo);
+						emailService.enviarCorreoModificacionEmpleado(nuevo.Email, nuevo.Nombre);
+                        emailService.enviarCorreo();
                     }
-                    else
+					else
                     {
                         int idNuevoMedico = negocio.AgregarConUsuario(nuevo);
 
-                        if (idNuevoMedico > 0)
-                        {
-                            List<TurnoTrabajo> horarios = HorariosTemporales;
-                            if (horarios != null && horarios.Count > 0)
-                            {
-                                TurnoTrabajoNegocio turnoNegocio = new TurnoTrabajoNegocio();
-                                foreach (TurnoTrabajo turno in horarios)
-                                {
-                                    turnoNegocio.Agregar(idNuevoMedico, turno);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("No se pudo obtener el Id del médico insertado.");
-                        }
+						if (idNuevoMedico > 0)
+						{
+							List<TurnoTrabajo> horarios = HorariosTemporales;
+							if (horarios != null && horarios.Count > 0)
+							{
+								TurnoTrabajoNegocio turnoNegocio = new TurnoTrabajoNegocio();
+								foreach (TurnoTrabajo turno in horarios)
+								{
+									turnoNegocio.Agregar(idNuevoMedico, turno);
+								}
+							}
+
+							List<int> especialidadesSeleccionadas = new List<int>();
+							foreach (ListItem item in chkEspecialidades.Items)
+							{
+								if (item.Selected)
+									especialidadesSeleccionadas.Add(int.Parse(item.Value));
+							}
+							if (especialidadesSeleccionadas.Count > 0)
+							{
+								EspecialidadNegocio especialidadNegocio = new EspecialidadNegocio();
+								foreach (int idEspecialidad in especialidadesSeleccionadas)
+								{
+									especialidadNegocio.AgregarEspecialidadAMedico(idNuevoMedico, idEspecialidad);
+								}
+							}
+						}
+						else
+						{
+							throw new Exception("No se pudo obtener el Id del médico insertado.");
+						}
+						emailService.enviarCorreoAltaEmpleado(nuevo.Email, nuevo.Apellido, nuevo.Nombre, nuevo.Usuario.NombreUsuario, nuevo.Usuario.Clave);
+                        emailService.enviarCorreo();
                     }
-                }
+				}
 
                 Response.Redirect("~/Administradores.aspx", false);
             }

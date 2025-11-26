@@ -29,7 +29,7 @@ namespace negocio
                     usuario.NombreUsuario = (string)datos.Lector["NombreUsuario"];
                     usuario.IdRol = (int)datos.Lector["IdRol"];
                     usuario.IdPersona = (int)datos.Lector["IdPersona"];
-                    
+
                     usuario.Rol = new Rol();
                     usuario.Rol.IdRol = usuario.IdRol;
                     usuario.Rol.Nombre = (string)datos.Lector["NombreRol"];
@@ -53,7 +53,7 @@ namespace negocio
 
                         if (!datos.Lector.IsDBNull(datos.Lector.GetOrdinal("Matricula")))
                             medico.Matricula = (string)datos.Lector["Matricula"];
-                        
+
                         usuario.Persona = medico;
                     }
                     else if (usuario.Rol.Nombre == "Recepcionista")
@@ -185,7 +185,7 @@ namespace negocio
                         string apellido = datos.Lector["Apellido"] as string;
                         string dni = datos.Lector["Dni"] as string;
                         string email = datos.Lector["Email"] as string;
-                        
+
                         switch (u.Rol.Nombre)
                         {
                             case "Medico":
@@ -198,7 +198,7 @@ namespace negocio
                                 u.Persona = new Administrador { IdPersona = u.IdPersona, Nombre = nombre, Apellido = apellido, Dni = dni, Email = email };
                                 break;
                             default:
-                                 break;
+                                break;
                         }
                     }
 
@@ -289,13 +289,66 @@ namespace negocio
                     aux.IdRol = (int)datos.Lector["IdRol"];
                     aux.Rol.IdRol = (int)datos.Lector["IdRol"];
                     aux.Rol.Nombre = (string)datos.Lector["RolNombre"];
-                    if(datos.Lector["IdPersona"] != DBNull.Value)
+                    if (datos.Lector["IdPersona"] != DBNull.Value)
                         aux.IdPersona = (int)datos.Lector["IdPersona"];
 
                     lista.Add(aux);
                 }
 
                 return lista;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public Usuario RecuperarUsuarioPorEmail(string email)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearProcedimiento("sp_RecuperarUsuarioPorEmail");
+                datos.setearParametro("@Email", email);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    Usuario usuario = new Usuario();
+                    usuario.IdUsuario = (int)datos.Lector["IdUsuario"];
+                    usuario.NombreUsuario = (string)datos.Lector["NombreUsuario"];
+                    usuario.Clave = (string)datos.Lector["Clave"];
+
+                    int idRol = (int)datos.Lector["IdRol"];
+
+                    switch (idRol)
+                    {
+                        case 3:
+                            usuario.Persona = new dominio.Medico();
+                            break;
+                        case 2:
+                            usuario.Persona = new dominio.Recepcionista();
+                            break;
+                        case 1:
+                            usuario.Persona = new dominio.Administrador();
+                            break;
+                        default:
+                            usuario.Persona = new dominio.Administrador();
+                            break;
+                    }
+
+                    usuario.Persona.IdPersona = (int)datos.Lector["IdPersona"];
+                    usuario.Persona.Nombre = (string)datos.Lector["Nombre"];
+                    usuario.Persona.Apellido = (string)datos.Lector["Apellido"];
+                    usuario.Persona.Email = (string)datos.Lector["Email"];
+
+                    return usuario;
+                }
+                return null;
             }
             catch (Exception ex)
             {
