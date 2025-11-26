@@ -39,7 +39,26 @@ namespace TPCuatrimestral_equipo_23A
 			}
 		}
 
-		private void CargarOpcionesHorario()
+        protected void cvMayorEdad_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            DateTime fechaNacimiento;
+            if (DateTime.TryParse(args.Value, out fechaNacimiento))
+            {
+                if (fechaNacimiento > DateTime.Today.AddYears(-18))
+                {
+                    args.IsValid = false;
+                }
+                else
+                {
+                    args.IsValid = true;
+                }
+            }
+            else
+            {
+                args.IsValid = false;
+            }
+        }
+        private void CargarOpcionesHorario()
 		{
 			TurnoTrabajoNegocio negocio = new TurnoTrabajoNegocio();
 			List<string> opciones = negocio.GenerarOpcionesHorario();
@@ -296,6 +315,12 @@ namespace TPCuatrimestral_equipo_23A
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            Page.Validate();
+            if (!Page.IsValid)
+            {
+                return;
+            }
+
             if (ddlRol.SelectedValue == "0" && Request.QueryString["ID"] == null)
             {
                 return;

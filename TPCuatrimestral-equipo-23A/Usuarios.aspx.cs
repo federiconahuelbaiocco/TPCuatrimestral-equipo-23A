@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using negocio;
 using dominio;
-
 
 namespace TPCuatrimestral_equipo_23A
 {
@@ -26,14 +22,15 @@ namespace TPCuatrimestral_equipo_23A
                 lblNombreCompletoTitulo.Text = $"{adminActual.Nombre} {adminActual.Apellido}";
                 lblRolTitulo.Text = "Administrador";
                 lblIdUsuarioTitulo.Text = adminActual.Usuario.IdUsuario.ToString();
-                lblEmailLogin.Text = adminActual.Email;
+
                 txtNombre.Text = adminActual.Nombre;
                 txtApellido.Text = adminActual.Apellido;
                 txtDni.Text = adminActual.Dni;
                 txtTelefono.Text = adminActual.Telefono;
+
                 if (adminActual.FechaNacimiento.HasValue)
                     txtFechaNac.Text = adminActual.FechaNacimiento.Value.ToString("yyyy-MM-dd");
-                
+
                 if (!string.IsNullOrEmpty(adminActual.Sexo))
                     ddlSexo.SelectedValue = adminActual.Sexo;
 
@@ -49,11 +46,42 @@ namespace TPCuatrimestral_equipo_23A
                 }
 
                 pnlInfoProfesional.Visible = false;
+
+                // Truco para limpiar validaciones iniciales
+                Page.Validate("GrupoInexistente");
+            }
+        }
+
+        // VALIDACIÓN SERVIDOR DE EDAD
+        protected void cvMayorEdadPerfil_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            DateTime fechaNacimiento;
+            if (DateTime.TryParse(args.Value, out fechaNacimiento))
+            {
+                if (fechaNacimiento > DateTime.Today.AddYears(-18))
+                {
+                    args.IsValid = false;
+                }
+                else
+                {
+                    args.IsValid = true;
+                }
+            }
+            else
+            {
+                args.IsValid = false;
             }
         }
 
         protected void btnGuardarInfoPersonal_Click(object sender, EventArgs e)
         {
+            // Validar solo este grupo
+            Page.Validate("DatosPersonales");
+            if (!Page.IsValid)
+            {
+                return;
+            }
+
             var adminActual = Session["adminActual"] as Administrador;
             if (adminActual == null)
             {
@@ -66,6 +94,7 @@ namespace TPCuatrimestral_equipo_23A
             adminActual.Dni = txtDni.Text.Trim();
             adminActual.Telefono = txtTelefono.Text.Trim();
             adminActual.Sexo = ddlSexo.SelectedValue;
+
             if (DateTime.TryParse(txtFechaNac.Text, out DateTime fechaNac))
             {
                 adminActual.FechaNacimiento = fechaNac;
@@ -86,7 +115,12 @@ namespace TPCuatrimestral_equipo_23A
             {
                 var adminNeg = new AdministradorNegocio();
                 adminNeg.Modificar(adminActual);
-                ScriptManager.RegisterStartupScript(this, GetType(), "ok", "mostrarToastMensaje('Datos personales actualizados','success');", true);
+
+                // Actualizar sesión
+                Session["adminActual"] = adminActual;
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "ok", "mostrarToastMensaje('Datos personales actualizados correctamente','success');", true);
+
                 emailServiceNegocio emailService = new emailServiceNegocio();
                 emailService.enviarCorreoModificacionEmpleado(adminActual.Email, adminActual.Nombre);
                 emailService.enviarCorreo();
@@ -94,6 +128,7 @@ namespace TPCuatrimestral_equipo_23A
             catch (Exception ex)
             {
                 var msg = ex.Message.Replace("'", "\\'");
+                if (msg.Contains("DNI")) msg = "El DNI ingresado ya está registrado en el sistema.";
                 ScriptManager.RegisterStartupScript(this, GetType(), "err", "mostrarToastMensaje('Error: " + msg + "','danger');", true);
             }
         }
