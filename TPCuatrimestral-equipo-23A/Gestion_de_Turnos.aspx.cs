@@ -157,6 +157,23 @@ namespace TPCuatrimestral_equipo_23A
                 TurnoNegocio negocio = new TurnoNegocio();
                 negocio.AltaTurno(idPaciente, idMedico, fechaHora, motivo, observaciones);
 
+                PacienteNegocio pacienteNeg = new PacienteNegocio();
+                var paciente = pacienteNeg.Listar().FirstOrDefault(p => p.IdPersona == idPaciente);
+
+                string destinatario = paciente?.Email;
+                string nombrePaciente = paciente?.Nombre + " " + paciente?.Apellido;
+
+                string fecha = fechaHora.ToString("dd/MM/yyyy");
+                string hora = fechaHora.ToString("HH:mm");
+                string especialidad = ddlEspecialidad.SelectedItem.Text;
+
+                if (!string.IsNullOrEmpty(destinatario))
+                {
+                    var emailService = new emailServiceNegocio();
+                    emailService.enviarConfirmacionTurno(destinatario, nombrePaciente, fecha, hora, especialidad);
+                    emailService.enviarCorreo();
+                }
+
                 CargarTurnos();
 
                 lblMensaje.Text = "Turno asignado exitosamente.";
@@ -165,7 +182,6 @@ namespace TPCuatrimestral_equipo_23A
             }
             catch (Exception ex)
             {
-
                 lblMensaje.Text = ex.Message;
                 lblMensaje.CssClass = "text-danger fw-bold";
                 lblMensaje.Visible = true;
