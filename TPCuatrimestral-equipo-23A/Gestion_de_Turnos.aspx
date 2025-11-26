@@ -42,178 +42,121 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0">
-                        <thead class="bg-light text-secondary text-uppercase small">
-                            <tr>
-                                <th scope="col" class="px-4 py-3">Hora</th>
-                                <th scope="col" class="px-4 py-3">Paciente</th>
-                                <th scope="col" class="px-4 py-3">Médico</th>
-                                <th scope="col" class="px-4 py-3">Tipo de Cita</th>
-                                <th scope="col" class="px-4 py-3">Estado</th>
-                                <th scope="col" class="px-4 py-3 text-end">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="px-4 py-3 align-middle">09:00</td>
-                                <td class="px-4 py-3 align-middle"><span class="fw-medium text-dark">Carlos Rodriguez</span></td>
-                                <td class="px-4 py-3 align-middle">Dr. Pérez</td>
-                                <td class="px-4 py-3 align-middle">Control</td>
-                                <td class="px-4 py-3 align-middle"><span class="badge rounded-pill text-bg-success">Llegada</span></td>
-                                <td class="px-4 py-3 align-middle text-end">
-                                    <div class="d-inline-flex gap-2">
-                                        <button class="btn btn-sm btn-outline-primary" data-bs-target="#scheduleModal" data-bs-toggle="modal" title="Editar">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger" title="Cancelar">
-                                            <i class="bi bi-x-circle-fill"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3 align-middle">09:30</td>
-                                <td class="px-4 py-3 align-middle"><span class="fw-medium text-dark">Martina Torres</span></td>
-                                <td class="px-4 py-3 align-middle">Dr. Sánchez</td>
-                                <td class="px-4 py-3 align-middle">Control</td>
-                                <td class="px-4 py-3 align-middle"><span class="badge rounded-pill text-bg-primary">Confirmado</span></td>
-                                <td class="px-4 py-3 align-middle text-end">
-                                    <div class="d-inline-flex gap-2">
-                                        <button class="btn btn-sm btn-outline-primary" data-bs-target="#scheduleModal" data-bs-toggle="modal" title="Editar">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger" title="Cancelar">
-                                            <i class="bi bi-x-circle-fill"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3 align-middle">10:30</td>
-                                <td class="px-4 py-3 align-middle"><span class="fw-medium text-dark">Ana Gómez</span></td>
-                                <td class="px-4 py-3 align-middle">Dr. Pérez</td>
-                                <td class="px-4 py-3 align-middle">Primera Vez</td>
-                                <td class="px-4 py-3 align-middle"><span class="badge rounded-pill text-bg-warning">En espera</span></td>
-                                <td class="px-4 py-3 align-middle text-end">
-                                    <div class="d-inline-flex gap-2">
-                                        <button class="btn btn-sm btn-outline-primary" data-bs-target="#scheduleModal" data-bs-toggle="modal" title="Editar">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger" title="Cancelar">
-                                            <i class="bi bi-x-circle-fill"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3 align-middle">11:00</td>
-                                <td class="px-4 py-3 align-middle"><span class="fw-medium text-dark">Luis Fernández</span></td>
-                                <td class="px-4 py-3 align-middle">Dr. García</td>
-                                <td class="px-4 py-3 align-middle">Urgencia</td>
-                                <td class="px-4 py-3 align-middle"><span class="badge rounded-pill text-bg-danger">Cancelado</span></td>
-                                <td class="px-4 py-3 align-middle text-end">
-                                    <div class="d-inline-flex gap-2">
-                                        <button class="btn btn-sm btn-outline-primary" data-bs-target="#scheduleModal" data-bs-toggle="modal" title="Editar">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger" title="Cancelar">
-                                            <i class="bi bi-x-circle-fill"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3 align-middle">14:00</td>
-                                <td class="px-4 py-3 align-middle"><span class="fw-medium text-dark">Juan Navarro</span></td>
-                                <td class="px-4 py-3 align-middle">Dr. Sánchez</td>
-                                <td class="px-4 py-3 align-middle">Control</td>
-                                <td class="px-4 py-3 align-middle"><span class="badge rounded-pill text-bg-primary">Confirmado</span></td>
-                                <td class="px-4 py-3 align-middle text-end">
-                                    <div class="d-inline-flex gap-2">
-                                        <button class="btn btn-sm btn-outline-primary" data-bs-target="#scheduleModal" data-bs-toggle="modal" title="Editar">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger" title="Cancelar">
-                                            <i class="bi bi-x-circle-fill"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3 align-middle">16:00</td>
-                                <td class="px-4 py-3 align-middle"><span class="fw-medium text-dark">Pedro Molina</span></td>
-                                <td class="px-4 py-3 align-middle">Dr. García</td>
-                                <td class="px-4 py-3 align-middle">Seguimiento</td>
-                                <td class="px-4 py-3 align-middle"><span class="badge rounded-pill text-bg-primary">Confirmado</span></td>
-                                <td class="px-4 py-3 align-middle text-end">
-                                    <div class="d-inline-flex gap-2">
-                                        <button class="btn btn-sm btn-outline-primary" data-bs-target="#scheduleModal" data-bs-toggle="modal" title="Editar">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger" title="Cancelar">
-                                            <i class="bi bi-x-circle-fill"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <h2>Listado de Turnos</h2>
+
+            <asp:GridView ID="gvTurnos" runat="server" AutoGenerateColumns="False" CssClass="table table-striped"
+                EmptyDataText="No hay turnos registrados.">
+
+                <Columns>
+
+                    <asp:BoundField DataField="PacienteNombreCompleto" HeaderText="Paciente" />
+                    <asp:BoundField DataField="MedicoNombreCompleto" HeaderText="Médico" />
+                    <asp:BoundField DataField="FechaHora" HeaderText="Fecha y Hora"
+                        DataFormatString="{0:dd/MM/yyyy HH:mm}" />
+                    <asp:BoundField DataField="MotivoConsulta" HeaderText="Motivo" />
+                    <asp:BoundField DataField="Observaciones" HeaderText="Observaciones" />
+                    <asp:BoundField DataField="Estado" HeaderText="Estado" />
+                    <asp:ButtonField Text="Modificar" CommandName="Editar" />
+                    <asp:ButtonField Text="Cancelar" CommandName="Cancelar" />
+                </Columns>
+
+            </asp:GridView>
+
+
         </div>
     </div>
 
-    <div aria-hidden="true" aria-labelledby="scheduleModalLabel" class="modal fade" id="scheduleModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade" id="scheduleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
+
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="scheduleModalLabel">Programar / Modificar Turno</h5>
-                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    <h5 class="modal-title">Programar Nuevo Turno</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
+
                 <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-md-12">
-                            <label class="form-label fw-medium" for="patientSearch">Buscar Paciente (Nombre o DNI)</label>
-                            <input class="form-control" id="patientSearch" placeholder="Ej: Martina Torres" type="text" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-medium" for="appointmentDate">Fecha</label>
-                            <input class="form-control" id="appointmentDate" type="date" value="2024-10-16" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-medium" for="appointmentTime">Hora</label>
-                            <input class="form-control" id="appointmentTime" type="time" value="09:30" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-medium" for="doctorSelect">Médico</label>
-                            <select class="form-select" id="doctorSelect">
-                                <option>Dr. Pérez</option>
-                                <option>Dr. García</option>
-                                <option selected="">Dr. Sánchez</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-medium" for="appointmentType">Tipo de Cita</label>
-                            <select class="form-select" id="appointmentType">
-                                <option selected="">Control</option>
-                                <option>Primera Vez</option>
-                                <option>Seguimiento</option>
-                                <option>Urgencia</option>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label fw-medium" for="appointmentNotes">Notas</label>
-                            <textarea class="form-control" id="appointmentNotes" rows="3">El paciente refiere dolor de cabeza persistente. Traer estudios anteriores.</textarea>
-                        </div>
-                    </div>
+                    <asp:UpdatePanel ID="updTurno" runat="server">
+                        <ContentTemplate>
+
+                            <!-- DNI DEL PACIENTE -->
+                            <div class="mb-3">
+                                <label class="form-label">DNI del Paciente</label>
+                                <div class="input-group">
+                                    <asp:TextBox ID="txtDniPaciente" CssClass="form-control" runat="server"></asp:TextBox>
+
+                                    <asp:Button ID="btnBuscarPaciente" runat="server"
+                                        Text="Buscar" CssClass="btn btn-secondary"
+                                        OnClick="btnBuscarPaciente_Click" />
+                                </div>
+                            </div>
+
+                            <!-- NOMBRE DEL PACIENTE (solo lectura) -->
+                            <div class="mb-3">
+                                <label class="form-label">Nombre del Paciente</label>
+                                <asp:TextBox ID="txtNombrePaciente" CssClass="form-control"
+                                    runat="server" ReadOnly="true"></asp:TextBox>
+                                <asp:HiddenField ID="hfIdPaciente" runat="server" />
+                            </div>
+
+                            <!-- ESPECIALIDAD -->
+                            <div class="row g-3">
+                                <div class="col mb-6">
+                                    <label class="form-label">Especialidad</label>
+                                    <asp:DropDownList ID="ddlEspecialidad" CssClass="form-select"
+                                        AutoPostBack="true" OnSelectedIndexChanged="ddlEspecialidad_SelectedIndexChanged"
+                                        runat="server">
+                                    </asp:DropDownList>
+                                </div>
+
+                                <!-- MÉDICO -->
+                                <div class="col mb-6">
+                                    <label class="form-label">Médico</label>
+                                    <asp:DropDownList ID="ddlMedico" CssClass="form-select"
+                                        AutoPostBack="true" OnSelectedIndexChanged="ddlMedico_SelectedIndexChanged"
+                                        runat="server">
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                            <!-- FECHA -->
+                            <div class="mb-3">
+                                <label class="form-label">Fecha disponible</label>
+                                <asp:DropDownList ID="ddlFecha" CssClass="form-select"
+                                    AutoPostBack="true" OnSelectedIndexChanged="ddlFecha_SelectedIndexChanged"
+                                    runat="server">
+                                </asp:DropDownList>
+                            </div>
+
+                            <!-- HORARIO -->
+                            <div class="mb-3">
+                                <label class="form-label">Horarios disponibles</label>
+                                <asp:DropDownList ID="ddlHorario" CssClass="form-select" runat="server">
+                                </asp:DropDownList>
+                            </div>
+                            <div>
+                                <label>Motivo de la consulta:</label>
+                                <asp:TextBox ID="txtMotivo" runat="server" TextMode="MultiLine" CssClass="form-control" />
+                            </div>
+
+                            <div>
+                                <label>Observaciones:</label>
+                                <asp:TextBox ID="txtObservaciones" runat="server" TextMode="MultiLine" CssClass="form-control" />
+                            </div>
+
+
+                            <!-- CONSULTORIO -->
+
+
+                            <div class="modal-footer">
+                                <asp:Button ID="btnGuardarTurno" runat="server" Text="Guardar Turno"
+                                    CssClass="btn btn-success" OnClick="btnGuardarTurno_Click" />
+                            </div>
+                            <asp:Label ID="lblMensaje" runat="server" Visible="false" CssClass="fw-bold"></asp:Label>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cerrar</button>
-                    <button class="btn btn-danger" type="button">Cancelar Turno</button>
-                    <button class="btn btn-primary" type="button">Guardar Cambios</button>
-                </div>
+
+
             </div>
         </div>
     </div>

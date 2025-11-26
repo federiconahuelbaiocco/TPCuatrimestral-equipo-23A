@@ -55,6 +55,12 @@
                         <div class="flex flex-col sm:flex-row flex-wrap justify-between items-start sm:items-center gap-4">
                             <h1 class="text-slate-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Listado de Médicos</h1>
                         </div>
+                        <asp:GridView ID="dgvMedicos" runat="server" CssClass="table table-striped" AutoGenerateColumns="false">
+                            <Columns>
+                                <asp:BoundField HeaderText="Médico" DataField="Nombre" />
+                                <asp:BoundField HeaderText="Especialidad" DataField="Especialidad" />
+                            </Columns>
+                        </asp:GridView>
                     </div>
                 </main>
             </div>

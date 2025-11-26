@@ -18,5 +18,10 @@ namespace dominio
 		public DateTime FechaHora { get; set; }
 		public string MotivoConsulta { get; set; }
 		public string Observaciones { get; set; }
-	}
+
+        public string PacienteNombreCompleto => $"{Paciente.Apellido}, {Paciente.Nombre}";
+        public string MedicoNombreCompleto => $"{Medico.Apellido}, {Medico.Nombre}";
+        public string EstadoTurno => Estado?.Descripcion;
+
+    }
 }
