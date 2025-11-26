@@ -129,3 +129,27 @@ SELECT 'Usuarios' AS Tabla, COUNT(*) AS Total FROM Usuarios;
 SELECT 'Turnos' AS Tabla, COUNT(*) AS Total FROM Turnos;
 
 GO
+
+USE ClinicaDB;
+GO
+
+-- Declarar IDs de especialidades (basado en tu script 5)
+DECLARE @IdClinica INT = (SELECT IdEspecialidad FROM Especialidades WHERE Descripcion = 'Clínica Médica');
+DECLARE @IdPediatria INT = (SELECT IdEspecialidad FROM Especialidades WHERE Descripcion = 'Pediatría');
+DECLARE @IdCardiologia INT = (SELECT IdEspecialidad FROM Especialidades WHERE Descripcion = 'Cardiología');
+
+-- Declarar IDs de médicos (buscándolos por DNI del script 5)
+DECLARE @IdLaura INT = (SELECT IdPersona FROM Personas WHERE Dni = '25111222'); -- Laura Torres
+DECLARE @IdDiego INT = (SELECT IdPersona FROM Personas WHERE Dni = '26222333'); -- Diego Ramírez
+DECLARE @IdValeria INT = (SELECT IdPersona FROM Personas WHERE Dni = '27333444'); -- Valeria Castro
+
+-- Insertar relaciones (Asignar especialidades)
+IF @IdLaura IS NOT NULL AND @IdCardiologia IS NOT NULL
+    INSERT INTO Medico_Especialidad (IdMedico, IdEspecialidad) VALUES (@IdLaura, @IdCardiologia);
+
+IF @IdDiego IS NOT NULL AND @IdClinica IS NOT NULL
+    INSERT INTO Medico_Especialidad (IdMedico, IdEspecialidad) VALUES (@IdDiego, @IdClinica);
+
+IF @IdValeria IS NOT NULL AND @IdPediatria IS NOT NULL
+    INSERT INTO Medico_Especialidad (IdMedico, IdEspecialidad) VALUES (@IdValeria, @IdPediatria);
+GO
