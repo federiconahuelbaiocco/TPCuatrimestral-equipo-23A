@@ -13,13 +13,10 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
-                        
-                       
                     </div>
                 </div>
             </nav>
             <nav aria-label="breadcrumb">
-               
             </nav>
         </header>
         <main>
@@ -29,14 +26,14 @@
                         <div class="d-flex align-items-center flex-grow-1 mb-3 mb-md-0">
                             <div class="profile-img rounded-circle me-4"></div>
                             <div class="d-flex flex-column">
-                                 <asp:Label ID="lblNombreCompleto" runat="server" CssClass="h4 fw-bold mb-0"></asp:Label>
-                                 <asp:Label ID="lblEdad" runat="server" CssClass="text-muted"></asp:Label>
+                                <asp:Label ID="lblNombreCompleto" runat="server" CssClass="h4 fw-bold mb-0"></asp:Label>
+                                <asp:Label ID="lblEdad" runat="server" CssClass="text-muted"></asp:Label>
                             </div>
 
                         </div>
                         <div class="d-flex gap-2">
                             <asp:Button ID="btnCancelar" OnClick="btnCancelar_Click" CssClass="btn btn-secondary" runat="server" type="button" Text="Cancelar"></asp:Button>
-                            <asp:Button ID="btnGuardarCambios" OnClick="btnGuardarCambios_Click" CssClass="btn btn-save-custom" runat="server" Text="Guardar Cambios"></asp:Button>
+                            <asp:Button ID="btnGuardarCambios" OnClick="btnGuardarCambios_Click" CssClass="btn btn-save-custom" runat="server" Text="Guardar Cambios" ValidationGroup="EdicionPaciente"></asp:Button>
                         </div>
                     </div>
                 </div>
@@ -64,34 +61,41 @@
                                     <class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label" for="Name">Nombre</label>
-                                            <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control" />
+                                            <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control" ValidationGroup="EdicionPaciente" />
+                                            <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txtNombre" ErrorMessage="El nombre es requerido" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label" for="Apellido">Apellido</label>
-                                            <asp:TextBox ID="txtApellido" runat="server" CssClass="form-control" />
+                                            <asp:TextBox ID="txtApellido" runat="server" CssClass="form-control" ValidationGroup="EdicionPaciente" />
+                                            <asp:RequiredFieldValidator ID="rfvApellido" runat="server" ControlToValidate="txtApellido" ErrorMessage="El apellido es requerido" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label" for="dni">DNI</label>
-                                            <asp:TextBox ID ="txtDni" runat="server" CssClass="form-control" />
+                                            <asp:TextBox ID="txtDni" runat="server" CssClass="form-control" ValidationGroup="EdicionPaciente" />
+                                            <asp:RequiredFieldValidator ID="rfvDni" runat="server" ControlToValidate="txtDni" ErrorMessage="El DNI es requerido" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
+                                            <asp:RegularExpressionValidator ID="revDni" runat="server" ControlToValidate="txtDni" ErrorMessage="Ingrese solo números" ValidationExpression="^\d+$" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label" for="birthDate">Fecha de Nacimiento</label>
-                                            <asp:TextBox ID="txtFechaNac" runat="server" CssClass="form-control" />
+                                            <asp:TextBox ID="txtFechaNac" runat="server" CssClass="form-control" TextMode="Date" ValidationGroup="EdicionPaciente" />
+                                            <asp:RequiredFieldValidator ID="rfvFechaNac" runat="server" ControlToValidate="txtFechaNac" ErrorMessage="La fecha de nacimiento es requerida" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
+                                            <asp:RangeValidator ID="rvFechaNac" runat="server" ControlToValidate="txtFechaNac" ErrorMessage="La fecha de nacimiento es inválida" Type="Date" MinimumValue="1900-01-01" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label" for="gender">Género</label>
                                             <asp:DropDownList ID="ddlSexo" CssClass="form-select cyan-focus" runat="server">
-                                                 <asp:ListItem Value="Seleccione">Seleccione</asp:ListItem>
-                                                 <asp:ListItem Value="Masculino">Masculino</asp:ListItem>
-                                                 <asp:ListItem Value="Femenino">Femenino</asp:ListItem>
-                                                 <asp:ListItem Value="No especificado">No especificado</asp:ListItem>
+                                                <asp:ListItem Value="Seleccione">Seleccione</asp:ListItem>
+                                                <asp:ListItem Value="Masculino">Masculino</asp:ListItem>
+                                                <asp:ListItem Value="Femenino">Femenino</asp:ListItem>
+                                                <asp:ListItem Value="No especificado">No especificado</asp:ListItem>
                                             </asp:DropDownList>
+                                            <asp:RequiredFieldValidator ID="rfvSexo" runat="server" ControlToValidate="ddlSexo" ErrorMessage="Debe seleccionar un sexo" InitialValue="Seleccione" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Cobertura Medica</label>
+                                            <label class="form-label">Cobertura Médica</label>
                                             <asp:DropDownList ID="ddlCoberturas" CssClass="form-select cyan-focus" runat="server"></asp:DropDownList>
-                                        </div>    
-
+                                            <asp:RequiredFieldValidator ID="rfvCobertura" runat="server" ControlToValidate="ddlCoberturas" ErrorMessage="Seleccione una cobertura" InitialValue="0" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
+                                        </div>
                                     </>
                                 </div>
                             </div>
@@ -105,43 +109,54 @@
                                     <class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label" for="phone">Teléfono</label>
-                                            <asp:TextBox ID="txtTelefono" runat="server" cssclass="form-control" />
+                                            <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control" ValidationGroup="EdicionPaciente" />
+                                            <asp:RequiredFieldValidator ID="rfvTelefono" runat="server" ControlToValidate="txtTelefono" ErrorMessage="Teléfono requerido" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
+                                            <asp:RegularExpressionValidator ID="revTelefono" runat="server" ControlToValidate="txtTelefono" ErrorMessage="Solo números válidos" ValidationExpression="^[0-9\-\s]{7,15}$" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label" for="email">Email</label>
-                                            <asp:TextBox ID="txtMail" runat="server" cssclass="form-control" />
-
+                                            <asp:TextBox ID="txtMail" runat="server" CssClass="form-control" TextMode="Email" ValidationGroup="EdicionPaciente" />
+                                            <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtMail" ErrorMessage="El email es requerido" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
+                                            <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtMail" ErrorMessage="Formato inválido" ValidationExpression="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
+                                        </div>
+                                        <div class="col-12 mt-3">
+                                            <h6 class="fw-bold text-secondary border-bottom pb-2">Dirección</h6>
                                         </div>
                                         <div class="col-12">
-                                            <label class="form-label" for="address">Dirección</label>
+                                            <label class="form-label">Calle</label>
+                                            <asp:TextBox ID="txtCalle" runat="server" CssClass="form-control" ValidationGroup="EdicionPaciente" />
+                                            <asp:RequiredFieldValidator ID="rfvCalle" runat="server" ControlToValidate="txtCalle" ErrorMessage="La calle es requerida" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Altura</label>
+                                            <asp:TextBox ID="txtAltura" runat="server" CssClass="form-control" ValidationGroup="EdicionPaciente" />
+                                            <asp:RequiredFieldValidator ID="rfvAltura" runat="server" ControlToValidate="txtAltura" ErrorMessage="Requerida" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
+                                            <asp:RegularExpressionValidator ID="revAltura" runat="server" ControlToValidate="txtAltura" ErrorMessage="Solo números" ValidationExpression="^\d+$" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Piso</label>
+                                            <asp:TextBox ID="txtPiso" runat="server" CssClass="form-control" ValidationGroup="EdicionPaciente" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Departamento</label>
+                                            <asp:TextBox ID="txtDepartamento" runat="server" CssClass="form-control" ValidationGroup="EdicionPaciente" />
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label class="form-label">Localidad</label>
+                                            <asp:TextBox ID="txtLocalidad" runat="server" CssClass="form-control" ValidationGroup="EdicionPaciente" />
+                                            <asp:RequiredFieldValidator ID="rfvLocalidad" runat="server" ControlToValidate="txtLocalidad" ErrorMessage="La localidad es requerida" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Código Postal</label>
+                                            <asp:TextBox ID="txtCodigoPostal" runat="server" CssClass="form-control" ValidationGroup="EdicionPaciente" />
+                                            <asp:RequiredFieldValidator ID="rfvCP" runat="server" ControlToValidate="txtCodigoPostal" ErrorMessage="Requerido" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
+                                            <asp:RegularExpressionValidator ID="revCP" runat="server" ControlToValidate="txtCodigoPostal" ErrorMessage="Solo números" ValidationExpression="^\d+$" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
                                         </div>
                                         <div class="col-12">
-                                             <label class="form-label" for="address">Calle</label>
-                                             <asp:TextBox ID="txtCalle" runat="server" cssclass="form-control" />
-                                        </div>
-                                        <div class="col-12">
-                                             <label class="form-label" for="address">Altura</label>
-                                             <asp:TextBox ID="txtAltura" runat="server" cssclass="form-control" />
-                                        </div>
-                                        <div class="col-12">
-                                             <label class="form-label" for="address">Piso</label>
-                                             <asp:TextBox ID="txtPiso" runat="server" cssclass="form-control" />
-                                         </div>
-                                        <div class="col-12">
-                                             <label class="form-label" for="address">Departamento</label>
-                                             <asp:TextBox ID="txtDepartamento" runat="server" cssclass="form-control" />
-                                          </div>
-                                        <div class="col-12">
-                                             <label class="form-label" for="address">Localidad</label>
-                                             <asp:TextBox ID="txtLocalidad" runat="server" cssclass="form-control" />
-                                        </div>
-                                        <div class="col-12">
-                                             <label class="form-label" for="address">Provincia</label>
-                                             <asp:TextBox ID="txtProvincia" runat="server" cssclass="form-control" />
-                                        </div>
-                                        <div class="col-12">
-                                             <label class="form-label" for="address">CP</label>
-                                             <asp:TextBox ID="txtCodigoPostal" runat="server" cssclass="form-control" />
+                                            <label class="form-label">Provincia</label>
+                                            <asp:TextBox ID="txtProvincia" runat="server" CssClass="form-control" ValidationGroup="EdicionPaciente" />
+                                            <asp:RequiredFieldValidator ID="rfvProvincia" runat="server" ControlToValidate="txtProvincia" ErrorMessage="La provincia es requerida" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
+                                            <asp:RegularExpressionValidator ID="revProvincia" runat="server" ControlToValidate="txtProvincia" ErrorMessage="La provincia solo puede contener letras" ValidationExpression="^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s.]+$" CssClass="text-danger small" Display="Dynamic" ValidationGroup="EdicionPaciente" />
                                         </div>
                                 </div>
                             </div>
