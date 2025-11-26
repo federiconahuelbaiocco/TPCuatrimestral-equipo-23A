@@ -11,41 +11,18 @@
 
         <div class="card shadow-sm">
             <div class="card-header bg-white py-3">
-                <div class="row g-3 align-items-center">
-                    <div class="col-md-3">
-                        <label class="form-label visually-hidden" for="dateFilter">Fecha</label>
-                        <input class="form-control" id="dateFilter" type="date" value="2024-10-16" />
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label visually-hidden" for="doctorFilter">Médico</label>
-                        <select class="form-select" id="doctorFilter">
-                            <option selected="">Todos los médicos</option>
-                            <option>Dr. Pérez</option>
-                            <option>Dr. García</option>
-                            <option>Dr. Sánchez</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label visually-hidden" for="statusFilter">Estado</label>
-                        <select class="form-select" id="statusFilter">
-                            <option selected="">Todos los estados</option>
-                            <option>Confirmado</option>
-                            <option>Llegada</option>
-                            <option>En espera</option>
-                            <option>Cancelado</option>
-                        </select>
-                    </div>
+                
                     <div class="col-md-3 text-end">
                         <button class="btn btn-primary" data-bs-target="#scheduleModal" data-bs-toggle="modal" type="button">
                             <i class="bi bi-plus-lg me-2"></i>Programar Turno
                         </button>
                     </div>
                 </div>
-            </div>
+           
             <h2>Listado de Turnos</h2>
 
             <asp:GridView ID="gvTurnos" runat="server" AutoGenerateColumns="False" CssClass="table table-striped"
-                EmptyDataText="No hay turnos registrados.">
+                EmptyDataText="No hay turnos registrados." OnRowCommand="gvTurnos_RowCommand" DataKeyNames="IdTurno">
 
                 <Columns>
 
@@ -56,8 +33,16 @@
                     <asp:BoundField DataField="MotivoConsulta" HeaderText="Motivo" />
                     <asp:BoundField DataField="Observaciones" HeaderText="Observaciones" />
                     <asp:BoundField DataField="Estado" HeaderText="Estado" />
-                    <asp:ButtonField Text="Modificar" CommandName="Editar" />
-                    <asp:ButtonField Text="Cancelar" CommandName="Cancelar" />
+                    
+
+                    <asp:TemplateField>
+                        <ItemTemplate>
+                            <asp:Button ID="btnCancelar" runat="server"
+                                Text="Cancelar"
+                                CommandName="CancelarTurno"
+                                CommandArgument='<%# Eval("IdTurno") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
                 </Columns>
 
             </asp:GridView>
@@ -155,9 +140,54 @@
                         </ContentTemplate>
                     </asp:UpdatePanel>
                 </div>
+</div>
+                <div class="modal fade" id="modalModificar" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
 
+                            <div class="modal-header">
+                                <h5 class="modal-title">Modificar Turno</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                Paciente:
+        <asp:TextBox ID="txtPacienteMod" runat="server" CssClass="form-control" ReadOnly="true" />
+
+                                Médico:
+        <asp:TextBox ID="txtMedicoMod" runat="server" CssClass="form-control" ReadOnly="true" />
+
+                                Fecha:
+        <asp:TextBox ID="txtFechaMod" runat="server" CssClass="form-control" ReadOnly="true" />
+
+                                Horario:
+        <asp:DropDownList ID="ddlHorariosModificar" runat="server" CssClass="form-control"></asp:DropDownList>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <asp:Button ID="btnGuardarModificacion" runat="server" Text="Guardar"
+                                    CssClass="btn btn-primary" OnClick="btnGuardarModificacion_Click" />
+
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    function abrirModalModificar() {
+                        document.getElementById("modalModificar").style.display = "block";
+                    }
+
+                    function cerrarModalModificar() {
+                        document.getElementById("modalModificar").style.display = "none";
+                    }
+                </script>
 
             </div>
-        </div>
+        
     </div>
 </asp:Content>
