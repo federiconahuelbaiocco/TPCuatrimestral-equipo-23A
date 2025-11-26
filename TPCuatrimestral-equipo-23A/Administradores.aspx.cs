@@ -165,8 +165,8 @@ namespace TPCuatrimestral_equipo_23A
 						Response.Redirect("~/AgregarEmpleado.aspx?ID=" + idUsuarioSeleccionado, false);
 						break;
 					case 3:
-						Response.Redirect("~/MedicoForm.aspx?ID=" + idUsuarioSeleccionado, false);
-						break;
+                        Response.Redirect("~/AgregarEmpleado.aspx?ID=" + idUsuarioSeleccionado, false);
+                        break;
 				}
 			}
 		}

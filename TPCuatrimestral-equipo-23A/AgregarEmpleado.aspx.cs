@@ -8,235 +8,291 @@ using System.Web.UI.WebControls;
 
 namespace TPCuatrimestral_equipo_23A
 {
-    public partial class AgregarEmpleado : System.Web.UI.Page
-    {
-        private List<TurnoTrabajo> HorariosTemporales
-        {
-            get
-            {
-                if (ViewState["HorariosTemporales"] == null)
-                    ViewState["HorariosTemporales"] = new List<TurnoTrabajo>();
-                return (List<TurnoTrabajo>)ViewState["HorariosTemporales"];
-            }
-            set
-            {
-                ViewState["HorariosTemporales"] = value;
-            }
-        }
+	public partial class AgregarEmpleado : System.Web.UI.Page
+	{
+		private List<TurnoTrabajo> HorariosTemporales
+		{
+			get
+			{
+				if (ViewState["HorariosTemporales"] == null)
+					ViewState["HorariosTemporales"] = new List<TurnoTrabajo>();
+				return (List<TurnoTrabajo>)ViewState["HorariosTemporales"];
+			}
+			set
+			{
+				ViewState["HorariosTemporales"] = value;
+			}
+		}
 
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            if (!IsPostBack)
-            {
+		protected void Page_Load(object sender, EventArgs e)
+		{
+			if (!IsPostBack)
+			{
+                rvFechaNac.MaximumValue = DateTime.Today.ToString("yyyy-MM-dd");
                 CargarRoles();
-                CargarOpcionesHorario();
+				CargarOpcionesHorario();
 
                 if (Request.QueryString["ID"] != null)
+				{
+					CargarDatosParaModificar();
+				}
+			}
+		}
+
+		private void CargarOpcionesHorario()
+		{
+			TurnoTrabajoNegocio negocio = new TurnoTrabajoNegocio();
+			List<string> opciones = negocio.GenerarOpcionesHorario();
+
+			ddlDesde.DataSource = opciones;
+			ddlDesde.DataBind();
+
+			ddlHasta.DataSource = opciones;
+			ddlHasta.DataBind();
+		}
+
+		private void CargarRoles()
+		{
+			RolNegocio negocio = new RolNegocio();
+			try
+			{
+				List<Rol> roles = negocio.Listar();
+
+				ddlRol.DataSource = roles;
+				ddlRol.DataValueField = "IdRol";
+				ddlRol.DataTextField = "Nombre";
+				ddlRol.DataBind();
+				ddlRol.Items.Insert(0, new ListItem("-- Seleccione Rol --", "0"));
+			}
+			catch (Exception ex)
+			{
+				Session["error"] = ex;
+				Response.Redirect("~/Error.aspx", false);
+			}
+		}
+
+		private void CargarDatosParaModificar()
+		{
+			try
+			{
+				int idUsuario = int.Parse(Request.QueryString["ID"]);
+
+				AdministradorNegocio adminNegocio = new AdministradorNegocio();
+				List<dominio.Administrador> listaAdmin = adminNegocio.Listar();
+				dominio.Administrador admin = null;
+				foreach (dominio.Administrador a in listaAdmin)
+				{
+					if (a.Usuario.IdUsuario == idUsuario)
+					{
+						admin = a;
+						break;
+					}
+				}
+
+				if (admin != null)
+				{
+					CargarCampos(admin, 1);
+					return;
+				}
+
+				RecepcionistaNegocio recepNegocio = new RecepcionistaNegocio();
+				List<dominio.Recepcionista> listaRecep = recepNegocio.Listar();
+				dominio.Recepcionista recep = null;
+				foreach (dominio.Recepcionista r in listaRecep)
+				{
+					if (r.Usuario.IdUsuario == idUsuario)
+					{
+						recep = r;
+						break;
+					}
+				}
+
+				if (recep != null)
+				{
+					CargarCampos(recep, 2);
+					return;
+				}
+
+                MedicoNegocio medicoNegocio = new MedicoNegocio();
+                List<dominio.Medico> listaMedicos = medicoNegocio.ListarActivos();
+                dominio.Medico medico = null;
+
+                foreach (dominio.Medico m in listaMedicos)
                 {
-                    CargarDatosParaModificar();
-                }
-            }
-        }
-
-        private void CargarOpcionesHorario()
-        {
-            TurnoTrabajoNegocio negocio = new TurnoTrabajoNegocio();
-            List<string> opciones = negocio.GenerarOpcionesHorario();
-
-            ddlDesde.DataSource = opciones;
-            ddlDesde.DataBind();
-
-            ddlHasta.DataSource = opciones;
-            ddlHasta.DataBind();
-        }
-
-        private void CargarRoles()
-        {
-            RolNegocio negocio = new RolNegocio();
-            try
-            {
-                List<Rol> roles = negocio.Listar();
-
-                ddlRol.DataSource = roles;
-                ddlRol.DataValueField = "IdRol";
-                ddlRol.DataTextField = "Nombre";
-                ddlRol.DataBind();
-                ddlRol.Items.Insert(0, new ListItem("-- Seleccione Rol --", "0"));
-            }
-            catch (Exception ex)
-            {
-                Session["error"] = ex;
-                Response.Redirect("~/Error.aspx", false);
-            }
-        }
-
-        private void CargarDatosParaModificar()
-        {
-            try
-            {
-                int idUsuario = int.Parse(Request.QueryString["ID"]);
-
-                AdministradorNegocio adminNegocio = new AdministradorNegocio();
-                List<dominio.Administrador> listaAdmin = adminNegocio.Listar();
-                dominio.Administrador admin = null;
-                foreach (dominio.Administrador a in listaAdmin)
-                {
-                    if (a.Usuario.IdUsuario == idUsuario)
+                    if (m.Usuario != null && m.Usuario.IdUsuario == idUsuario)
                     {
-                        admin = a;
+                        medico = m;
                         break;
                     }
                 }
 
-                if (admin != null)
+                if (medico != null)
                 {
-                    CargarCampos(admin, 1);
-                    return;
-                }
+                    medico = medicoNegocio.ObtenerPorId(medico.IdPersona);
 
-                RecepcionistaNegocio recepNegocio = new RecepcionistaNegocio();
-                List<dominio.Recepcionista> listaRecep = recepNegocio.Listar();
-                dominio.Recepcionista recep = null;
-                foreach (dominio.Recepcionista r in listaRecep)
-                {
-                    if (r.Usuario.IdUsuario == idUsuario)
+                    CargarCampos(medico, 3);
+
+                    txtMatricula.Text = medico.Matricula;
+
+                    foreach (var espMedico in medico.Especialidades)
                     {
-                        recep = r;
-                        break;
+                        foreach (ListItem item in chkEspecialidades.Items)
+                        {
+                            if (item.Value == espMedico.IdEspecialidad.ToString())
+                            {
+                                item.Selected = true;
+                            }
+                        }
                     }
-                }
-
-                if (recep != null)
-                {
-                    CargarCampos(recep, 2);
                     return;
                 }
             }
-            catch (Exception ex)
-            {
-                Session["error"] = ex;
-                Response.Redirect("~/Error.aspx", false);
-            }
-        }
+			catch (Exception ex)
+			{
+				Session["error"] = ex;
+				Response.Redirect("~/Error.aspx", false);
+			}
+		}
 
-        private void CargarCampos(dominio.Persona persona, int idRol)
-        {
-            txtNombre.Text = persona.Nombre;
-            txtApellido.Text = persona.Apellido;
-            txtDni.Text = persona.Dni;
-            ddlSexo.SelectedValue = persona.Sexo.ToString();
+		private void CargarCampos(dominio.Persona persona, int idRol)
+		{
+			txtNombre.Text = persona.Nombre;
+			txtApellido.Text = persona.Apellido;
+			txtDni.Text = persona.Dni;
+
+            if (!string.IsNullOrEmpty(persona.Sexo))
+            {
+                if (ddlSexo.Items.FindByValue(persona.Sexo) != null)
+                {
+                    ddlSexo.SelectedValue = persona.Sexo;
+                }
+                else
+                {
+                    ddlSexo.SelectedValue = "No especificado";
+                }
+            }
+            else
+            {
+                ddlSexo.SelectedValue = "No especificado";
+            }
+
+            if (persona.FechaNacimiento.HasValue)
+            {
+                txtFechaNac.Text = persona.FechaNacimiento.Value.ToString("yyyy-MM-dd");
+            }
+
             txtTelefono.Text = persona.Telefono;
-            txtEmailContacto.Text = persona.Email;
+			txtEmailContacto.Text = persona.Email;
 
-            ddlRol.SelectedValue = idRol.ToString();
-            ddlRol.Enabled = false;
+			ddlRol.SelectedValue = idRol.ToString();
+			ddlRol.Enabled = false;
 
-            if (persona is dominio.Administrador)
-            {
-                txtNombreUsuario.Text = ((dominio.Administrador)persona).Usuario.NombreUsuario;
-            }
-            else if (persona is dominio.Recepcionista)
-            {
-                txtNombreUsuario.Text = ((dominio.Recepcionista)persona).Usuario.NombreUsuario;
-            }
+			if (persona is dominio.Administrador)
+			{
+				txtNombreUsuario.Text = ((dominio.Administrador)persona).Usuario.NombreUsuario;
+			}
+			else if (persona is dominio.Recepcionista)
+			{
+				txtNombreUsuario.Text = ((dominio.Recepcionista)persona).Usuario.NombreUsuario;
+			}
 
-            txtNombreUsuario.Enabled = false;
-            lblAvisoClave.Visible = true;
-            btnGuardar.Text = "Modificar Empleado";
-            litTitulo.Text = "Modificar Empleado";
-        }
+			txtNombreUsuario.Enabled = false;
+			lblAvisoClave.Visible = true;
+			btnGuardar.Text = "Modificar Empleado";
+			litTitulo.Text = "Modificar Empleado";
+		}
 
-        protected void ddlRol_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int idRol = int.Parse(ddlRol.SelectedValue);
-            Panel1.Visible = (idRol == 3);
+		protected void ddlRol_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			int idRol = int.Parse(ddlRol.SelectedValue);
+			Panel1.Visible = (idRol == 3);
+			
+			if (idRol == 3)
+			{
+				CargarEspecialidades();
+				ActualizarGridHorarios();
+			}
+		}
 
-            if (idRol == 3)
-            {
-                CargarEspecialidades();
-                ActualizarGridHorarios();
-            }
-        }
+		private void CargarEspecialidades()
+		{
+			EspecialidadNegocio negocio = new EspecialidadNegocio();
+			List<Especialidad> lista = negocio.Listar();
+			List<Especialidad> listaActivos = new List<Especialidad>();
+			
+			foreach (Especialidad esp in lista)
+			{
+				if (esp.Activo)
+					listaActivos.Add(esp);
+			}
 
-        private void CargarEspecialidades()
-        {
-            EspecialidadNegocio negocio = new EspecialidadNegocio();
-            List<Especialidad> lista = negocio.Listar();
-            List<Especialidad> listaActivos = new List<Especialidad>();
+			chkEspecialidades.DataSource = listaActivos;
+			chkEspecialidades.DataTextField = "Descripcion";
+			chkEspecialidades.DataValueField = "IdEspecialidad";
+			chkEspecialidades.DataBind();
+		}
 
-            foreach (Especialidad esp in lista)
-            {
-                if (esp.Activo)
-                    listaActivos.Add(esp);
-            }
+		protected void btnAgregarHorario_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				lblErrorHorario.Text = "";
 
-            chkEspecialidades.DataSource = listaActivos;
-            chkEspecialidades.DataTextField = "Descripcion";
-            chkEspecialidades.DataValueField = "IdEspecialidad";
-            chkEspecialidades.DataBind();
-        }
+				TurnoTrabajo turno = new TurnoTrabajo();
+				turno.DiaSemana = (DayOfWeek)int.Parse(ddlDia.SelectedValue);
+				turno.HoraEntrada = TimeSpan.Parse(ddlDesde.SelectedValue);
+				turno.HoraSalida = TimeSpan.Parse(ddlHasta.SelectedValue);
 
-        protected void btnAgregarHorario_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                lblErrorHorario.Text = "";
+				if (turno.HoraSalida <= turno.HoraEntrada)
+				{
+					lblErrorHorario.Text = "La hora de salida debe ser mayor a la hora de entrada.";
+					return;
+				}
 
-                TurnoTrabajo turno = new TurnoTrabajo();
-                turno.DiaSemana = (DayOfWeek)int.Parse(ddlDia.SelectedValue);
-                turno.HoraEntrada = TimeSpan.Parse(ddlDesde.SelectedValue);
-                turno.HoraSalida = TimeSpan.Parse(ddlHasta.SelectedValue);
+				List<TurnoTrabajo> horarios = HorariosTemporales;
+				horarios.Add(turno);
+				HorariosTemporales = horarios;
 
-                if (turno.HoraSalida <= turno.HoraEntrada)
-                {
-                    lblErrorHorario.Text = "La hora de salida debe ser mayor a la hora de entrada.";
-                    return;
-                }
+				ActualizarGridHorarios();
+			}
+			catch (Exception ex)
+			{
+				lblErrorHorario.Text = "Error al agregar horario: " + ex.Message;
+			}
+		}
 
-                List<TurnoTrabajo> horarios = HorariosTemporales;
-                horarios.Add(turno);
-                HorariosTemporales = horarios;
+		private void ActualizarGridHorarios()
+		{
+			List<TurnoTrabajo> horarios = HorariosTemporales;
+			List<object> horariosParaGrid = new List<object>();
+			
+			foreach (TurnoTrabajo h in horarios)
+			{
+				horariosParaGrid.Add(new
+				{
+					Dia = ObtenerNombreDia(h.DiaSemana),
+					Entrada = h.HoraEntrada.ToString(@"hh\:mm"),
+					Salida = h.HoraSalida.ToString(@"hh\:mm")
+				});
+			}
 
-                ActualizarGridHorarios();
-            }
-            catch (Exception ex)
-            {
-                lblErrorHorario.Text = "Error al agregar horario: " + ex.Message;
-            }
-        }
+			gvHorarios.DataSource = horariosParaGrid;
+			gvHorarios.DataBind();
+		}
 
-        private void ActualizarGridHorarios()
-        {
-            List<TurnoTrabajo> horarios = HorariosTemporales;
-            List<object> horariosParaGrid = new List<object>();
-
-            foreach (TurnoTrabajo h in horarios)
-            {
-                horariosParaGrid.Add(new
-                {
-                    Dia = ObtenerNombreDia(h.DiaSemana),
-                    Entrada = h.HoraEntrada.ToString(@"hh\:mm"),
-                    Salida = h.HoraSalida.ToString(@"hh\:mm")
-                });
-            }
-
-            gvHorarios.DataSource = horariosParaGrid;
-            gvHorarios.DataBind();
-        }
-
-        private string ObtenerNombreDia(DayOfWeek dia)
-        {
-            switch (dia)
-            {
-                case DayOfWeek.Monday: return "Lunes";
-                case DayOfWeek.Tuesday: return "Martes";
-                case DayOfWeek.Wednesday: return "Miércoles";
-                case DayOfWeek.Thursday: return "Jueves";
-                case DayOfWeek.Friday: return "Viernes";
-                case DayOfWeek.Saturday: return "Sábado";
-                default: return dia.ToString();
-            }
-        }
+		private string ObtenerNombreDia(DayOfWeek dia)
+		{
+			switch (dia)
+			{
+				case DayOfWeek.Monday: return "Lunes";
+				case DayOfWeek.Tuesday: return "Martes";
+				case DayOfWeek.Wednesday: return "Miércoles";
+				case DayOfWeek.Thursday: return "Jueves";
+				case DayOfWeek.Friday: return "Viernes";
+				case DayOfWeek.Saturday: return "Sábado";
+				default: return dia.ToString();
+			}
+		}
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
@@ -284,12 +340,14 @@ namespace TPCuatrimestral_equipo_23A
                 if (idRol == 1)
                 {
                     AdministradorNegocio negocio = new AdministradorNegocio();
-                    dominio.Administrador admin = new dominio.Administrador();
+					dominio.Administrador admin = new dominio.Administrador();
+					emailServiceNegocio emailService = new emailServiceNegocio();
 
                     admin.Nombre = txtNombre.Text;
                     admin.Apellido = txtApellido.Text;
                     admin.Dni = txtDni.Text;
                     admin.Sexo = ddlSexo.SelectedValue;
+                    if (!string.IsNullOrEmpty(txtFechaNac.Text)) admin.FechaNacimiento = DateTime.Parse(txtFechaNac.Text);
                     if (string.IsNullOrEmpty(admin.Sexo)) admin.Sexo = "No especificado";
                     admin.Telefono = txtTelefono.Text;
                     admin.Email = txtEmailContacto.Text;
@@ -311,21 +369,28 @@ namespace TPCuatrimestral_equipo_23A
                     {
                         admin.Usuario.IdUsuario = idUsuario;
                         negocio.Modificar(admin);
-                    }
-                    else
+						emailService.enviarCorreoModificacionEmpleado(admin.Email, admin.Nombre);
+						emailService.enviarCorreo();
+
+					}
+					else
                     {
-                        negocio.Agregar(admin);
+						negocio.Agregar(admin);
+						emailService.enviarCorreoAltaEmpleado(admin.Email, admin.Apellido, admin.Nombre, admin.Usuario.NombreUsuario, admin.Usuario.Clave);
+                        emailService.enviarCorreo();
                     }
-                }
+				}
                 else if (idRol == 2)
                 {
                     RecepcionistaNegocio negocio = new RecepcionistaNegocio();
-                    dominio.Recepcionista recep = new dominio.Recepcionista();
+					dominio.Recepcionista recep = new dominio.Recepcionista();
+                    emailServiceNegocio emailService = new emailServiceNegocio();
 
                     recep.Nombre = txtNombre.Text;
                     recep.Apellido = txtApellido.Text;
                     recep.Dni = txtDni.Text;
                     recep.Sexo = ddlSexo.SelectedValue;
+                    if (!string.IsNullOrEmpty(txtFechaNac.Text)) recep.FechaNacimiento = DateTime.Parse(txtFechaNac.Text);
                     if (string.IsNullOrEmpty(recep.Sexo)) recep.Sexo = "No especificado";
                     recep.Telefono = txtTelefono.Text;
                     recep.Email = txtEmailContacto.Text;
@@ -344,24 +409,30 @@ namespace TPCuatrimestral_equipo_23A
                     recep.Usuario.Clave = string.IsNullOrEmpty(txtContrasena.Text) ? null : txtContrasena.Text;
 
                     if (esModificacion)
-                    {
-                        recep.Usuario.IdUsuario = idUsuario;
-                        negocio.Modificar(recep);
+					{
+						recep.Usuario.IdUsuario = idUsuario;
+						negocio.Modificar(recep);
+						emailService.enviarCorreoModificacionEmpleado(recep.Email, recep.Nombre);
+                        emailService.enviarCorreo();
                     }
-                    else
+					else
                     {
                         negocio.Agregar(recep);
+						emailService.enviarCorreoAltaEmpleado(recep.Email, recep.Apellido, recep.Nombre, recep.Usuario.NombreUsuario, recep.Usuario.Clave);
+                        emailService.enviarCorreo();
                     }
-                }
+				}
                 else if (idRol == 3)
                 {
                     MedicoNegocio negocio = new MedicoNegocio();
                     dominio.Medico nuevo = new dominio.Medico();
+					emailServiceNegocio emailService = new emailServiceNegocio();
 
                     nuevo.Nombre = txtNombre.Text;
                     nuevo.Apellido = txtApellido.Text;
                     nuevo.Dni = txtDni.Text;
                     nuevo.Sexo = ddlSexo.SelectedValue;
+                    if (!string.IsNullOrEmpty(txtFechaNac.Text)) nuevo.FechaNacimiento = DateTime.Parse(txtFechaNac.Text);
                     if (string.IsNullOrEmpty(nuevo.Sexo)) nuevo.Sexo = "No especificado";
                     nuevo.Telefono = txtTelefono.Text;
                     nuevo.Email = txtEmailContacto.Text;
@@ -384,44 +455,48 @@ namespace TPCuatrimestral_equipo_23A
                     {
                         nuevo.Usuario.IdUsuario = idUsuario;
                         negocio.Modificar(nuevo);
+						emailService.enviarCorreoModificacionEmpleado(nuevo.Email, nuevo.Nombre);
+                        emailService.enviarCorreo();
                     }
-                    else
+					else
                     {
                         int idNuevoMedico = negocio.AgregarConUsuario(nuevo);
 
-                        if (idNuevoMedico > 0)
-                        {
-                            List<TurnoTrabajo> horarios = HorariosTemporales;
-                            if (horarios != null && horarios.Count > 0)
-                            {
-                                TurnoTrabajoNegocio turnoNegocio = new TurnoTrabajoNegocio();
-                                foreach (TurnoTrabajo turno in horarios)
-                                {
-                                    turnoNegocio.Agregar(idNuevoMedico, turno);
-                                }
-                            }
+						if (idNuevoMedico > 0)
+						{
+							List<TurnoTrabajo> horarios = HorariosTemporales;
+							if (horarios != null && horarios.Count > 0)
+							{
+								TurnoTrabajoNegocio turnoNegocio = new TurnoTrabajoNegocio();
+								foreach (TurnoTrabajo turno in horarios)
+								{
+									turnoNegocio.Agregar(idNuevoMedico, turno);
+								}
+							}
 
-                            List<int> especialidadesSeleccionadas = new List<int>();
-                            foreach (ListItem item in chkEspecialidades.Items)
-                            {
-                                if (item.Selected)
-                                    especialidadesSeleccionadas.Add(int.Parse(item.Value));
-                            }
-                            if (especialidadesSeleccionadas.Count > 0)
-                            {
-                                EspecialidadNegocio especialidadNegocio = new EspecialidadNegocio();
-                                foreach (int idEspecialidad in especialidadesSeleccionadas)
-                                {
-                                    especialidadNegocio.AgregarEspecialidadAMedico(idNuevoMedico, idEspecialidad);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("No se pudo obtener el Id del médico insertado.");
-                        }
+							List<int> especialidadesSeleccionadas = new List<int>();
+							foreach (ListItem item in chkEspecialidades.Items)
+							{
+								if (item.Selected)
+									especialidadesSeleccionadas.Add(int.Parse(item.Value));
+							}
+							if (especialidadesSeleccionadas.Count > 0)
+							{
+								EspecialidadNegocio especialidadNegocio = new EspecialidadNegocio();
+								foreach (int idEspecialidad in especialidadesSeleccionadas)
+								{
+									especialidadNegocio.AgregarEspecialidadAMedico(idNuevoMedico, idEspecialidad);
+								}
+							}
+						}
+						else
+						{
+							throw new Exception("No se pudo obtener el Id del médico insertado.");
+						}
+						emailService.enviarCorreoAltaEmpleado(nuevo.Email, nuevo.Apellido, nuevo.Nombre, nuevo.Usuario.NombreUsuario, nuevo.Usuario.Clave);
+                        emailService.enviarCorreo();
                     }
-                }
+				}
 
                 Response.Redirect("~/Administradores.aspx", false);
             }

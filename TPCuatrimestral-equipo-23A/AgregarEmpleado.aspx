@@ -56,6 +56,12 @@
                             <asp:RequiredFieldValidator ID="rfvSexo" runat="server" ControlToValidate="ddlSexo" ErrorMessage="Debe seleccionar un sexo." InitialValue="" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                         <div class="col-md-6">
+                            <label for="<%= txtFechaNac.ClientID %>" class="form-label">Fecha de Nacimiento</label>
+                            <asp:TextBox ID="txtFechaNac" runat="server" TextMode="Date" CssClass="form-control"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvFechaNac" runat="server" ControlToValidate="txtFechaNac" ErrorMessage="La fecha de nacimiento es requerida" CssClass="text-danger small" Display="Dynamic" />
+                            <asp:RangeValidator ID="rvFechaNac" runat="server" ControlToValidate="txtFechaNac" ErrorMessage="Fecha inválida" Type="Date" MinimumValue="1900-01-01" CssClass="text-danger small" Display="Dynamic" />
+                        </div>
+                        <div class="col-md-6">
                             <label for="<%= txtTelefono.ClientID %>" class="form-label">Teléfono</label>
                             <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control" placeholder="Ingrese el teléfono" TextMode="Phone"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvTelefono" runat="server" ControlToValidate="txtTelefono" ErrorMessage="El teléfono es requerido." CssClass="text-danger small" Display="Dynamic" />
