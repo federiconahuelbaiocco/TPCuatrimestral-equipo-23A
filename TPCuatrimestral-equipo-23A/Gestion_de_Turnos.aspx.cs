@@ -5,6 +5,7 @@ using System.Web.UI;
 using dominio;
 using negocio;
 using System.Web.UI.WebControls;
+using System.Linq;
 
 namespace TPCuatrimestral_equipo_23A
 {
@@ -94,13 +95,9 @@ namespace TPCuatrimestral_equipo_23A
                     ddlMedico.DataValueField = "IdPersona";
                     ddlMedico.DataBind();
 
-                    // Re-insertar el item inicial, que fue borrado al hacer DataBind
                     ddlMedico.Items.Insert(0, new ListItem("-- Seleccione un médico --", "0"));
                 }
-                // Si no hay médicos, el ddlMedico ya tiene el mensaje "-- Seleccione un médico --"
             }
-            // Si la condición es falsa (es 0 o falló la conversión), el ddlMedico 
-            // queda limpio con el mensaje inicial, que es el comportamiento deseado.
         }
 
 
@@ -184,5 +181,111 @@ namespace TPCuatrimestral_equipo_23A
             gvTurnos.DataBind();
         }
 
+        protected void gvTurnos_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "CancelarTurno")
+            {
+                int idTurno = Convert.ToInt32(e.CommandArgument);
+                TurnoNegocio neg = new TurnoNegocio();
+                int idEstadoCancelado = 3; // o el que corresponda en tu BD
+                neg.ModificarEstadoTurno(idTurno, idEstadoCancelado, "Cancelado por recepcionista");
+
+                CargarTurnos(); // refresca la grilla
+            }
+
+            if (e.CommandName == "Modificar")
+            {
+
+                int idTurno = Convert.ToInt32(e.CommandArgument);
+
+                CargarDatosTurnoEnModal(idTurno);
+
+                ScriptManager.RegisterStartupScript(
+                    this,
+                    GetType(),
+                    "AbrirModalModificar",
+                    "abrirModalModificar();",
+                    true
+                );
+            }
+        }
+
+        private void CargarDatosTurnoEnModal(int idTurno)
+        {
+            var negocio = new TurnoNegocio();
+
+            // Obtenemos la lista completa y filtramos por ID
+            Turno turno = negocio.ListarTurnos()
+                                 .FirstOrDefault(t => t.IdTurno == idTurno);
+
+            if (turno == null)
+                throw new Exception("No se encontró el turno.");
+
+            // Guardamos para el botón Guardar
+            ViewState["IdTurno"] = turno.IdTurno;
+            ViewState["IdMedico"] = turno.Medico.IdPersona;
+            ViewState["FechaTurno"] = turno.FechaHora.Date;
+
+            // Cargar datos en los labels / textbox readonly
+            txtPacienteMod.Text = turno.Paciente.Apellido + ", " + turno.Paciente.Nombre;
+            txtMedicoMod.Text = turno.Medico.Apellido + ", " + turno.Medico.Nombre;
+            txtFechaMod.Text = turno.FechaHora.ToString("yyyy-MM-dd");
+
+            // Cargar horarios disponibles
+            CargarHorariosDisponiblesModificar(turno.Medico.IdPersona, turno.FechaHora.Date, turno.FechaHora.TimeOfDay);
+        }
+
+
+        private void CargarHorariosDisponiblesModificar(int idMedico, DateTime fecha, TimeSpan horarioActual)
+        {
+            var negocio = new TurnoNegocio();
+            var horarios = negocio.ListarHorariosDisponibles(idMedico, fecha);
+
+            // Agregar horario actual si no está (por ejemplo: cuando ya fue descartado de la lista)
+            if (!horarios.Contains(horarioActual))
+                horarios.Add(horarioActual);
+
+            // Ordenar la lista de horarios
+            horarios = horarios.OrderBy(h => h).ToList();
+
+            ddlHorariosModificar.DataSource = horarios.Select(h => new
+            {
+                Texto = h.ToString(@"hh\:mm"),
+                Valor = h.ToString()
+            });
+
+            ddlHorariosModificar.DataTextField = "Texto";
+            ddlHorariosModificar.DataValueField = "Valor";
+            ddlHorariosModificar.DataBind();
+
+            // Selecciona el horario actual del turno
+            ddlHorariosModificar.SelectedValue = horarioActual.ToString();
+        }
+
+        protected void btnGuardarModificacion_Click(object sender, EventArgs e)
+        {
+            int idTurno = (int)ViewState["IdTurno"];
+            int idMedico = (int)ViewState["IdMedico"];
+            DateTime fecha = (DateTime)ViewState["FechaTurno"];
+
+            TimeSpan nuevoHorario = TimeSpan.Parse(ddlHorariosModificar.SelectedValue);
+
+            DateTime nuevaFechaHora = fecha.Date + nuevoHorario;
+
+            var negocio = new TurnoNegocio();
+            negocio.ModificarHoraTurno(idTurno, nuevaFechaHora);
+
+            // refrescamos la grilla
+            CargarTurnos();
+
+            // cerrar modal via JS
+            ScriptManager.RegisterStartupScript(this, GetType(), "CerrarModalModificar", "cerrarModalModificar();", true);
+        }
+
+
     }
+
+
+
+
 }

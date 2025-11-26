@@ -355,8 +355,8 @@ namespace negocio
                     "SELECT FechaHora FROM Turnos " +
                     "WHERE IdMedico = @IdMedico " +
                     "AND CONVERT(date, FechaHora) = @Fecha " +
-                    "AND Activo = 1"
-                );
+                    "AND Activo = 1 " +
+                    "AND IdEstadoTurno <> 3"                   );
 
                 datos.setearParametro("@IdMedico", idMedico);
                 datos.setearParametro("@Fecha", fecha.Date);
@@ -375,6 +375,33 @@ namespace negocio
             }
 
             return ocupados;
+        }
+
+        public void ModificarHoraTurno(int idTurno, DateTime nuevaFechaHora)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(
+                    "UPDATE Turnos " +
+                    "SET FechaHora = @NuevaFechaHora " +
+                    "WHERE IdTurno = @IdTurno"
+                );
+
+                datos.setearParametro("@IdTurno", idTurno);
+                datos.setearParametro("@NuevaFechaHora", nuevaFechaHora);
+
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al modificar la hora del turno.", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
         }
 
 

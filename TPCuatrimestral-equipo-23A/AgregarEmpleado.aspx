@@ -43,7 +43,7 @@
                             <label for="<%= txtDni.ClientID %>" class="form-label">DNI</label>
                             <asp:TextBox ID="txtDni" runat="server" CssClass="form-control" placeholder="Ingrese DNI sin puntos"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvDni" runat="server" ControlToValidate="txtDni" ErrorMessage="El DNI es requerido." CssClass="text-danger small" Display="Dynamic" />
-                            <asp:RegularExpressionValidator ID="revDni" runat="server" ControlToValidate="txtDni" ErrorMessage="Ingrese solo números." ValidationExpression="^\d+$" CssClass="text-danger small" Display="Dynamic" />
+                            <asp:RegularExpressionValidator ID="revDni" runat="server" ControlToValidate="txtDni" ErrorMessage="El DNI debe tener 7 u 8 dígitos." ValidationExpression="^\d{7,8}$" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                         <div class="col-md-6">
                             <label for="<%= ddlSexo.ClientID %>" class="form-label">Sexo</label>
@@ -60,6 +60,7 @@
                             <asp:TextBox ID="txtFechaNac" runat="server" TextMode="Date" CssClass="form-control"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvFechaNac" runat="server" ControlToValidate="txtFechaNac" ErrorMessage="La fecha de nacimiento es requerida" CssClass="text-danger small" Display="Dynamic" />
                             <asp:RangeValidator ID="rvFechaNac" runat="server" ControlToValidate="txtFechaNac" ErrorMessage="Fecha inválida" Type="Date" MinimumValue="1900-01-01" CssClass="text-danger small" Display="Dynamic" />
+                            <asp:CustomValidator ID="cvMayorEdad" runat="server" ControlToValidate="txtFechaNac" ErrorMessage="El empleado debe ser mayor de 18 años." CssClass="text-danger small" Display="Dynamic" OnServerValidate="cvMayorEdad_ServerValidate" />
                         </div>
                         <div class="col-md-6">
                             <label for="<%= txtTelefono.ClientID %>" class="form-label">Teléfono</label>
@@ -221,6 +222,7 @@
                             <asp:TextBox ID="txtContrasena" runat="server" CssClass="form-control" placeholder="Crear una contraseña segura" TextMode="Password"></asp:TextBox>
                             <asp:Label ID="lblAvisoClave" runat="server" CssClass="form-text" Text="Dejar en blanco para no modificar la contraseña actual." Visible="false"></asp:Label>
                             <asp:RequiredFieldValidator ID="rfvClave" runat="server" ControlToValidate="txtContrasena" ErrorMessage="La contraseña es requerida para nuevos usuarios." CssClass="text-danger small" Display="Dynamic" Enabled="true" />
+                            <asp:RegularExpressionValidator ID="revClave" runat="server" ControlToValidate="txtContrasena" ErrorMessage="La contraseña debe tener al menos 4 caracteres." ValidationExpression="^.{4,}$" CssClass="text-danger small" Display="Dynamic" />
                         </div>
                     </div>
                 </div>
