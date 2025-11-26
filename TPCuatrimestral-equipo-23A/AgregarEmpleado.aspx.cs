@@ -28,10 +28,11 @@ namespace TPCuatrimestral_equipo_23A
 		{
 			if (!IsPostBack)
 			{
-				CargarRoles();
+                rvFechaNac.MaximumValue = DateTime.Today.ToString("yyyy-MM-dd");
+                CargarRoles();
 				CargarOpcionesHorario();
 
-				if (Request.QueryString["ID"] != null)
+                if (Request.QueryString["ID"] != null)
 				{
 					CargarDatosParaModificar();
 				}
@@ -111,7 +112,41 @@ namespace TPCuatrimestral_equipo_23A
 					CargarCampos(recep, 2);
 					return;
 				}
-			}
+
+                MedicoNegocio medicoNegocio = new MedicoNegocio();
+                List<dominio.Medico> listaMedicos = medicoNegocio.ListarActivos();
+                dominio.Medico medico = null;
+
+                foreach (dominio.Medico m in listaMedicos)
+                {
+                    if (m.Usuario != null && m.Usuario.IdUsuario == idUsuario)
+                    {
+                        medico = m;
+                        break;
+                    }
+                }
+
+                if (medico != null)
+                {
+                    medico = medicoNegocio.ObtenerPorId(medico.IdPersona);
+
+                    CargarCampos(medico, 3);
+
+                    txtMatricula.Text = medico.Matricula;
+
+                    foreach (var espMedico in medico.Especialidades)
+                    {
+                        foreach (ListItem item in chkEspecialidades.Items)
+                        {
+                            if (item.Value == espMedico.IdEspecialidad.ToString())
+                            {
+                                item.Selected = true;
+                            }
+                        }
+                    }
+                    return;
+                }
+            }
 			catch (Exception ex)
 			{
 				Session["error"] = ex;
@@ -124,8 +159,29 @@ namespace TPCuatrimestral_equipo_23A
 			txtNombre.Text = persona.Nombre;
 			txtApellido.Text = persona.Apellido;
 			txtDni.Text = persona.Dni;
-			ddlSexo.SelectedValue = persona.Sexo.ToString();
-			txtTelefono.Text = persona.Telefono;
+
+            if (!string.IsNullOrEmpty(persona.Sexo))
+            {
+                if (ddlSexo.Items.FindByValue(persona.Sexo) != null)
+                {
+                    ddlSexo.SelectedValue = persona.Sexo;
+                }
+                else
+                {
+                    ddlSexo.SelectedValue = "No especificado";
+                }
+            }
+            else
+            {
+                ddlSexo.SelectedValue = "No especificado";
+            }
+
+            if (persona.FechaNacimiento.HasValue)
+            {
+                txtFechaNac.Text = persona.FechaNacimiento.Value.ToString("yyyy-MM-dd");
+            }
+
+            txtTelefono.Text = persona.Telefono;
 			txtEmailContacto.Text = persona.Email;
 
 			ddlRol.SelectedValue = idRol.ToString();
@@ -291,6 +347,7 @@ namespace TPCuatrimestral_equipo_23A
                     admin.Apellido = txtApellido.Text;
                     admin.Dni = txtDni.Text;
                     admin.Sexo = ddlSexo.SelectedValue;
+                    if (!string.IsNullOrEmpty(txtFechaNac.Text)) admin.FechaNacimiento = DateTime.Parse(txtFechaNac.Text);
                     if (string.IsNullOrEmpty(admin.Sexo)) admin.Sexo = "No especificado";
                     admin.Telefono = txtTelefono.Text;
                     admin.Email = txtEmailContacto.Text;
@@ -333,6 +390,7 @@ namespace TPCuatrimestral_equipo_23A
                     recep.Apellido = txtApellido.Text;
                     recep.Dni = txtDni.Text;
                     recep.Sexo = ddlSexo.SelectedValue;
+                    if (!string.IsNullOrEmpty(txtFechaNac.Text)) recep.FechaNacimiento = DateTime.Parse(txtFechaNac.Text);
                     if (string.IsNullOrEmpty(recep.Sexo)) recep.Sexo = "No especificado";
                     recep.Telefono = txtTelefono.Text;
                     recep.Email = txtEmailContacto.Text;
@@ -374,6 +432,7 @@ namespace TPCuatrimestral_equipo_23A
                     nuevo.Apellido = txtApellido.Text;
                     nuevo.Dni = txtDni.Text;
                     nuevo.Sexo = ddlSexo.SelectedValue;
+                    if (!string.IsNullOrEmpty(txtFechaNac.Text)) nuevo.FechaNacimiento = DateTime.Parse(txtFechaNac.Text);
                     if (string.IsNullOrEmpty(nuevo.Sexo)) nuevo.Sexo = "No especificado";
                     nuevo.Telefono = txtTelefono.Text;
                     nuevo.Email = txtEmailContacto.Text;

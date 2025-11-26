@@ -2,6 +2,8 @@ using conexion;
 using dominio;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 
 namespace negocio
 {
@@ -288,5 +290,93 @@ namespace negocio
 				datos.cerrarConexion();
 			}
 		}
-	}
+
+        public List<DateTime> ListarFechasDisponibles(int idMedico)
+        {
+            TurnoTrabajoNegocio TurnoTrabajoNegocio = new TurnoTrabajoNegocio();	
+
+            var fechas = new List<DateTime>();
+            var horarios = TurnoTrabajoNegocio.ListarPorMedico(idMedico);
+
+            var diasTrabajo = horarios.Select(h => h.DiaSemana).Distinct().ToList();
+
+            DateTime hoy = DateTime.Today;
+            DateTime limite = hoy.AddDays(30);
+
+            for (DateTime fecha = hoy; fecha <= limite; fecha = fecha.AddDays(1))
+            {
+                if (diasTrabajo.Contains(fecha.DayOfWeek))
+                {
+                    fechas.Add(fecha);
+                }
+            }
+
+            return fechas;
+        }
+        public List<TimeSpan> ListarHorariosDisponibles(int idMedico, DateTime fecha)
+        {
+            var horarioNegocio = new TurnoTrabajoNegocio();
+            var horariosMedico = horarioNegocio.ListarHorariosPorMedico(idMedico);
+
+            DayOfWeek dia = fecha.DayOfWeek;
+
+            // buscar el horario correspondiente al día
+            var turnoDia = horariosMedico
+                            .FirstOrDefault(h => h.DiaSemana == dia);
+
+            if (turnoDia == null)
+                return new List<TimeSpan>(); 
+
+            List<TimeSpan> horarios = new List<TimeSpan>();
+
+            TimeSpan actual = turnoDia.HoraEntrada;
+            while (actual < turnoDia.HoraSalida)
+            {
+                horarios.Add(actual);
+                actual = actual.Add(TimeSpan.FromMinutes(60));
+            }
+
+            var ocupados = ListarHorariosOcupados(idMedico, fecha);
+
+            // filtrar
+            return horarios
+                    .Where(h => !ocupados.Contains(h))
+                    .ToList();
+        }
+
+        public List<TimeSpan> ListarHorariosOcupados(int idMedico, DateTime fecha)
+        {
+            List<TimeSpan> ocupados = new List<TimeSpan>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(
+                    "SELECT FechaHora FROM Turnos " +
+                    "WHERE IdMedico = @IdMedico " +
+                    "AND CONVERT(date, FechaHora) = @Fecha " +
+                    "AND Activo = 1"
+                );
+
+                datos.setearParametro("@IdMedico", idMedico);
+                datos.setearParametro("@Fecha", fecha.Date);
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    DateTime fh = (DateTime)datos.Lector["FechaHora"];
+                    ocupados.Add(fh.TimeOfDay);
+                }
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+
+            return ocupados;
+        }
+
+
+    }
 }

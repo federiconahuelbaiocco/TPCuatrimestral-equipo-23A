@@ -2,6 +2,7 @@
 using dominio;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace negocio
 {
@@ -398,7 +399,7 @@ namespace negocio
             {
                 datosMat.cerrarConexion();
             }
-            
+
             AccesoDatos datosDel = new AccesoDatos();
             try
             {
@@ -436,6 +437,81 @@ namespace negocio
                         datosAdd.cerrarConexion();
                     }
                 }
+            }
+        }
+
+        public List<Medico> ListarPorEspecialidad(int idEspecialidad)
+        {
+            List<Medico> lista = new List<Medico>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearProcedimiento("ListarMedicosPorEspecialidad");
+                datos.setearParametro("@IdEspecialidad", idEspecialidad);
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Medico m = new Medico();
+
+                    m.IdPersona = (int)datos.Lector["IdMedico"];   // ← así se llama en tu SP
+                    string nombreCompleto = datos.Lector["NombreCompleto"].ToString();
+
+                    // Separar nombre y apellido si querés (opcional)
+                    var partes = nombreCompleto.Split(' ');
+                    m.Nombre = partes[0];
+                    m.Apellido = string.Join(" ", partes.Skip(1));
+
+
+                    lista.Add(m);
+                }
+
+                return lista;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public List<Medico> ListarConEspecialidades()
+        {
+            List<Medico> lista = new List<Medico>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearProcedimiento("sp_ListarMedicosConEspecialidades");
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Medico m = new Medico();
+
+                    m.IdPersona = (int)datos.Lector["IdMedico"];
+                    m.Nombre = datos.Lector["Nombre"].ToString();
+                    m.Apellido = datos.Lector["Apellido"].ToString();
+
+
+                    // Puedes guardar NombreCompleto directo en una propiedad auxiliar
+                    //m.NombreCompleto = datos.Lector["NombreCompleto"].ToString();
+
+                    // Cargar especialidad
+                    Especialidad esp = new Especialidad();
+                    esp.Descripcion = datos.Lector["Especialidad"].ToString();
+                    m.Especialidades.Add(esp);
+
+                    // HORARIOS DEL MÉDICO
+                    //m.Horarios = ObtenerHorarios(m.IdPersona);
+                    lista.Add(m);
+                }
+
+                return lista;
+            }
+            finally
+            {
+                datos.cerrarConexion();
             }
         }
     }

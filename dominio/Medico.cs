@@ -12,8 +12,9 @@ namespace dominio
 		public string Matricula { get; set; }
 		public List<Especialidad> Especialidades { get; set; } = new List<Especialidad>();
 		public List<TurnoTrabajo> Horarios { get; set; } = new List<TurnoTrabajo>();
+        public string NombreCompleto => Apellido + ", " + Nombre;
 
-		public Usuario Usuario { get; set; }
+        public Usuario Usuario { get; set; }
 
 		public Medico()
 		{
